@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.HashMap;
 import org.bukkit.Server;
 import de.damarus.mcdesktopinfo.McDesktopInfo;
 import de.damarus.mcdesktopinfo.Values;
@@ -43,29 +44,29 @@ public class SocketListener implements Runnable {
                 DataOutputStream sOut = new DataOutputStream(socket.getOutputStream());
 
                 String request = sIn.readLine();
+                HashMap<String, String> params = new HashMap<String, String>();
 
-                /*
-                 * Filter out the important String
-                 * 
-                 * GET 127.0.0.1:6868/playerCount?rnd=234525 HTTP/1.1
-                 * becomes
-                 * playerCount
-                 * 
-                 * The if-else block provides compatibilty with
-                 * requests that aren't sent from the gadget.
-                 */
-                request = request.substring(request.indexOf("/") + 1);
-                if(request.contains("?rnd=")) {
-                    request = request.substring(0, request.indexOf("?rnd="));
-                } else {
-                    request = request.substring(0, request.indexOf(" "));
+                // Splitting into real request and parameters
+                request = request.substring(request.indexOf("/"));
+                if(request.contains(" HTTP/")) request = request.substring(0, request.indexOf(" HTTP/"));
+
+                String[] paramsWithValue = request.split("[?]");
+
+                boolean skippedFirst = false;
+                for(String s : paramsWithValue) {
+                    if(!skippedFirst) {
+                        skippedFirst = true;
+                        continue;
+                    }
+                    String[] x = s.split("[=]");
+                    params.put(x[0], x[1]);
                 }
 
                 // Get newest values from server
                 values.updateValues();
 
                 // Form response to the given request (Everything is in first line)
-                String response = values.get(request);
+                String response = values.get(paramsWithValue[0], params);
 
                 sOut.writeBytes(response); // Give the response back to the client
                 sOut.flush(); // Make sure, that data is sent now
