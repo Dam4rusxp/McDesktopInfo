@@ -1,0 +1,10 @@
+name: McDesktopInfo
+version: 0.3
+author: Damarus
+description: Show information about your server live on your desktop.
+website: http://dev.bukkit.org/server-mods/mcdesktopinfo/
+
+# Internal stuffz
+load: POSTWORLD
+database: false
+main: de.damarus.mcdesktopinfo.McDesktopInfo

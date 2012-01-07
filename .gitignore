@@ -1,0 +1,16 @@
+# Eclipse
+/.classpath
+/.project
+/.settings
+
+# Mac OS
+/.DS_Store
+
+# Maven
+/target
+
+# General
+/bin
+/build
+/dist
+/res
