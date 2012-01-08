@@ -27,7 +27,7 @@ function loadInfo() {
     fields.foreach(loadInfo2);
     
     if(mySettings.useCustomName) {
-        serverName.innerHTML = mySettings.serverName;
+        System.Gadget.document.getElementById("serverName").innerHTML = mySettings.serverName;
     }
     
     if(mySettings.useAutoRefresh) {
