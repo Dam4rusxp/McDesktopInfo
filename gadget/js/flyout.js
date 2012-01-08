@@ -1,6 +1,9 @@
 ﻿var listTemp = "";
 
 function initFlyout() {
+    // The settings need to be loaded seperately for gadget and flyout
+    settingsChanged();
+    
     refreshPlayerList();
 }
 
@@ -20,7 +23,7 @@ function displayPlayerList2(player) {
 }
 
 function kickPlayer(player) {
-    getInfo("kick?player=" + player + "?adminPw=" + mySettings.adminPw);
+    getInfo("kick?player=" + player);
     loadInfo();
     refreshPlayerList();
 }

@@ -45,7 +45,7 @@ public class PasswordSystem {
 
     public static void digestPWs() {
         if(config.getString("adminPw").length() != 32)
-            config.set("adminPw", generateMD5("'" + config.getString("adminPw") + "'"));
+            config.set("adminPw", generateMD5(config.getString("adminPw")));
     }
 
     public static void setConfig(FileConfiguration fc) {

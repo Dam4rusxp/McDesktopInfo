@@ -47,6 +47,7 @@ function getInfo(key) {
         var wait = true;
         var response;
         
+        key += "?adminPw=" + mySettings.adminPw;
         xhr.open("GET", "http://" + mySettings.host + "/" + key + "?rnd=" + Math.random(), false);
         
         xhr.onreadystatechange = function() {
