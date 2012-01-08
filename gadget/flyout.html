@@ -1,0 +1,36 @@
+﻿<html>
+    <head>
+        <style type:"text/css">
+            body {
+                background-color: #000000;
+                font-family: Segoe UI, Tahoma, Sans-Serif;
+                color: white;
+                height: 130px;
+                margin: 1px;
+                padding: 0px;
+                width: 130px;
+                font-size: 10px;
+            }
+            
+            #playerListLbl {
+                font-weight: bold;
+            }
+        </style>
+        
+        <script type="text/javascript" language="javascript" src="js/gadget.js"></script>
+        <script type="text/javascript" language="javascript" src="js/settings.js"></script>
+        <script type="text/javascript" language="javascript" src="js/flyout.js"></script>
+        <script type="text/javascript" language="javascript">
+        window.onload = function () {
+            initFlyout();
+        }
+        </script>
+    </head>
+    <body>
+        <div>
+            <span id="playerListLbl">Player List:</span>
+            <br />
+            <span id="playerList"></span>
+        </div>
+    </body>
+</html>

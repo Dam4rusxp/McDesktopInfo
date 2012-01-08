@@ -1,17 +1,18 @@
 ﻿<html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=Unicode" />
         <style type:"text/css">
             body {
                 background-color: #FFFFFF;
                 font-family: Segoe UI, Tahoma, Sans-Serif;
                 color: white;
                 height: 130px;
-                margin: 0px;
-                margin-left: 1px;
-                margin-top: 1px;
+                margin: 1px;
                 padding: 0px;
                 width: 130px;
+            }
+            
+            a {
+                color: white;
             }
             
             body, td, #refreshBtn {
@@ -24,8 +25,9 @@
             }
         </style>
         
-        <script type="text/javascript" language="javascript" src="/js/gadget.js"></script>
-        <script type="text/javascript" language="javascript" src="/js/settings.js"></script>
+        <script type="text/javascript" language="javascript" src="js/gadget.js"></script>
+        <script type="text/javascript" language="javascript" src="js/settings.js"></script>
+        <script type="text/javascript" language="javascript" src="js/flyout.js"></script>
     </head>
 
     <body onload="init();">
@@ -37,8 +39,10 @@
             </tr>
             <tr>
                 <td>
+                    <a href="javascript:void(0);" onclick="showFlyout();" id="playerListLink">
                     <span id="playerCountLbl">Current Players: </span>
                     <span id="playerCount"></span>
+                    </a>
                 </td>
             </tr>
             <tr>

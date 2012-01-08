@@ -1,24 +1,25 @@
-<html>
+﻿<html>
     <head>
         <title>McDesktopInfo Settings</title>
         
         <style type="text/css">
             body {
                 font-family: Segoe UI, Tahoma, Sans-Serif;
-                height: 235px;
+                height: 285px;
                 margin: 0px;
                 width: 220px;
             }
             
-            #serverNameInp, #hostInp, #bgSel {
+            #serverNameInp, #hostInp, #bgSel, #adminPwInp, #refreshIntervalInp {
                 width: 220px;
             }
         </style>
         
-        <script type="text/javascript" language="javascript" src="/js/gadget.js"></script>
-        <script type="text/javascript" language="javascript" src="/js/settings.js"></script>
+        <script type="text/javascript" language="javascript" src="js/gadget.js"></script>
+        <script type="text/javascript" language="javascript" src="js/settings.js"></script>
+        <script type="text/javascript" language="javascript" src="js/flyout.js"></script>
     </head>
-    <body onload="loadSettings()">
+    <body onload="loadSettings();">
         <div>
             <input type="checkbox" id="useCustomName" onclick="nameBoxChanged();" />
             <label for="useCustomName">Use custom Servername?</label>
@@ -29,9 +30,14 @@
             <input id="serverNameInp" type="text" maxlength="100" disabled="true" />
             <br />
             
-            <label for="hostInp">Host:</label>
+            <label for="hostInp">Server-IP:</label>
             <br />
             <input id="hostInp" type="text" maxlength="100" />
+            <br />
+            
+            <label for="hostInp">Administration-Password:</label>
+            <br />
+            <input id="adminPwInp" type="password" maxlength="100" />
             <br />
             
             <input type="checkbox" id="useAutoRefresh" onclick="refreshBoxChanged();" />
@@ -41,7 +47,6 @@
             <label for="refreshIntervalInp">Refresh interval in seconds:</label>
             <br />
             <input id="refreshIntervalInp" type="text" maxlength="10" disabled="false" />
-            <br />
             <br />
             
             <label for="bgSel">Background:</label>

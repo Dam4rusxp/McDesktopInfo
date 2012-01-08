@@ -1,4 +1,4 @@
-var mySettings = new mcSettings();
+﻿var mySettings = new mcSettings();
 
 // Is fired when the settings dialogue is closed
 function settingsClosing(event) {
@@ -14,10 +14,11 @@ function mcSettings() {
 
     this.useCustomName = false;
     this.serverName    = "A Bukkit Server"
-    this.host          = "";
-    this.bg            = "bg_dirt.png"
+    this.host          = "localhost:6868";
+    this.bg            = "bg_grass.png"
     this.useAutoRefresh = true;
-    this.refreshInterval = 60000; // 60 Seconds
+    this.refreshInterval = 300 * 1000; //5 Minutes
+    this.adminPw       = "foo-bar";
 }
 
 function saveToMemory() {
@@ -28,6 +29,7 @@ function saveToMemory() {
     mySettings.bg            = bgSel.value;
     mySettings.useAutoRefresh  = useAutoRefresh.checked;
     mySettings.refreshInterval = refreshIntervalInp.value * 1000;
+    mySettings.adminPw       = adminPwInp.value;
     
     // Save settings to disk
     mySettings.save();
@@ -42,8 +44,9 @@ function loadSettings() {
     serverNameInp.value   = mySettings.serverName;
     hostInp.value         = mySettings.host;
     bgSel.value           = mySettings.bg;
-    useAutoRefresh.checked   = mySettings.useAutoRefresh;
+    useAutoRefresh.checked = mySettings.useAutoRefresh;
     refreshIntervalInp.value = mySettings.refreshInterval / 1000;
+    adminPwInp.value      = mySettings.adminPw;
     
     nameBoxChanged();
     refreshBoxChanged();
@@ -59,6 +62,7 @@ function saveToDisk() {
     System.Gadget.Settings.writeString("bg"           , this.bg);
     System.Gadget.Settings.write      ("useAutoRefresh", this.useAutoRefresh);
     System.Gadget.Settings.write      ("refreshInterval", this.refreshInterval);
+    System.Gadget.Settings.writeString("adminPw", this.adminPw);
 }
 
 function loadFromDisk() {
@@ -67,8 +71,9 @@ function loadFromDisk() {
         this.serverName    = System.Gadget.Settings.readString("serverName");
         this.host          = System.Gadget.Settings.readString("host");
         this.bg            = System.Gadget.Settings.readString("bg");
-        this.useAutoRefresh  = System.Gadget.Settings.read    ("useAutoRefresh");
+        this.useAutoRefresh = System.Gadget.Settings.read     ("useAutoRefresh");
         this.refreshInterval = System.Gadget.Settings.read    ("refreshInterval");
+        this.adminPw = System.Gadget.Settings.readString      ("adminPw");
     }
 }
 

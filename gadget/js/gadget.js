@@ -1,5 +1,4 @@
-var host;
-var fields = new Array("playerCount", "serverName", "pluginVersion");
+﻿var fields = new Array("playerCount", "serverName", "pluginVersion");
 
 // Simple for-each script
 Array.prototype.foreach = function(callback) {
@@ -9,10 +8,14 @@ Array.prototype.foreach = function(callback) {
 }
 
 function init() {
-    settingsChanged();
-    
     System.Gadget.settingsUI = "settings.html";
     System.Gadget.onSettingsClosed = settingsClosed;
+    
+    System.Gadget.Flyout.file = "flyout.html";
+    System.Gadget.Flyout.onShow = showFlyout;
+    System.Gadget.Flyout.onHide = hideFlyout;
+    
+    settingsChanged();
 }
 
 function changeBg(newBg) {
@@ -21,7 +24,7 @@ function changeBg(newBg) {
 
 function loadInfo() {
     // Load info for each existing field
-    fields.foreach(getInfo);
+    fields.foreach(loadInfo2);
     
     if(mySettings.useCustomName) {
         serverName.innerHTML = mySettings.serverName;
@@ -32,21 +35,42 @@ function loadInfo() {
     }
 }
 
+function loadInfo2(key) {
+    var value = getInfo(key)
+    System.Gadget.document.getElementById(key).innerHTML = value;
+}
+
 function getInfo(key) {
     // If no host is specified, do not try to update
-    if(host != "") {
+    if(mySettings.host != "") {
         var xhr = new XMLHttpRequest();
+        var wait = true;
+        var response;
         
-        xhr.open("GET", "http://" + host + "/" + key + "?rnd=" + Math.random(), false);
+        xhr.open("GET", "http://" + mySettings.host + "/" + key + "?rnd=" + Math.random(), false);
         
         xhr.onreadystatechange = function() {
-            if ( xhr.readyState == 4 ) {
-                document.getElementById(key).innerHTML = xhr.responseText;
+            if (xhr.readyState == 4) {
+                response = xhr.responseText;
+                wait = false;
             }
         }
         
         xhr.send(null);
+        
+        while(wait) {}
+        if(response == undefined) response = "";
+        return response;
     }
+    return "";
+}
+
+function showFlyout() {
+    System.Gadget.Flyout.show = true;
+}
+
+function hideFlyout() {
+    System.Gadget.Flyout.show = false;
 }
 
 function settingsClosed(event) {
@@ -57,8 +81,6 @@ function settingsClosed(event) {
 
 function settingsChanged() {
     mySettings.load();
-    
-    host = mySettings.host;
     
     changeBg(mySettings.bg);
     loadInfo();

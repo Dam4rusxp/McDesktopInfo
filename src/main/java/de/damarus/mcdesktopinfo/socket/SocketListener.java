@@ -9,7 +9,7 @@ import java.net.Socket;
 import java.util.HashMap;
 import org.bukkit.Server;
 import de.damarus.mcdesktopinfo.McDesktopInfo;
-import de.damarus.mcdesktopinfo.Values;
+import de.damarus.mcdesktopinfo.RequestHandler;
 
 public class SocketListener implements Runnable {
 
@@ -32,7 +32,7 @@ public class SocketListener implements Runnable {
 
     @Override
     public void run() {
-        Values values = new Values(server);
+        RequestHandler values = new RequestHandler(server);
 
         while(!breakLoop) {
             try {
@@ -47,7 +47,7 @@ public class SocketListener implements Runnable {
                 HashMap<String, String> params = new HashMap<String, String>();
 
                 // Splitting into real request and parameters
-                request = request.substring(request.indexOf("/"));
+                request = request.substring(request.indexOf("/") + 1);
                 if(request.contains(" HTTP/")) request = request.substring(0, request.indexOf(" HTTP/"));
 
                 String[] paramsWithValue = request.split("[?]");
@@ -61,6 +61,8 @@ public class SocketListener implements Runnable {
                     String[] x = s.split("[=]");
                     params.put(x[0], x[1]);
                 }
+
+                params.put("gadgetIp", socket.getInetAddress().getHostAddress());
 
                 // Get newest values from server
                 values.updateValues();
