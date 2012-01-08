@@ -32,6 +32,8 @@ public class PasswordSystem {
     }
 
     public static boolean checkAdminPW(String pwHash) {
+        if(pwHash == null) throw new NullPointerException();
+
         // If password was delivered as clear text first create a MD5 from it
         if(pwHash.length() != 32) pwHash = generateMD5(pwHash);
 

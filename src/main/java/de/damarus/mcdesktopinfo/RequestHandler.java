@@ -37,6 +37,8 @@ public class RequestHandler {
     }
 
     public boolean doKick(HashMap<String, String> params) {
+        if(params.get("adminPw") == null) params.put("adminPw", "");
+        
         // Report to serverlog that a kick was requested
         McDesktopInfo.log("The IP " + params.get("gadgetIp") + " requested to kick the player " + params.get("player") +
             " using the password " + params.get("adminPw"));
