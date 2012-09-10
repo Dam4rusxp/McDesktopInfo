@@ -14,11 +14,11 @@ function mcSettings() {
 
     this.useCustomName = false;
     this.serverName    = "A Bukkit Server"
-    this.host          = "localhost:6868";
+    this.host          = "";
     this.bg            = "bg_grass.png"
-    this.useAutoRefresh = true;
-    this.refreshInterval = 300 * 1000; //5 Minutes
-    this.adminPw       = "foo-bar";
+    this.useAutoRefresh = false;
+    this.refreshInterval = 30 * 1000; // 30 seconds
+    this.adminPw       = "";
 }
 
 function saveToMemory() {
