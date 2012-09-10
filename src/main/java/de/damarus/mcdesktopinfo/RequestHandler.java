@@ -26,8 +26,8 @@ import org.bukkit.entity.Player;
 
 public class RequestHandler {
 
-    private FileConfiguration config;
-    private Server server;
+    private FileConfiguration       config;
+    private Server                  server;
     private HashMap<String, String> values;
 
     public RequestHandler(Server server) {
@@ -49,7 +49,7 @@ public class RequestHandler {
     public String get(String request, HashMap<String, String> params) {
         // Return nothing if a password is required but not given with the request or is wrong
         if(config.getBoolean("enforcePassword") && !params.containsKey("adminPw") || !PasswordSystem.checkAdminPW(params.get("adminPw"))) return "";
-        
+
         // Handle more complex requests
         if(request.equals("kick")) doKick(params);
         if(request.equals("playerList")) return getPlayerList(params);
@@ -62,8 +62,6 @@ public class RequestHandler {
     }
 
     public boolean doKick(HashMap<String, String> params) {
-        if(params.get("adminPw") == null) params.put("adminPw", "");
-        
         // Report to serverlog that a kick was requested
         McDesktopInfo.log("The IP " + params.get("gadgetIp") + " requested to kick the player " + params.get("player") +
             " using the password " + params.get("adminPw"));

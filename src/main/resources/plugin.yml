@@ -8,3 +8,9 @@ website: http://dev.bukkit.org/server-mods/mcdesktopinfo/
 load: POSTWORLD
 database: false
 main: de.damarus.mcdesktopinfo.McDesktopInfo
+
+commands:
+    mcdesktopinfo:
+        description: Configure McDesktopInfo
+        usage: /mcdesktopinfo
+        aliases: mcdi
