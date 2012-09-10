@@ -7,7 +7,9 @@ Compiling
 ---------
 
 You can easily compile this plugin by using Maven. You shouldn't need to set a compile goal as a default one is already set in the pom.xml. If this doesn't work though you can build the plugin with:
-	clean package
+
+    clean package
+
 Please note that you need to have the current Bukkit version (referenced in the pom.xml) installed in Maven or you won't be able to compile this.
 
 License
