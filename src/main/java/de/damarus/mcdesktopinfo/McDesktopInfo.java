@@ -52,7 +52,6 @@ public class McDesktopInfo extends JavaPlugin {
     }
 
     public void onDisable() {
-        saveConfig();
         logger.info("Disabled!");
     }
 
