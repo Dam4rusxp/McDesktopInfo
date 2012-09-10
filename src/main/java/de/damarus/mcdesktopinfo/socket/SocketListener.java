@@ -31,9 +31,9 @@ import de.damarus.mcdesktopinfo.RequestHandler;
 
 public class SocketListener implements Runnable {
 
-    private Server server;
+    private Server       server;
     private ServerSocket serverSocket;
-    private boolean breakLoop = false;
+    private boolean      breakLoop = false;
 
     public SocketListener(int port, Server server) {
         try {
@@ -42,7 +42,7 @@ public class SocketListener implements Runnable {
             McDesktopInfo.log("Starting listener on port " + port + ".");
 
             serverSocket = new ServerSocket(port);
-        } catch(IOException e) {
+        } catch (IOException e) {
             McDesktopInfo.log("Could not start socket on port " + port + ".");
             e.printStackTrace();
         }
@@ -92,7 +92,7 @@ public class SocketListener implements Runnable {
                 sOut.flush(); // Make sure, that data is sent now
 
                 socket.close(); // Transmission done...
-            } catch(IOException e) {
+            } catch (IOException e) {
                 McDesktopInfo.log("Listening on port " + serverSocket.getLocalPort() + " was interrupted.");
                 e.printStackTrace();
             }

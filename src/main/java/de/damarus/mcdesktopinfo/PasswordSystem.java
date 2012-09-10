@@ -42,7 +42,7 @@ public class PasswordSystem {
             }
 
             return digestString;
-        } catch(NoSuchAlgorithmException e) {
+        } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
 
@@ -62,8 +62,7 @@ public class PasswordSystem {
     }
 
     public static void digestPWs() {
-        if(config.getString("adminPw").length() != 32)
-            config.set("adminPw", generateMD5(config.getString("adminPw")));
+        if(config.getString("adminPw").length() != 32) config.set("adminPw", generateMD5(config.getString("adminPw")));
     }
 
     public static void setConfig(FileConfiguration fc) {
