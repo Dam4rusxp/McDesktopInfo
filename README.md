@@ -1,7 +1,7 @@
 McDesktopInfo
 =============
 
-Show information about your server live on your desktop.
+Show information about your server live on your desktop. For more plugin/gadget related information please look at its [BukkitDev page](http://dev.bukkit.org/server-mods/mcdesktopinfo/).
 
 Compiling
 ---------
