@@ -33,7 +33,9 @@ public class CommandHandler implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if(args.length == 1) {
+        if(args.length == 0) {
+            helpMessage(sender);
+        } else if(args.length == 1) {
             if(args[0].equalsIgnoreCase("help")) {
                 helpMessage(sender);
                 return true;
