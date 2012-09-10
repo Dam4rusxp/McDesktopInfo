@@ -19,15 +19,19 @@
 package de.damarus.mcdesktopinfo;
 
 import java.util.HashMap;
+
 import org.bukkit.Server;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 public class RequestHandler {
 
-    public Server server;
+    private FileConfiguration config;
+    private Server server;
     private HashMap<String, String> values;
 
     public RequestHandler(Server server) {
+        this.config = server.getPluginManager().getPlugin(Config.PLUGIN_NAME).getConfig();
         this.server = server;
 
         values = new HashMap<String, String>();
@@ -43,6 +47,9 @@ public class RequestHandler {
     }
 
     public String get(String request, HashMap<String, String> params) {
+        // Return nothing if a password is required but not given with the request or is wrong
+        if(config.getBoolean("enforcePassword") && !params.containsKey("adminPw") || !PasswordSystem.checkAdminPW(params.get("adminPw"))) return "";
+        
         // Handle more complex requests
         if(request.equals("kick")) doKick(params);
         if(request.equals("playerList")) return getPlayerList(params);
