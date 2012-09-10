@@ -35,8 +35,6 @@ public class McDesktopInfo extends JavaPlugin {
         saveConfig();
         reloadConfig();
 
-        getConfig().set("VERSION", Config.PLUGIN_VERSION);
-
         PasswordSystem.setConfig(getConfig());
         PasswordSystem.digestPWs();
         saveConfig();
