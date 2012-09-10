@@ -37,7 +37,7 @@ public class RequestHandler {
 
     public void updateValues() {
         values.put("playerCount", server.getOnlinePlayers().length + " / " + server.getMaxPlayers());
-        values.put("serverName", server.getName()); // AFAIK it always returns "craftbukkit"
+        values.put("serverName", server.getServerName());
         values.put("serverVersion", server.getVersion());
         values.put("pluginVersion", server.getPluginManager().getPlugin(Config.PLUGIN_NAME).getDescription().getVersion());
     }
