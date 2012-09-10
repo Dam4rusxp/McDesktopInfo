@@ -42,20 +42,26 @@ public class CommandHandler implements CommandExecutor {
             }
 
             if(args[0].equalsIgnoreCase("reload")) {
-                McDesktopInfo.respond(sender, "Reloading config...");
-                plugin.reloadConfig();
-                McDesktopInfo.respond(sender, "Done!");
-                return true;
+                if(sender.hasPermission("mcdesktopinfo.admin")) {
+                    McDesktopInfo.respond(sender, "Reloading config...");
+                    plugin.reloadConfig();
+                    PasswordSystem.digestPWs();
+                    plugin.saveConfig();
+                    McDesktopInfo.respond(sender, "Done!");
+                    return true;
+                }
             }
         } else if(args.length == 2) {
             if(args[0].equalsIgnoreCase("setPassword")) {
-                McDesktopInfo.respond(sender, "Changing the admin password...");
+                if(sender.hasPermission("mcdesktopinfo.admin")) {
+                    McDesktopInfo.respond(sender, "Changing the admin password...");
 
-                plugin.getConfig().set("adminPw", args[1]);
-                PasswordSystem.digestPWs();
-                plugin.saveConfig();
+                    plugin.getConfig().set("adminPw", args[1]);
+                    PasswordSystem.digestPWs();
+                    plugin.saveConfig();
 
-                McDesktopInfo.respond(sender, "Done!");
+                    McDesktopInfo.respond(sender, "Done!");
+                }
             }
         }
         return false;

@@ -10,7 +10,15 @@ database: false
 main: de.damarus.mcdesktopinfo.McDesktopInfo
 
 commands:
-    mcdesktopinfo:
-        description: Configure McDesktopInfo
-        usage: /mcdesktopinfo
-        aliases: mcdi
+  mcdesktopinfo:
+    description: Configure McDesktopInfo
+    usage: Usage: /mcdesktopinfo help
+
+permissions:
+  mcdesktopinfo.*:
+    description: Grants every mcdesktopinfo permission
+    children:
+      mcdesktopinfo.admin: true
+  mcdesktopinfo.admin:
+    description: Grants access to admin functions
+    default: op

@@ -45,8 +45,10 @@ public class McDesktopInfo extends JavaPlugin {
             log("No password set, admin functions are disabled!");
         }
 
-        // Register the command handler
-        getCommand("mcdesktopinfo").setExecutor(new CommandHandler(this));
+        // Register the command handlers
+        CommandHandler chandler = new CommandHandler(this);
+        getCommand("mcdesktopinfo").setExecutor(chandler);
+        getCommand("mcdi").setExecutor(chandler);
 
         // Start the listener in a new thread to be able to do other things while listening
         listenerThread = new Thread(new SocketListener(getConfig().getInt("socket-port"), getServer()));
