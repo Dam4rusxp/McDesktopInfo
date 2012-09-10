@@ -6,6 +6,7 @@
     <version>0.4</version>
     <name>McDesktopInfo</name>
     <build>
+    	<finalName>McDesktopInfo</finalName>
         <defaultGoal>clean package</defaultGoal>
         <plugins>
             <plugin>
