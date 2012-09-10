@@ -31,7 +31,7 @@
                         <phase>package</phase>
                         <configuration>
                             <target>
-                                <zip destfile="${project.build.directory}/McDesktopInfo.gadget" basedir="${project.basedir}/gadget" includes="*.*" />
+                                <zip destfile="${project.build.directory}/McDesktopInfo.gadget" basedir="${project.basedir}/gadget" includes="**" />
                             </target>
                         </configuration>
                         <goals>
