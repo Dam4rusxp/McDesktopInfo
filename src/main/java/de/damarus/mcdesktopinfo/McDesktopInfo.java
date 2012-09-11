@@ -36,13 +36,13 @@ public class McDesktopInfo extends JavaPlugin {
         saveConfig();
         reloadConfig();
 
-        PasswordSystem.setConfig(getConfig());
-        PasswordSystem.digestPWs();
-        saveConfig();
-
         // Check if an admin password is set
         if(getConfig().getString("adminPw").isEmpty()) {
             log("No password set, admin functions are disabled!");
+        } else {
+            PasswordSystem.setConfig(getConfig());
+            PasswordSystem.digestPWs();
+            saveConfig();
         }
 
         // Register the command handlers
@@ -53,13 +53,9 @@ public class McDesktopInfo extends JavaPlugin {
         // Start the listener in a new thread to be able to do other things while listening
         listenerThread = new Thread(new SocketListener(getConfig().getInt("socket-port"), getServer()));
         listenerThread.start();
-
-        log("Enabled!");
     }
 
-    public void onDisable() {
-        logger.info("Disabled!");
-    }
+    public void onDisable() {}
 
     public static void log(String message) {
         logger.info("[" + Config.PLUGIN_NAME + "] " + message);
