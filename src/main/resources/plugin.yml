@@ -19,6 +19,9 @@ permissions:
     description: Grants every mcdesktopinfo permission
     children:
       mcdesktopinfo.admin: true
+      mcdesktopinfo.getport: true
   mcdesktopinfo.admin:
     description: Grants access to admin functions
     default: op
+  mcdesktopinfo.getport:
+    description: Allows the player to use /mcdi port, which displays the socket port

@@ -50,6 +50,12 @@ public class CommandHandler implements CommandExecutor {
                     return true;
                 }
             }
+            
+            if(args[0].equalsIgnoreCase("port")) {
+                if(sender.hasPermission("mcdesktopinfo.getport")) {
+                    McDesktopInfo.respond(sender, plugin.getConfig().getInt("socket-port") + "");   
+                }
+            }
         } else if(args.length == 2) {
             if(args[0].equalsIgnoreCase("setPassword")) {
                 if(sender.hasPermission("mcdesktopinfo.admin")) {
@@ -71,6 +77,7 @@ public class CommandHandler implements CommandExecutor {
             "---McDesktopInfo help message---\n" +
             "<...> - required argument | [...] - optional argument\n" +
             "/mcdi help                       Display this message\n" +
+            "/mcdi port             Display the port of the socket\n" +
             "/mcdi reload                        Reload the config\n" +
             "/mcdi setPassword <pw>       Set a new admin password\n");
         // @formatter:on
