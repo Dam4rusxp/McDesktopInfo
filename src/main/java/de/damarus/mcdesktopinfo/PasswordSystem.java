@@ -20,11 +20,12 @@ package de.damarus.mcdesktopinfo;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import org.bukkit.configuration.file.FileConfiguration;
+
+import org.bukkit.plugin.java.JavaPlugin;
 
 public class PasswordSystem {
 
-    private static FileConfiguration config;
+    private static JavaPlugin plugin;
 
     public static String generateMD5(String x) {
         try {
@@ -50,22 +51,25 @@ public class PasswordSystem {
     }
 
     public static boolean checkAdminPW(String pwHash) {
-        if(pwHash == null) throw new NullPointerException();
+        if(plugin.getConfig().getString("adminPw").isEmpty()) return false;
 
         // If password was delivered as clear text first create a MD5 from it
         if(pwHash.length() != 32) pwHash = generateMD5(pwHash);
 
         // Check if password is correct
-        if(config.getString("adminPw").equals(pwHash)) return true;
+        if(plugin.getConfig().getString("adminPw").equals(pwHash)) return true;
 
         return false;
     }
 
     public static void digestPWs() {
-        if(config.getString("adminPw").length() != 32) config.set("adminPw", generateMD5(config.getString("adminPw")));
+        if(plugin.getConfig().getString("adminPw").length() != 32) {
+            plugin.getConfig().set("adminPw", generateMD5(plugin.getConfig().getString("adminPw")));
+            plugin.saveConfig();
+        }
     }
 
-    public static void setConfig(FileConfiguration fc) {
-        config = fc;
+    public static void setPlugin(JavaPlugin plugin) {
+        PasswordSystem.plugin = plugin;
     }
 }

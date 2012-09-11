@@ -32,17 +32,14 @@ public class McDesktopInfo extends JavaPlugin {
         logger = getServer().getLogger();
 
         // TODO Write better script for writing/updating config
-        getConfig().options().copyDefaults(true);
-        saveConfig();
-        reloadConfig();
+        saveDefaultConfig();
+        PasswordSystem.setPlugin(this);
 
         // Check if an admin password is set
         if(getConfig().getString("adminPw").isEmpty()) {
             log("No password set, admin functions are disabled!");
         } else {
-            PasswordSystem.setConfig(getConfig());
             PasswordSystem.digestPWs();
-            saveConfig();
         }
 
         // Register the command handlers

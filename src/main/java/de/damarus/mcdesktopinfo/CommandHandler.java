@@ -46,7 +46,6 @@ public class CommandHandler implements CommandExecutor {
                     McDesktopInfo.respond(sender, "Reloading config...");
                     plugin.reloadConfig();
                     PasswordSystem.digestPWs();
-                    plugin.saveConfig();
                     McDesktopInfo.respond(sender, "Done!");
                     return true;
                 }
@@ -58,7 +57,6 @@ public class CommandHandler implements CommandExecutor {
 
                     plugin.getConfig().set("adminPw", args[1]);
                     PasswordSystem.digestPWs();
-                    plugin.saveConfig();
 
                     McDesktopInfo.respond(sender, "Done!");
                 }

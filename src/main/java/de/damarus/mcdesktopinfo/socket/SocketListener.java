@@ -27,7 +27,7 @@ import java.net.Socket;
 import java.util.HashMap;
 import org.bukkit.Server;
 import de.damarus.mcdesktopinfo.McDesktopInfo;
-import de.damarus.mcdesktopinfo.RequestHandler;
+import de.damarus.mcdesktopinfo.QueryHandler;
 
 public class SocketListener implements Runnable {
 
@@ -50,7 +50,7 @@ public class SocketListener implements Runnable {
 
     @Override
     public void run() {
-        RequestHandler values = new RequestHandler(server);
+        QueryHandler values = new QueryHandler(server);
 
         while(!breakLoop) {
             try {
@@ -61,31 +61,33 @@ public class SocketListener implements Runnable {
                 BufferedReader sIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 DataOutputStream sOut = new DataOutputStream(socket.getOutputStream());
 
-                String request = sIn.readLine();
+                String query = sIn.readLine();
                 HashMap<String, String> params = new HashMap<String, String>();
 
-                // Splitting into real request and parameters
-                request = request.substring(request.indexOf("/") + 1);
-                if(request.contains(" HTTP/")) request = request.substring(0, request.indexOf(" HTTP/"));
+                // Splitting into real query and parameters
+                query = query.substring(query.indexOf("/") + 1);
+                if(query.contains(" HTTP/")) query = query.substring(0, query.indexOf(" HTTP/"));
 
-                String[] paramsWithValue = request.split("[?]");
+                String[] paramsWithValue = query.split("[?]");
 
-                boolean skippedFirst = false;
-                for(String s : paramsWithValue) {
-                    if(!skippedFirst) {
-                        skippedFirst = true;
+                for(int i = 1; i < paramsWithValue.length; i++) {
+                    String[] x = paramsWithValue[i].split("[=]");
+
+                    // Skip parameters without value
+                    if(x.length == 1) {
                         continue;
                     }
-                    String[] x = s.split("[=]");
+
                     params.put(x[0], x[1]);
                 }
 
+                params.remove("rnd");
                 params.put("gadgetIp", socket.getInetAddress().getHostAddress());
 
                 // Get newest values from server
                 values.updateValues();
 
-                // Form response to the given request (Everything is in first line)
+                // Form response to the given query (Everything is in first line)
                 String response = values.get(paramsWithValue[0], params);
 
                 sOut.writeBytes(response); // Give the response back to the client

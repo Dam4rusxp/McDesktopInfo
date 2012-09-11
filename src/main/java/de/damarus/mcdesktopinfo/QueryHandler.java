@@ -24,13 +24,13 @@ import org.bukkit.Server;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
-public class RequestHandler {
+public class QueryHandler {
 
     private FileConfiguration       config;
     private Server                  server;
     private HashMap<String, String> values;
 
-    public RequestHandler(Server server) {
+    public QueryHandler(Server server) {
         this.config = server.getPluginManager().getPlugin(Config.PLUGIN_NAME).getConfig();
         this.server = server;
 
@@ -46,27 +46,27 @@ public class RequestHandler {
         values.put("pluginVersion", server.getPluginManager().getPlugin(Config.PLUGIN_NAME).getDescription().getVersion());
     }
 
-    public String get(String request, HashMap<String, String> params) {
-        // Return nothing if a password is required but not given with the request or is wrong
-        if(config.getBoolean("enforcePassword") && !params.containsKey("adminPw") || !PasswordSystem.checkAdminPW(params.get("adminPw"))) return "";
+    public String get(String query, HashMap<String, String> params) {
+        // Return nothing if a password is required but not given with the query or is wrong
+        if(config.getBoolean("enforcePassword") && !params.containsKey("adminPw") || (params.containsKey("adminPw") && !PasswordSystem.checkAdminPW(params.get("adminPw")))) return "";
 
-        // Handle more complex requests
-        if(request.equals("kick")) doKick(params);
-        if(request.equals("playerList")) return getPlayerList(params);
+        // Handle more complex querys
+        if(query.equals("kick")) doKick(params);
+        if(query.equals("playerList")) return getPlayerList(params);
 
-        // Handle simpler requests
-        if(values.containsKey(request)) return values.get(request);
+        // Handle simpler querys
+        if(values.containsKey(query)) return values.get(query);
 
         // ...else return an empty string
         return "";
     }
 
     public boolean doKick(HashMap<String, String> params) {
-        // Report to serverlog that a kick was requested
-        McDesktopInfo.log("The IP " + params.get("gadgetIp") + " requested to kick the player " + params.get("player") +
-            " using the password " + params.get("adminPw"));
-
-        if(PasswordSystem.checkAdminPW(params.get("adminPw"))) {
+        // Report to serverlog that a kick was queryed
+        McDesktopInfo.log("The IP " + params.get("gadgetIp") + " sent a query to kick the player " + params.get("player") + " using the password " + params.get("adminPw"));
+        if(!params.containsKey("adminPw")) {
+            McDesktopInfo.log("No adminPw specified in the config! Skipping kick.");
+        } else if(PasswordSystem.checkAdminPW(params.get("adminPw"))) {
             Player player = server.getPlayer(params.get("player"));
             if(player != null) {
                 player.kickPlayer("Kicked with McDesktopInfo");
