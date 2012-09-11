@@ -1,12 +1,5 @@
 ﻿var fields = new Array("playerCount", "serverName", "pluginVersion");
 
-// Simple for-each script
-Array.prototype.foreach = function(callback) {
-  for(var x=0; x < this.length; x++) {
-    callback(this[x]);
-  }
-}
-
 function init() {
     System.Gadget.settingsUI = "settings.html";
     System.Gadget.onSettingsClosed = settingsClosed;
@@ -22,50 +15,51 @@ function changeBg(newBg) {
     System.Gadget.background = "img/" + newBg;
 }
 
-function loadInfo() {
+function refresh() {
     // Load info for each existing field
-    fields.foreach(loadInfo2);
+    for(i = 0; i < fields.length; i++) {
+        sendQuery(fields[i], function(resp) {
+            System.Gadget.document.getElementById(fields[i]).innerHTML = resp;
+        });
+    }
     
     if(mySettings.useCustomName) {
         System.Gadget.document.getElementById("serverName").innerHTML = mySettings.serverName;
     }
     
     if(mySettings.useAutoRefresh) {
-        setTimeout("loadInfo()", mySettings.refreshInterval);
+        setTimeout("refresh()", mySettings.refreshInterval);
     }
 }
 
-function loadInfo2(key) {
-    var value = getInfo(key)
-    System.Gadget.document.getElementById(key).innerHTML = value;
-}
-
-function getInfo(key) {
+function sendQuery(query, callback) {
     // If no host is specified, do not try to update
     if(mySettings.host != "") {
         var xhr = new XMLHttpRequest();
-        var wait = true;
         var response;
         
+        // If existing, add adminPw to query
         if(mySettings.adminPw != undefined && mySettings.adminPw != "") {
-        	key += "?adminPw=" + mySettings.adminPw;
+        	query += "?adminPw=" + mySettings.adminPw;
     	}
-        xhr.open("GET", "http://" + mySettings.host + "/" + key + "?rnd=" + Math.random(), false);
+        xhr.open("GET", "http://" + mySettings.host + "/" + query + "?rnd=" + Math.random(), false);
         
+        // Set the function that is executes when we get an answer
         xhr.onreadystatechange = function() {
             if (xhr.readyState == 4) {
                 response = xhr.responseText;
-                wait = false;
+                if(response == undefined) response = "";
+
+                typeof callback == "function" && callback(response);
             }
         }
         
         xhr.send(null);
-        
-        while(wait) {}
-        if(response == undefined) response = "";
-        return response;
+        return;
     }
-    return "";
+
+    // Callback with an empty string if we get no answer
+    typeof callback == "function" && callback("");
 }
 
 function showFlyout() {
@@ -84,7 +78,7 @@ function settingsClosed(event) {
 
 function settingsChanged() {
     mySettings.load();
-    
+
     changeBg(mySettings.bg);
-    loadInfo();
+    refresh();
 }

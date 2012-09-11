@@ -1,6 +1,4 @@
-﻿var listTemp = "";
-
-function initFlyout() {
+﻿function initFlyout() {
     // The settings need to be loaded seperately for gadget and flyout
     settingsChanged();
     
@@ -8,22 +6,21 @@ function initFlyout() {
 }
 
 function refreshPlayerList() {
-    var players = getInfo("playerList");
+    var players = sendQuery("playerList", undefined);
     players = players.split("+");
-    
-    players.foreach(displayPlayerList2);
-    playerList.innerHTML = listTemp;
-    listTemp = "";
-}
 
-function displayPlayerList2(player) {
-    if(player != undefined && player != "") {
-        listTemp += player + " (<a href=\"javascript:void(0);\" onclick=\" kickPlayer(\'" + player + "\');\">Kick</a></span>)" + "<br />";
+    var listTemp = "";
+    for(var i = 0; i < players.length; i++) {
+        if(player != undefined && player != "") {
+            listTemp += player + " (<a href=\"javascript:void(0);\" onclick=\"kickPlayer(\'" + player + "\');\">Kick</a></span>)" + "<br />";
+        }
     }
+
+    System.Gadget.Flyout.document.getElementById("playerList").innerHTML = listTemp;
 }
 
 function kickPlayer(player) {
-    getInfo("kick?player=" + player);
-    loadInfo();
+    sendQuery("kick?player=" + player, undefined);
+    refresh();
     refreshPlayerList();
 }
