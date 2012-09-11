@@ -64,7 +64,6 @@ function sendQuery(query, callback) {
 
 function showFlyout() {
     System.Gadget.Flyout.show = true;
-    initFlyout();
 }
 
 function hideFlyout() {
