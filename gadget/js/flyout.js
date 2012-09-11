@@ -6,17 +6,18 @@
 }
 
 function refreshPlayerList() {
-    var players = sendQuery("playerList", undefined);
-    players = players.split("+");
+    sendQuery("playerList", function(response) {
+        players = response.split("+");
 
-    var listTemp = "";
-    for(var i = 0; i < players.length; i++) {
-        if(player != undefined && player != "") {
-            listTemp += player + " (<a href=\"javascript:void(0);\" onclick=\"kickPlayer(\'" + player + "\');\">Kick</a></span>)" + "<br />";
+        var listTemp = "";
+        for(var i = 0; i < players.length; i++) {
+            if(players[i] != undefined && players[i] != "") {
+                listTemp += players[i] + " (<a href=\"javascript:void(0);\" onclick=\"kickPlayer(\'" + players[i] + "\');\">Kick</a></span>)" + "<br />";
+            }
         }
-    }
 
-    System.Gadget.Flyout.document.getElementById("playerList").innerHTML = listTemp;
+        System.Gadget.Flyout.document.getElementById("playerList").innerHTML = listTemp;
+    });
 }
 
 function kickPlayer(player) {
