@@ -84,3 +84,9 @@ function nameBoxChanged() {
 function refreshBoxChanged() {
     refreshIntervalInp.disabled = !useAutoRefresh.checked;
 }
+
+function addPortNumber(ip) {
+	// If IP is not undefined, not empty and doesn't contain a port number, add the default one
+	if(ip != undefined && ip != "" && !ip.match(".*:[0-9]{1,5}")) return ip.concat(":6868");
+	return ip;
+}

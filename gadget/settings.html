@@ -32,7 +32,7 @@
             
             <label for="hostInp">Server-IP:</label>
             <br />
-            <input id="hostInp" type="text" maxlength="100" />
+            <input id="hostInp" type="text" maxlength="100" onblur="this.value = addPortNumber(this.value);" />
             <br />
             
             <label for="adminPwInp">Administration-Password:</label>
