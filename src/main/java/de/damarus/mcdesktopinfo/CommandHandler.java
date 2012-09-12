@@ -50,10 +50,10 @@ public class CommandHandler implements CommandExecutor {
                     return true;
                 }
             }
-            
+
             if(args[0].equalsIgnoreCase("port")) {
                 if(sender.hasPermission("mcdesktopinfo.getport")) {
-                    McDesktopInfo.respond(sender, plugin.getConfig().getInt("socket-port") + "");   
+                    McDesktopInfo.respond(sender, plugin.getConfig().getInt("socket-port") + "");
                 }
             }
         } else if(args.length == 2) {

@@ -29,14 +29,14 @@ public class QueryHandler {
     private FileConfiguration       config;
     private Server                  server;
     private HashMap<String, String> values;
+    private HashMap<String, String> admin;
 
     public QueryHandler(Server server) {
         this.config = server.getPluginManager().getPlugin(Config.PLUGIN_NAME).getConfig();
         this.server = server;
 
         values = new HashMap<String, String>();
-
-        updateValues();
+        admin = new HashMap<String, String>();
     }
 
     public void updateValues() {
@@ -44,20 +44,25 @@ public class QueryHandler {
         values.put("serverName", server.getServerName());
         values.put("serverVersion", server.getBukkitVersion());
         values.put("pluginVersion", server.getPluginManager().getPlugin(Config.PLUGIN_NAME).getDescription().getVersion());
+        values.put("playerList", getPlayerList());
+
+        admin.put("mem", getMem());
     }
 
     public String get(String query, HashMap<String, String> params) {
         // Return nothing if a password is required but not given with the query or is wrong
         if(config.getBoolean("enforcePassword") && !params.containsKey("adminPw") || (params.containsKey("adminPw") && !PasswordSystem.checkAdminPW(params.get("adminPw")))) return "";
 
-        // Handle more complex querys
-        if(query.equals("kick")) doKick(params);
-        if(query.equals("playerList")) return getPlayerList(params);
-
-        // Handle simpler querys
+        // Handle user/simple querys
         if(values.containsKey(query)) return values.get(query);
 
-        // ...else return an empty string
+        // Handle admin/complex queries
+        if(params.containsKey("adminPw") && PasswordSystem.checkAdminPW(params.get("adminPw"))) {
+            if(admin.containsKey(query)) return admin.get(query);
+            if(query.equals("kick")) doKick(params);
+        }
+
+        // Return empty string if query is unknown
         return "";
     }
 
@@ -76,7 +81,7 @@ public class QueryHandler {
         return false;
     }
 
-    public String getPlayerList(HashMap<String, String> params) {
+    public String getPlayerList() {
         Player[] players = server.getOnlinePlayers();
 
         String output = "";
@@ -86,5 +91,14 @@ public class QueryHandler {
 
         output = output.replaceFirst("[+]", "");
         return output;
+    }
+
+    public static String getMem() {
+        Runtime runtime = Runtime.getRuntime();
+
+        long used = (runtime.maxMemory() - runtime.freeMemory()) / 1024 / 1024;
+        long max = runtime.maxMemory() / 1024 / 1024;
+
+        return used + "MB / " + (max == Long.MAX_VALUE ? "inf" : max + "MB");
     }
 }
