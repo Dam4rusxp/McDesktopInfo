@@ -1,4 +1,4 @@
-﻿var fields = new Array("playerCount", "serverName", "pluginVersion");
+﻿var fields = new Array("playerCount", "serverName", "pluginVersion", "serverVersion");
 
 function init() {
     System.Gadget.settingsUI = "settings.html";
