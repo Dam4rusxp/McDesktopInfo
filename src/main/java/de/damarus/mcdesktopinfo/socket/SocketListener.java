@@ -57,43 +57,8 @@ public class SocketListener implements Runnable {
                 // Wait for connection
                 Socket socket = serverSocket.accept();
 
-                // Get in and out streams
-                BufferedReader sIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                DataOutputStream sOut = new DataOutputStream(socket.getOutputStream());
-
-                String query = sIn.readLine();
-                HashMap<String, String> params = new HashMap<String, String>();
-
-                // Splitting into real query and parameters
-                query = query.substring(query.indexOf("/") + 1);
-                if(query.contains(" HTTP/")) query = query.substring(0, query.indexOf(" HTTP/"));
-
-                String[] paramsWithValue = query.split("[?]");
-
-                for(int i = 1; i < paramsWithValue.length; i++) {
-                    String[] x = paramsWithValue[i].split("[=]");
-
-                    // Skip parameters without value
-                    if(x.length == 1) {
-                        continue;
-                    }
-
-                    params.put(x[0], x[1]);
-                }
-
-                params.remove("rnd");
-                params.put("gadgetIp", socket.getInetAddress().getHostAddress());
-
-                // Get newest values from server
-                values.updateValues();
-
-                // Form response to the given query (Everything is in first line)
-                String response = values.get(paramsWithValue[0], params);
-
-                sOut.writeBytes(response); // Give the response back to the client
-                sOut.flush(); // Make sure, that data is sent now
-
-                socket.close(); // Transmission done...
+                // Handle connection in a new thread
+                new Thread(new ConnectionHandler(socket, server)).start();
             } catch (IOException e) {
                 McDesktopInfo.log("Listening on port " + serverSocket.getLocalPort() + " was interrupted.");
                 e.printStackTrace();
