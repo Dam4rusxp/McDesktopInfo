@@ -96,7 +96,7 @@ public class QueryHandler {
     public static String getMem() {
         Runtime runtime = Runtime.getRuntime();
 
-        long used = (runtime.maxMemory() - runtime.freeMemory()) / 1024 / 1024;
+        long used = (runtime.totalMemory() - runtime.freeMemory()) / 1024 / 1024;
         long max = runtime.maxMemory() / 1024 / 1024;
 
         return used + "MB / " + (max == Long.MAX_VALUE ? "inf" : max + "MB");
