@@ -18,7 +18,7 @@ function refresh() {
     System.Gadget.document.getElementById("refreshBtn").disabled = true;
     setTimeout(function() {
         System.Gadget.document.getElementById("refreshBtn").disabled = false;
-    }, 5 * 1000);
+    }, mySettings.connTimeout);
 
     // Load info for each existing field
     untilFinish = fields.length;

@@ -19,6 +19,7 @@ function mcSettings() {
     this.useAutoRefresh  = false;
     this.refreshInterval = 30 * 1000; // 30 seconds
     this.adminPw         = "";
+    this.connTimeout     = 5 * 1000;
 }
 
 function saveToMemory() {
@@ -30,6 +31,7 @@ function saveToMemory() {
     mySettings.useAutoRefresh  = useAutoRefresh.checked;
     mySettings.refreshInterval = refreshIntervalInp.value * 1000;
     mySettings.adminPw         = adminPwInp.value;
+    mySettings.connTimeout     = connTimeoutInp.value * 1000;
     
     // Save settings to disk
     mySettings.save();
@@ -47,6 +49,7 @@ function loadSettings() {
     useAutoRefresh.checked   = mySettings.useAutoRefresh;
     refreshIntervalInp.value = mySettings.refreshInterval / 1000;
     adminPwInp.value         = mySettings.adminPw;
+    connTimeoutInp.value     = mySettings.connTimeout / 1000;
     
     nameBoxChanged();
     refreshBoxChanged();
@@ -63,6 +66,7 @@ function saveToDisk() {
     System.Gadget.Settings.write      ("useAutoRefresh" , this.useAutoRefresh);
     System.Gadget.Settings.write      ("refreshInterval", this.refreshInterval);
     System.Gadget.Settings.writeString("adminPw"        , this.adminPw);
+    System.Gadget.Settings.write      ("connTimeout"    , this.connTimeout);
 }
 
 function loadFromDisk() {
@@ -74,6 +78,7 @@ function loadFromDisk() {
         this.useAutoRefresh  = System.Gadget.Settings.read      ("useAutoRefresh");
         this.refreshInterval = System.Gadget.Settings.read      ("refreshInterval");
         this.adminPw         = System.Gadget.Settings.readString("adminPw");
+        this.connTimeout     = System.Gadget.Settings.read      ("connTimeout");
     }
 }
 

@@ -5,12 +5,12 @@
         <style type="text/css">
             body {
                 font-family: Segoe UI, Tahoma, Sans-Serif;
-                height: 285px;
                 margin: 0px;
+                height: 290px;
                 width: 220px;
             }
             
-            #serverNameInp, #hostInp, #bgSel, #adminPwInp, #refreshIntervalInp {
+            #serverNameInp, #hostInp, #bgSel, #adminPwInp, #refreshIntervalInp, #connTimeoutInp {
                 width: 220px;
             }
         </style>
@@ -20,7 +20,7 @@
         <script type="text/javascript" language="javascript" src="js/flyout.js"></script>
     </head>
     <body onload="loadSettings();">
-        <div>
+        <div id="contentDiv">
             <input type="checkbox" id="useCustomName" onclick="nameBoxChanged();" />
             <label for="useCustomName">Use custom Servername?</label>
             <br />
@@ -46,7 +46,12 @@
             
             <label for="refreshIntervalInp">Refresh interval in seconds:</label>
             <br />
-            <input id="refreshIntervalInp" type="text" maxlength="10" disabled="false" />
+            <input id="refreshIntervalInp" type="text" maxlength="5" disabled="false" onkeyup="this.value=this.value.replace(/[^\d]/,'')" />
+            <br />
+            
+            <label for="connTimeoutInp">Connection timeout in seconds:</label>
+            <br />
+            <input id="connTimeoutInp" type="text" maxlength="2" onkeyup="this.value=this.value.replace(/[^\d]/,'')" />
             <br />
             
             <label for="bgSel">Background:</label>
