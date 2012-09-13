@@ -1,7 +1,7 @@
 ﻿function initFlyout() {
     // The settings need to be loaded seperately for gadget and flyout
     settingsChanged();
-    
+
     refreshPlayerList();
 }
 
@@ -10,7 +10,7 @@ function refreshPlayerList() {
         players = response.split("+");
 
         var listTemp = "";
-        for(var i = 0; i < players.length; i++) {
+        for(i = 0; i < players.length; i++) {
             if(players[i] != undefined && players[i] != "") {
                 listTemp += players[i] + " (<a href=\"javascript:void(0);\" onclick=\"kickPlayer(\'" + players[i] + "\');\">Kick</a></span>)" + "<br />";
             }
