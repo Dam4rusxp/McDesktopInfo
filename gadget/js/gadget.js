@@ -1,6 +1,7 @@
 ﻿var fields = new Array("playerCount", "serverName", "pluginVersion", "serverVersion", "mem");
 
 var untilFinish = 0;
+var startedAutoRefresh = false;
 
 function init() {
     System.Gadget.settingsUI = "settings.html";
@@ -35,9 +36,14 @@ function refresh() {
             }
         });
     }
+}
 
+function autoRefresh() {
     if(mySettings.useAutoRefresh) {
-        setTimeout("refresh()", mySettings.refreshInterval);
+        refresh();
+        setTimeout(autoRefresh, mySettings.refreshInterval);
+    } else {
+        startedAutoRefresh = false;
     }
 }
 
@@ -92,5 +98,12 @@ function settingsChanged() {
     }
 
     System.Gadget.background = "img/" + mySettings.bg;
+
     refresh();
+
+    // Start auto refreshing
+    if(mySettings.useAutoRefresh && !startedAutoRefresh) {
+        setTimeout(autoRefresh, mySettings.refreshInterval);
+        startedAutoRefresh = true;
+    }
 }

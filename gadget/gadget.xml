@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <gadget>
   <name>McDesktopInfo</name>
-  <version>0.4.3</version>
+  <version>0.4.4</version>
   <author name="Damarus"></author>
   <copyright>&#169; Damarus</copyright>
   <description>A Windows Sidebar gadget that displays information from a Bukkit server.</description>
