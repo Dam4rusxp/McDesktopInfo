@@ -14,7 +14,7 @@
     border: 1px solid black;
     
 	float: left;
-	margin-right: 6px;
+	margin-right: 5px;
 }
 
 .tabs li a {
@@ -22,9 +22,7 @@
 	text-decoration: none;
     color: black;
 	
-	padding-top: 4px;
-	padding-left: 4px;
-    padding-right: 4px;
+	padding: 5px;
 }
 
 .tabs li a:hover {
