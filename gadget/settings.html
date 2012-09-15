@@ -35,40 +35,45 @@
 	            
 	            <label for="serverName">Servername:</label>
 	            <br />
-	            <input id="serverNameInp" class="wideInput" type="text" maxlength="100" disabled="true" />
+	            <input id="serverName" class="wideInput" type="text" maxlength="100" disabled="true" />
 	            <br />
 	            
-	            <label for="hostInp">Server-IP:</label>
+	            <label for="host">Server-IP:</label>
 	            <br />
-	            <input id="hostInp" class="wideInput" type="text" maxlength="100" onblur="this.value = addPortNumber(this.value);" />
+	            <input id="host" class="wideInput" type="text" maxlength="100" onblur="this.value = addPortNumber(this.value);" />
 	            <br />
 	            
-	            <label for="adminPwInp">Administration-Password:</label>
+	            <label for="adminPw">Administration-Password:</label>
 	            <br />
-	            <input id="adminPwInp" class="wideInput" type="password" maxlength="100" />
+	            <input id="adminPw" class="wideInput" type="password" maxlength="100" />
 	            <br />
 	            
 	            <input type="checkbox" id="useAutoRefresh" onclick="refreshBoxChanged();" />
 	            <label for="useAutoRefresh">Use automatic refresh?</label>
 	            <br />
 	            
-	            <label for="refreshIntervalInp">Refresh interval in seconds:</label>
+	            <label for="refreshInterval">Refresh interval in seconds:</label>
 	            <br />
-	            <input id="refreshIntervalInp" class="wideInput" type="text" maxlength="5" disabled="false" onkeyup="this.value=this.value.replace(/[^\d]/,'')" />
+	            <input id="refreshInterval" class="wideInput" type="text" maxlength="5" disabled="false" onkeyup="this.value=this.value.replace(/[^\d]/,'')" />
 	            <br />
 	            
-	            <label for="connTimeoutInp">Connection timeout in seconds:</label>
+	            <label for="connTimeout">Connection timeout in seconds:</label>
 	            <br />
-	            <input id="connTimeoutInp" class="wideInput" type="text" maxlength="2" onkeyup="this.value=this.value.replace(/[^\d]/,'')" />
+	            <input id="connTimeout" class="wideInput" type="text" maxlength="2" onkeyup="this.value=this.value.replace(/[^\d]/,'')" />
             </div>
             
             <div id="pane2" class="pane" title="Design">
-                <label for="bgSel">Background:</label>
+                <label for="bg">Background:</label>
 	            <br />
-	            <select id="bgSel" class="wideInput">
+	            <select id="bg" class="wideInput">
 	                <option value="bg_dirt.png">Dirt</option>
 	                <option value="bg_grass.png">Grass</option>
 	            </select>
+                <br />
+                
+                <label for="textColor">Text color of the gadget:</label>
+                <br />
+                <input id="textColor" class="wideInput" type="text" maxlength="7" />
             </div>
         </div>
     </body>

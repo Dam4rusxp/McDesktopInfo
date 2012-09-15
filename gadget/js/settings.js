@@ -1,103 +1,80 @@
-﻿var mySettings = new mcSettings();
+var settings = new settingsObject();
+
+var checkSettings = new Array("useCustomName", "useAutoRefresh")
+var varSettings = new Array("refreshInterval", "connTimeout");
+var stringSettings = new Array("serverName", "host", "bg", "adminPw", "textColor");
 
 function initSettings() {
-    setupTabs();
+    System.Gadget.onSettingsClosing = settingsClosing;
     
-    loadSettings();
+    setupTabs();
+    applySettings();
+    
+    nameBoxChanged();
+    refreshBoxChanged();
 }
 
 // Is fired when the settings dialogue is closed
 function settingsClosing(event) {
-	if (event.closeAction == event.Action.commit) {
-		saveToMemory();
-	}
+     if (event.closeAction == event.Action.commit) {
+         for(i = 0; i < checkSettings.length; i++) settings[checkSettings[i]] = document.getElementById(checkSettings[i]).checked;
+         for(i = 0; i < varSettings.length; i++) settings[varSettings[i]] = document.getElementById(varSettings[i]).value;
+         for(i = 0; i < stringSettings.length; i++) settings[stringSettings[i]] = document.getElementById(stringSettings[i]).value;
+         saveSettings();
+     }
 }
 
-function mcSettings() {
-    // Functions that load and save this element
-    this.save = saveToDisk;
-    this.load = loadFromDisk;
-
-    this.useCustomName   = false;
-    this.serverName      = "A Bukkit Server"
-    this.host            = "";
-    this.bg              = "bg_grass.png"
-    this.useAutoRefresh  = false;
-    this.refreshInterval = 30 * 1000; // 30 seconds
-    this.adminPw         = "";
-    this.connTimeout     = 5 * 1000;
-}
-
-function saveToMemory() {
-    // Read settings from settings dialogue and save them in mySettings
-    mySettings.useCustomName   = useCustomName.checked;
-    mySettings.serverName      = serverNameInp.value;
-    mySettings.host            = hostInp.value;
-    mySettings.bg              = bgSel.value;
-    mySettings.useAutoRefresh  = useAutoRefresh.checked;
-    mySettings.refreshInterval = refreshIntervalInp.value * 1000;
-    mySettings.adminPw         = adminPwInp.value;
-    mySettings.connTimeout     = connTimeoutInp.value * 1000;
+function settingsObject() {
+    this.load = loadSettings;
+    this.save = saveSettings;
     
-    // Save settings to disk
-    mySettings.save();
+    this["useCustomName"]   = false;
+    this["useAutoRefresh"]  = false;
+    this["refreshInterval"] = 30;
+    this["connTimeout"]     = 5;
+    
+    this["serverName"] = "A Bukkit Server";
+    this["host"]       = "";
+    this["bg"]         = "bg_grass.png";
+    this["adminPw"]    = "";
+    this["textColor"]  = "#FFFFFF";
 }
 
 function loadSettings() {
-    // Load settings from disk
-    mySettings.load();
-    
-    // Apply loaded settings to HTML elements
-    useCustomName.checked    = mySettings.useCustomName;
-    serverNameInp.value      = mySettings.serverName;
-    hostInp.value            = mySettings.host;
-    bgSel.value              = mySettings.bg;
-    useAutoRefresh.checked   = mySettings.useAutoRefresh;
-    refreshIntervalInp.value = mySettings.refreshInterval / 1000;
-    adminPwInp.value         = mySettings.adminPw;
-    connTimeoutInp.value     = mySettings.connTimeout / 1000;
-    
-    nameBoxChanged();
-    refreshBoxChanged();
-    
-    System.Gadget.onSettingsClosing = settingsClosing;
-}
-
-function saveToDisk() {
-    System.Gadget.Settings.write      ("settingsExist"  , true);
-    System.Gadget.Settings.write      ("useCustomName"  , this.useCustomName);
-    System.Gadget.Settings.writeString("serverName"     , this.serverName);
-    System.Gadget.Settings.writeString("host"           , this.host);
-    System.Gadget.Settings.writeString("bg"             , this.bg);
-    System.Gadget.Settings.write      ("useAutoRefresh" , this.useAutoRefresh);
-    System.Gadget.Settings.write      ("refreshInterval", this.refreshInterval);
-    System.Gadget.Settings.writeString("adminPw"        , this.adminPw);
-    System.Gadget.Settings.write      ("connTimeout"    , this.connTimeout);
-}
-
-function loadFromDisk() {
+    // Load from disk
     if(System.Gadget.Settings.read("settingsExist")) {
-        this.useCustomName   = System.Gadget.Settings.read      ("useCustomName");
-        this.serverName      = System.Gadget.Settings.readString("serverName");
-        this.host            = System.Gadget.Settings.readString("host");
-        this.bg              = System.Gadget.Settings.readString("bg");
-        this.useAutoRefresh  = System.Gadget.Settings.read      ("useAutoRefresh");
-        this.refreshInterval = System.Gadget.Settings.read      ("refreshInterval");
-        this.adminPw         = System.Gadget.Settings.readString("adminPw");
-        this.connTimeout     = System.Gadget.Settings.read      ("connTimeout");
+        for(i = 0; i < checkSettings.length; i++) settings[checkSettings[i]] = System.Gadget.Settings.read(checkSettings[i]);
+        for(i = 0; i < varSettings.length; i++) settings[varSettings[i]] = System.Gadget.Settings.read(varSettings[i]);
+        for(i = 0; i < stringSettings.length; i++) settings[stringSettings[i]] = System.Gadget.Settings.readString(stringSettings[i]);
     }
 }
 
+function saveSettings() {
+    // Save to disk
+    for(i = 0; i < checkSettings.length; i++) System.Gadget.Settings.write(checkSettings[i], settings[checkSettings[i]]);
+    for(i = 0; i < varSettings.length; i++) System.Gadget.Settings.write(varSettings[i], settings[varSettings[i]]);
+    for(i = 0; i < stringSettings.length; i++) System.Gadget.Settings.writeString(stringSettings[i], settings[stringSettings[i]]);
+    System.Gadget.Settings.write("settingsExist", true);
+}
+
+function applySettings() {
+    // Apply Settings to settings dialog
+    loadSettings();
+    for(i = 0; i < checkSettings.length; i++) document.getElementById(checkSettings[i]).checked = settings[checkSettings[i]];
+    for(i = 0; i < varSettings.length; i++) document.getElementById(varSettings[i]).value = settings[varSettings[i]];
+    for(i = 0; i < stringSettings.length; i++) document.getElementById(stringSettings[i]).value = settings[stringSettings[i]];
+}
+
 function nameBoxChanged() {
-    serverNameInp.disabled = !useCustomName.checked;
+    document.getElementById("serverName").disabled = !useCustomName.checked;
 }
 
 function refreshBoxChanged() {
-    refreshIntervalInp.disabled = !useAutoRefresh.checked;
+    document.getElementById("refreshInterval").disabled = !useAutoRefresh.checked;
 }
 
 function addPortNumber(ip) {
-	// If IP is not undefined, not empty and doesn't contain a port number, add the default one
-	if(ip != undefined && ip != "" && !ip.match(".*:[0-9]{1,5}")) return ip.concat(":6868");
-	return ip;
+    // If IP is not undefined, not empty and doesn't contain a port number, add the default one
+    if(ip != undefined && ip != "" && !ip.match(".*:[0-9]{1,5}")) return ip.concat(":6868");
+    return ip;
 }
