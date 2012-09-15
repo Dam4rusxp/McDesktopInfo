@@ -19,7 +19,7 @@ function refresh() {
     System.Gadget.document.getElementById("refreshBtn").disabled = true;
     setTimeout(function() {
         System.Gadget.document.getElementById("refreshBtn").disabled = false;
-    }, settings["connTimeout"]);
+    }, settings["connTimeout"] * 1000);
 
     // Load info for each existing field
     untilFinish = fields.length;
