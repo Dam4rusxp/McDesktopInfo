@@ -1,7 +1,6 @@
 ﻿function initFlyout() {
     // The settings need to be loaded seperately for gadget and flyout
-    settingsChanged();
-
+    settings.load();
     refreshPlayerList();
 }
 
