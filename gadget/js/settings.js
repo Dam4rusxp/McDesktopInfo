@@ -1,5 +1,11 @@
 ﻿var mySettings = new mcSettings();
 
+function initSettings() {
+    setupTabs();
+    
+    loadSettings();
+}
+
 // Is fired when the settings dialogue is closed
 function settingsClosing(event) {
 	if (event.closeAction == event.Action.commit) {

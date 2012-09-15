@@ -1,65 +1,75 @@
 ﻿<html>
     <head>
         <title>McDesktopInfo Settings</title>
-        
+
+        <link rel="stylesheet" href="css/tabbing.css">
         <style type="text/css">
             body {
                 font-family: Segoe UI, Tahoma, Sans-Serif;
+                
                 margin: 0px;
-                height: 290px;
+                margin-bottom: 20px;
+                padding: 0px;
+                height: 270px;
                 width: 220px;
             }
             
-            #serverNameInp, #hostInp, #bgSel, #adminPwInp, #refreshIntervalInp, #connTimeoutInp {
-                width: 220px;
+            .wideInput {
+                width: 100%;
             }
         </style>
         
         <script type="text/javascript" language="javascript" src="js/gadget.js"></script>
         <script type="text/javascript" language="javascript" src="js/settings.js"></script>
-        <script type="text/javascript" language="javascript" src="js/flyout.js"></script>
+        <script type="text/javascript" language="javascript" src="js/tabbing.js"></script>
     </head>
-    <body onload="loadSettings();">
-        <div id="contentDiv">
-            <input type="checkbox" id="useCustomName" onclick="nameBoxChanged();" />
-            <label for="useCustomName">Use custom Servername?</label>
-            <br />
+    <body onload="initSettings();">
+        <ul id="tabList" class="tabs">
+        </ul>
+        
+        <div class="paneContainer" id="paneContainer">
+            <div id="pane1" class="pane" title="Connection">
+	            <input type="checkbox" id="useCustomName" onclick="nameBoxChanged();" />
+	            <label for="useCustomName">Use custom Servername?</label>
+	            <br />
+	            
+	            <label for="serverName">Servername:</label>
+	            <br />
+	            <input id="serverNameInp" class="wideInput" type="text" maxlength="100" disabled="true" />
+	            <br />
+	            
+	            <label for="hostInp">Server-IP:</label>
+	            <br />
+	            <input id="hostInp" class="wideInput" type="text" maxlength="100" onblur="this.value = addPortNumber(this.value);" />
+	            <br />
+	            
+	            <label for="adminPwInp">Administration-Password:</label>
+	            <br />
+	            <input id="adminPwInp" class="wideInput" type="password" maxlength="100" />
+	            <br />
+	            
+	            <input type="checkbox" id="useAutoRefresh" onclick="refreshBoxChanged();" />
+	            <label for="useAutoRefresh">Use automatic refresh?</label>
+	            <br />
+	            
+	            <label for="refreshIntervalInp">Refresh interval in seconds:</label>
+	            <br />
+	            <input id="refreshIntervalInp" class="wideInput" type="text" maxlength="5" disabled="false" onkeyup="this.value=this.value.replace(/[^\d]/,'')" />
+	            <br />
+	            
+	            <label for="connTimeoutInp">Connection timeout in seconds:</label>
+	            <br />
+	            <input id="connTimeoutInp" class="wideInput" type="text" maxlength="2" onkeyup="this.value=this.value.replace(/[^\d]/,'')" />
+            </div>
             
-            <label for="serverName">Servername:</label>
-            <br />
-            <input id="serverNameInp" type="text" maxlength="100" disabled="true" />
-            <br />
-            
-            <label for="hostInp">Server-IP:</label>
-            <br />
-            <input id="hostInp" type="text" maxlength="100" onblur="this.value = addPortNumber(this.value);" />
-            <br />
-            
-            <label for="adminPwInp">Administration-Password:</label>
-            <br />
-            <input id="adminPwInp" type="password" maxlength="100" />
-            <br />
-            
-            <input type="checkbox" id="useAutoRefresh" onclick="refreshBoxChanged();" />
-            <label for="useAutoRefresh">Use automatic refresh?</label>
-            <br />
-            
-            <label for="refreshIntervalInp">Refresh interval in seconds:</label>
-            <br />
-            <input id="refreshIntervalInp" type="text" maxlength="5" disabled="false" onkeyup="this.value=this.value.replace(/[^\d]/,'')" />
-            <br />
-            
-            <label for="connTimeoutInp">Connection timeout in seconds:</label>
-            <br />
-            <input id="connTimeoutInp" type="text" maxlength="2" onkeyup="this.value=this.value.replace(/[^\d]/,'')" />
-            <br />
-            
-            <label for="bgSel">Background:</label>
-            <br />
-            <select id="bgSel">
-                <option value="bg_dirt.png">Dirt</option>
-                <option value="bg_grass.png">Grass</option>
-            </select>
+            <div id="pane2" class="pane" title="Design">
+                <label for="bgSel">Background:</label>
+	            <br />
+	            <select id="bgSel" class="wideInput">
+	                <option value="bg_dirt.png">Dirt</option>
+	                <option value="bg_grass.png">Grass</option>
+	            </select>
+            </div>
         </div>
     </body>
 </html>
