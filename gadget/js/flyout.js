@@ -12,7 +12,7 @@ function refreshPlayerList() {
         var listTemp = "";
         for(i = 0; i < players.length; i++) {
             if(players[i] != undefined && players[i] != "") {
-                listTemp += players[i] + " (<a href=\"javascript:void(0);\" onclick=\"kickPlayer(\'" + players[i] + "\');\">Kick</a></span>)" + "<br />";
+                listTemp += players[i] + " (<a href=\"#\" onclick=\"kickPlayer(\'" + players[i] + "\'); return false;\">Kick</a>)" + "<br />";
             }
         }
 
