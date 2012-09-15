@@ -1,18 +1,28 @@
-﻿<html>
+﻿﻿<html>
     <head>
         <style type:"text/css">
             body {
-                background-color: #000000;
+                background: silver;
+                color: black;
                 font-family: Segoe UI, Tahoma, Sans-Serif;
-                color: white;
-                height: 130px;
-                margin: 1px;
-                padding: 0px;
-                width: 130px;
                 font-size: 10px;
+                
+                width: 130px;
+                height: 130px;
+                margin: 0px;
+                padding: 0px;
+            }
+            
+            #contentDiv {
+                display: inline;
+                height: 100%;
+                width: 100%;
+                margin: 5px;
+                padding: 0px;
             }
             
             #playerListLbl {
+                font-size: 11px;
                 font-weight: bold;
             }
         </style>
@@ -22,7 +32,7 @@
         <script type="text/javascript" language="javascript" src="js/flyout.js"></script>
     </head>
     <body onload="initFlyout();">
-        <div>
+        <div id="contentDiv">
             <span id="playerListLbl">Player List:</span>
             <br />
             <span id="playerList"></span>
