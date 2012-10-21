@@ -56,7 +56,7 @@ public class SocketListener implements Runnable {
                 Socket socket = serverSocket.accept();
 
                 // Handle connection in a new thread
-                new Thread(new ConnectionHandler(socket, server)).start();
+                new Thread(new ConnectionHandler(socket, server, values)).start();
             } catch (IOException e) {
                 McDesktopInfo.log("Listening on port " + serverSocket.getLocalPort() + " was interrupted.");
                 e.printStackTrace();

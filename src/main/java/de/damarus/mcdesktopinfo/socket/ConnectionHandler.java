@@ -34,16 +34,16 @@ public class ConnectionHandler implements Runnable {
 
     private Socket socket;
     private Server server;
+    private QueryHandler values;
 
-    public ConnectionHandler(Socket socket, Server server) {
+    public ConnectionHandler(Socket socket, Server server, QueryHandler values) {
         this.socket = socket;
         this.server = server;
+        this.values = values;
     }
 
     @Override
     public void run() {
-        QueryHandler values = new QueryHandler(server);
-
         try {
             // Get in and out streams
             BufferedReader sIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
