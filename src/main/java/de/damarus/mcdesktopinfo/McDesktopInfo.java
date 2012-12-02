@@ -41,8 +41,6 @@ public class McDesktopInfo extends JavaPlugin {
             PasswordSystem.digestPWs();
         }
 
-        saveConfig();
-
         // Register the command handlers
         CommandHandler chandler = new CommandHandler(this);
         getCommand("mcdesktopinfo").setExecutor(chandler);
