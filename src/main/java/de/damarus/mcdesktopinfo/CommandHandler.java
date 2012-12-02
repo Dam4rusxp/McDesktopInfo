@@ -43,28 +43,28 @@ public class CommandHandler implements CommandExecutor {
 
             if(args[0].equalsIgnoreCase("reload")) {
                 if(sender.hasPermission("mcdesktopinfo.admin")) {
-                    McDesktopInfo.respond(sender, "Reloading config...");
+                    CommandHandler.respond(sender, "Reloading config...");
                     plugin.reloadConfig();
                     PasswordSystem.digestPWs();
-                    McDesktopInfo.respond(sender, "Done!");
+                    CommandHandler.respond(sender, "Done!");
                     return true;
                 }
             }
 
             if(args[0].equalsIgnoreCase("port")) {
                 if(sender.hasPermission("mcdesktopinfo.getport")) {
-                    McDesktopInfo.respond(sender, plugin.getConfig().getInt("socket-port") + "");
+                    CommandHandler.respond(sender, plugin.getConfig().getInt("socket-port") + "");
                 }
             }
         } else if(args.length == 2) {
             if(args[0].equalsIgnoreCase("setPassword")) {
                 if(sender.hasPermission("mcdesktopinfo.admin")) {
-                    McDesktopInfo.respond(sender, "Changing the admin password...");
+                    CommandHandler.respond(sender, "Changing the admin password...");
 
                     plugin.getConfig().set("adminPw", args[1]);
                     PasswordSystem.digestPWs();
 
-                    McDesktopInfo.respond(sender, "Done!");
+                    CommandHandler.respond(sender, "Done!");
                 }
             }
         }
@@ -73,7 +73,7 @@ public class CommandHandler implements CommandExecutor {
 
     public void helpMessage(CommandSender sender) {
         // @formatter:off
-        McDesktopInfo.respond(sender,
+        CommandHandler.respond(sender,
             "---McDesktopInfo help message---\n" +
             "<...> - required argument | [...] - optional argument\n" +
             "/mcdi help                       Display this message\n" +
@@ -81,5 +81,9 @@ public class CommandHandler implements CommandExecutor {
             "/mcdi reload                        Reload the config\n" +
             "/mcdi setPassword <pw>       Set a new admin password\n");
         // @formatter:on
+    }
+
+    public static void respond(CommandSender sender, String message) {
+        sender.sendMessage("[" + Config.PLUGIN_NAME + "] " + message);
     }
 }

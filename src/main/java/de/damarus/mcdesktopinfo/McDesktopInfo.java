@@ -18,7 +18,6 @@
 
 package de.damarus.mcdesktopinfo;
 
-import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 import de.damarus.mcdesktopinfo.socket.SocketListener;
 import java.util.logging.Logger;
@@ -56,9 +55,5 @@ public class McDesktopInfo extends JavaPlugin {
 
     public static void log(String message) {
         logger.info("[" + Config.PLUGIN_NAME + "] " + message);
-    }
-
-    public static void respond(CommandSender sender, String message) {
-        sender.sendMessage("[" + Config.PLUGIN_NAME + "] " + message);
     }
 }
