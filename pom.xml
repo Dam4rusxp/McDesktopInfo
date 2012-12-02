@@ -33,6 +33,7 @@
                         <configuration>
                             <target>
                                 <zip destfile="${project.build.directory}/McDesktopInfo.gadget" basedir="${project.basedir}/gadget" includes="**" />
+                                <zip destfile="${project.build.directory}/McDesktopInfo_v${project.version}.zip" basedir="${project.basedir}/target" includes="*.*" />
                             </target>
                         </configuration>
                         <goals>
