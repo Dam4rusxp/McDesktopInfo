@@ -43,28 +43,28 @@ public class CommandHandler implements CommandExecutor {
 
             if(args[0].equalsIgnoreCase("reload")) {
                 if(sender.hasPermission("mcdesktopinfo.admin")) {
-                    CommandHandler.respond(sender, "Reloading config...");
+                    respond(sender, "Reloading config...");
                     plugin.reloadConfig();
                     PasswordSystem.digestPWs();
-                    CommandHandler.respond(sender, "Done!");
+                    respond(sender, "Done!");
                     return true;
                 }
             }
 
             if(args[0].equalsIgnoreCase("port")) {
                 if(sender.hasPermission("mcdesktopinfo.getport")) {
-                    CommandHandler.respond(sender, plugin.getConfig().getInt("socket-port") + "");
+                    respond(sender, plugin.getConfig().getInt("socket-port") + "");
                 }
             }
         } else if(args.length == 2) {
             if(args[0].equalsIgnoreCase("setPassword")) {
                 if(sender.hasPermission("mcdesktopinfo.admin")) {
-                    CommandHandler.respond(sender, "Changing the admin password...");
+                    respond(sender, "Changing the admin password...");
 
                     plugin.getConfig().set("adminPw", args[1]);
                     PasswordSystem.digestPWs();
 
-                    CommandHandler.respond(sender, "Done!");
+                    respond(sender, "Done!");
                 }
             }
         }
@@ -73,7 +73,7 @@ public class CommandHandler implements CommandExecutor {
 
     public void helpMessage(CommandSender sender) {
         // @formatter:off
-        CommandHandler.respond(sender,
+        respond(sender,
             "---McDesktopInfo help message---\n" +
             "<...> - required argument | [...] - optional argument\n" +
             "/mcdi help                       Display this message\n" +
