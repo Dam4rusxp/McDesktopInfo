@@ -31,7 +31,7 @@ public class McDesktopInfo extends JavaPlugin {
         logger = getServer().getLogger();
 
         // TODO Write better script for writing/updating config
-        saveDefaultConfig();
+        saveConfig();
         PasswordSystem.setPlugin(this);
 
         // Check if an admin password is set
