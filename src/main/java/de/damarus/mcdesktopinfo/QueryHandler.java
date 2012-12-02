@@ -30,7 +30,7 @@ public class QueryHandler {
     private Server                  server;
     private HashMap<String, String> values;
     private HashMap<String, String> admin;
-    private long lastUpdate;
+    private long                    lastUpdate;
 
     public QueryHandler(Server server) {
         this.config = server.getPluginManager().getPlugin(Config.PLUGIN_NAME).getConfig();
@@ -48,10 +48,10 @@ public class QueryHandler {
         values.put("playerList", getPlayerList());
 
         admin.put("mem", getMem());
-        
+
         lastUpdate = System.currentTimeMillis();
     }
-    
+
     public void updateValues(int timeout) {
         if(System.currentTimeMillis() - lastUpdate > timeout) updateValues();
     }
