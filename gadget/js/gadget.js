@@ -1,7 +1,7 @@
-﻿var fields = new Array("playerCount", "serverName", "pluginVersion", "serverVersion", "mem");
+﻿var fields = ["playerCount", "serverName", "pluginVersion", "serverVersion", "mem"];
 
 var untilFinish = 0;
-var startedAutoRefresh = false;
+var autoRefreshRunning = false;
 
 function init() {
     System.Gadget.settingsUI = "settings.html";
@@ -26,15 +26,19 @@ function refresh() {
     for(i = 0; i < fields.length; i++) {
         if(settings["useCustomName"] && fields[i] == "serverName") continue;
 
-        sendQuery(fields[i], function(response, query) {
+        var keys = ["action"];
+        var values = [fields[i]];
+        var params = buildParams(keys, values);
+
+        sendQuery(params, function(response, field) {
             // Note: Do not access variables of the refresh function here, because it will finish before this is called
-            System.Gadget.document.getElementById(query).innerHTML = response;
+            System.Gadget.document.getElementById(field).innerHTML = response;
 
             untilFinish--;
             if(untilFinish == 0) {
                 System.Gadget.document.getElementById("refreshBtn").disabled = false;
             }
-        });
+        }, fields[i]);
     }
 }
 
@@ -43,37 +47,51 @@ function autoRefresh() {
         refresh();
         setTimeout(autoRefresh, settings["refreshInterval"] * 1000);
     } else {
-        startedAutoRefresh = false;
+        autoRefreshRunning = false;
     }
 }
 
-function sendQuery(query, callback) {
+function sendQuery(params, callback, callbackParam) {
     // If no host is specified, do not try to update
     if(settings["host"] != undefined && settings["host"] != "") {
         var xhr = new XMLHttpRequest();
-        var response;
-        var field = query;
 
-        // If existing, add adminPw to query
-        if(settings["adminPw"] != undefined && settings["adminPw"] != "") {
-            query += "?adminPw=" + settings["adminPw"];
-        }
-        xhr.open("GET", "http://" + settings["host"] + "/" + query + "?rnd=" + Math.random(), true);
+        xhr.open("GET", encodeURI("http://" + settings["host"] + "/") + params + "&rnd=" + Math.random(), true);
 
         // Set the function that is executes when we get an answer
         xhr.onreadystatechange = function() {
             if(xhr.readyState == 4) {
-                response = xhr.responseText;
+                var response = xhr.responseText;
                 if(response == undefined) response = "";
-                
-                typeof callback == "function" && callback(response, field);
+
+                typeof callback == "function" && callback(response, callbackParam);
             }
         }
 
-        xhr.send(null);
+        xhr.send();
     } else {
-        typeof callback == "function" && callback("", query);
+        typeof callback == "function" && callback("", callbackParam);
     }
+}
+
+function buildParams(keys, values) {
+    var params = "?";
+
+    if(keys.length != values.length) return;
+
+    // Add adminPw if one is set
+    if(settings["adminPw"] != undefined && settings["adminPw"] != "") {
+        keys.push("adminPw");
+        values.push(settings["adminPw"]);
+    }
+
+    // Build the param String and escape it properly
+    for( var i = 0; i < keys.length; i++) {
+        if(i > 0) params += "&";
+        params += escape(keys[i]) + "=" + escape(values[i]);
+    }
+
+    return params;
 }
 
 function showFlyout() {
@@ -111,8 +129,8 @@ function settingsChanged() {
     refresh();
 
     // Start auto refreshing
-    if(settings["useAutoRefresh"] && !startedAutoRefresh) {
+    if(settings["useAutoRefresh"] && !autoRefreshRunning) {
         setTimeout(autoRefresh, settings["refreshInterval"] * 1000);
-        startedAutoRefresh = true;
+        autoRefreshRunning = true;
     }
 }

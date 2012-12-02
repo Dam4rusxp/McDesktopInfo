@@ -20,7 +20,11 @@ function refreshPlayerList() {
 }
 
 function kickPlayer(player) {
-    sendQuery("kick?player=" + player, undefined);
+    var keys = ["action", "player"];
+    var values = ["kick", player];
+    var body = buildParams(keys, values);
+
+    sendQuery(body, undefined, undefined);
     refresh();
     refreshPlayerList();
 }

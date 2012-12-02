@@ -48,7 +48,7 @@ public class McDesktopInfo extends JavaPlugin {
         getCommand("mcdi").setExecutor(chandler);
 
         // Start the listener in a new thread to be able to do other things while listening
-        listenerThread = new Thread(new SocketListener(getConfig().getInt("socket-port"), getServer()));
+        listenerThread = new Thread(new SocketListener(getConfig().getInt("socket-port"), this));
         listenerThread.start();
     }
 

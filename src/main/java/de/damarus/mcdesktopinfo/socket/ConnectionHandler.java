@@ -23,22 +23,27 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.net.URLDecoder;
 import java.util.HashMap;
 
 import org.bukkit.Server;
+import org.bukkit.plugin.java.JavaPlugin;
 
+import de.damarus.mcdesktopinfo.Config;
 import de.damarus.mcdesktopinfo.McDesktopInfo;
 import de.damarus.mcdesktopinfo.QueryHandler;
 
 public class ConnectionHandler implements Runnable {
 
-    private Socket socket;
-    private Server server;
+    private JavaPlugin   plugin;
+    private Socket       socket;
+    private Server       server;
     private QueryHandler values;
 
-    public ConnectionHandler(Socket socket, Server server, QueryHandler values) {
+    public ConnectionHandler(Socket socket, JavaPlugin plugin, QueryHandler values) {
+        this.plugin = plugin;
         this.socket = socket;
-        this.server = server;
+        this.server = plugin.getServer();
         this.values = values;
     }
 
@@ -50,33 +55,37 @@ public class ConnectionHandler implements Runnable {
             DataOutputStream sOut = new DataOutputStream(socket.getOutputStream());
 
             String query = sIn.readLine();
+
             HashMap<String, String> params = new HashMap<String, String>();
 
-            // Splitting into real query and parameters
-            query = query.substring(query.indexOf("/") + 1);
+            // Splitting into the important part
+            query = query.substring(query.indexOf("?") + 1);
             if(query.contains(" HTTP/")) query = query.substring(0, query.indexOf(" HTTP/"));
 
-            String[] paramsWithValue = query.split("[?]");
+            String[] paramsWithValue = query.split("[&]");
 
-            for(int i = 1; i < paramsWithValue.length; i++) {
+            for(int i = 0; i < paramsWithValue.length; i++) {
                 String[] param = paramsWithValue[i].split("[=]");
 
-                // Skip parameters without value
-                if(param.length == 1) {
+                // Skip faulty parameters
+                if(param.length != 2) {
                     continue;
                 }
 
-                params.put(param[0], param[1]);
+                McDesktopInfo.log(param[0] + "=" + param[1] + " || " + URLDecoder.decode(param[0], "UTF-8") + "=" + URLDecoder.decode(param[1], "UTF-8"));
+
+                // Decode parameters and put them into map
+                params.put(URLDecoder.decode(param[0], "UTF-8"), URLDecoder.decode(param[1], "UTF-8"));
             }
 
             params.remove("rnd");
             params.put("gadgetIp", socket.getInetAddress().getHostAddress());
 
-            // Get newest values from server
-            values.updateValues();
+            // Let values update if necessary
+            values.updateValues(plugin.getConfig().getInt("valueTimeout"));
 
             // Form response to the given query (Everything is in first line)
-            String response = values.get(paramsWithValue[0], params);
+            String response = values.get(params.get("action"), params);
 
             sOut.writeBytes(response); // Give the response back to the client
             sOut.flush(); // Make sure, that data is sent now

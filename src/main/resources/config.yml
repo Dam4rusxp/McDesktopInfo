@@ -1,3 +1,4 @@
 socket-port: 6868
 adminPw: ""
 enforcePassword: false
+valueTimeout: 3
