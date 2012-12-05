@@ -72,8 +72,6 @@ public class ConnectionHandler implements Runnable {
                     continue;
                 }
 
-                McDesktopInfo.log(param[0] + "=" + param[1] + " || " + URLDecoder.decode(param[0], "UTF-8") + "=" + URLDecoder.decode(param[1], "UTF-8"));
-
                 // Decode parameters and put them into map
                 params.put(URLDecoder.decode(param[0], "UTF-8"), URLDecoder.decode(param[1], "UTF-8"));
             }
