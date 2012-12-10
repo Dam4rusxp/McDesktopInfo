@@ -5,13 +5,15 @@
 }
 
 function refreshPlayerList() {
-    sendQuery("playerList", function(response) {
+    var body = buildParams(["action"], ["playerList"]);
+    
+    sendQuery(body, function(response) {
         players = response.split("+");
 
         var listTemp = "";
         for(i = 0; i < players.length; i++) {
             if(players[i] != undefined && players[i] != "") {
-                listTemp += players[i] + " (<a href=\"#\" onclick=\"kickPlayer(\'" + players[i] + "\'); return false;\">Kick</a>)" + "<br />";
+                listTemp += unescape(players[i]) + " (<a href=\"#\" onclick=\"kickPlayer(\'" + unescape(players[i]) + "\'); return false;\">Kick</a>)" + "<br />";
             }
         }
 

@@ -18,6 +18,8 @@
 
 package de.damarus.mcdesktopinfo;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 
 import org.bukkit.Server;
@@ -93,7 +95,11 @@ public class QueryHandler {
 
         String output = "";
         for(Player p : players) {
-            output += "+" + p.getName();
+            try {
+                output += "+" + URLEncoder.encode(p.getName(), "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
         }
 
         output = output.replaceFirst("[+]", "");
