@@ -62,6 +62,9 @@ public class SocketListener implements Runnable {
             } catch (IOException e) {
                 McDesktopInfo.log("Listening on port " + serverSocket.getLocalPort() + " was interrupted.");
                 e.printStackTrace();
+            } catch (Exception e) {
+                McDesktopInfo.log("An unknown error has happened while accepting the connection from a client.");
+                e.printStackTrace();
             }
         }
     }
