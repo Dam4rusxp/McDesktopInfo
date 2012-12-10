@@ -84,6 +84,7 @@ public class QueryHandler {
             Player player = server.getPlayer(params.get("player"));
             if(player != null) {
                 player.kickPlayer("Kicked with McDesktopInfo");
+                updateValues();
                 return true;
             }
         }
