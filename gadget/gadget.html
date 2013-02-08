@@ -2,27 +2,52 @@
     <head>
         <style type="text/css">
             body {
-                background-color: #FFFFFF;
+                background-color: #000000;
                 font-family: Segoe UI, Tahoma, Sans-Serif;
+                font-size: 10px;
                 color: white;
                 
                 width: 130px;
                 height: 130px;
-                margin: 0px;
-                padding: 0px;
+                margin: 0;
+                padding: 0;
             }
             
             a {
                 color: white;
             }
             
-            body, td, #refreshBtn {
-                font-size: 10px;
+            #mainPage {
+                width: 100%;
+                height: 100%;
+                padding: 5px;
+                overflow: hidden;
+            }
+            
+            #infoList {
+                width: 100%;
+                list-style: none;
+                white-space: nowrap;
+                margin: 0;
+            }
+            
+            .value {
+                width: 100%;
             }
             
             #serverName {
                 font-weight: bold;
                 font-size: 14px;
+                text-align: center;
+            }
+            
+            #refreshBtn {
+                font-size: 10px;
+            }
+            
+            .btnWrapper {
+                width: 100%;
+                text-align: center;
             }
         </style>
         
@@ -31,43 +56,29 @@
     </head>
 
     <body onload="init();">
-        <table id="mainTable" border="0" width="100%">
-            <tr>
-                <td align="center">
-                    <span id="serverName"></span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <a href="#" onclick="showFlyout();" id="playerListLink">
-                    <span id="playerCountLbl">Current Players: </span>
-                    <span id="playerCount"></span>
-                    </a>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span id="pluginVersionLbl">Plugin Version: </span>
-                    <span id="pluginVersion"></span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span id="serverVersionLbl">Server Version: </span>
-                    <span id="serverVersion"></span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span id="memLbl">RAM: </span>
-                    <span id="mem"></span>
-                </td>
-            </tr>
-            <tr>
-                <td align="center">
-                    <input id="refreshBtn" onclick="refresh();" type="button" value="Refresh" />
-                </td>
-            </tr>
-        </table>
+        <div id="mainPage">
+            <ul id="infoList">
+	            <li><span id="serverName" class="value"></span></li>
+	            <li>
+	                <a href="#" onclick="showFlyout();" id="playerListLink">
+		                <span id="playerCountLbl" class="label">Current Players: </span>
+		                <span id="playerCount" class="value"></span>
+	                </a>
+	            </li>
+	            <li>
+	                <span id="pluginVersionLbl" class="label">Plugin Version: </span>
+	                <span id="pluginVersion" class="value"></span>
+	            </li>
+	            <li>
+	                <span id="serverVersionLbl" class="label">Server Version: </span>
+	                <span id="serverVersion" class="value"></span>
+	            </li>
+	            <li>
+	                <span id="memLbl" class="label">RAM: </span>
+	                <span id="mem" class="value"></span>
+	            </li>
+            </ul>
+            <span class="btnWrapper"><input id="refreshBtn" onclick="refresh();" type="button" value="Refresh" /></span>
+        </div>
     </body>
 </html>
