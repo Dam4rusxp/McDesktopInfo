@@ -7,7 +7,7 @@ function setupTabs() {
         var paneName = panes[i].getAttribute("title");
 
         var tab = document.createElement("li");
-        tab.innerHTML = "<a href=\"#" + paneId + "\" onclick=\"showTab(\'" + paneId + "\'); return false;\">" + paneName + "</a>";
+        tab.innerHTML = "<a href=\"#" + paneId + "\" onclick=\"this.blur(); showTab(\'" + paneId + "\'); return false;\">" + paneName + "</a>";
         tabList.appendChild(tab);
 
         panes[i].removeAttribute("title");
