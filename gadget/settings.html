@@ -24,10 +24,8 @@
         <script type="text/javascript" language="javascript" src="js/tabbing.js"></script>
     </head>
     <body onload="initSettings();">
-        <ul id="tabList" class="tabs">
-        </ul>
-        
-        <div class="paneContainer" id="paneContainer">
+        <ul id="tabList" class="tabs"></ul>
+        <div id="paneContainer" class="paneContainer" >
             <div id="pane1" class="pane" title="Connection">
 	            <input type="checkbox" id="useCustomName" onclick="nameBoxChanged();" />
 	            <label for="useCustomName">Use custom Servername?</label>
@@ -35,7 +33,7 @@
 	            
 	            <label for="serverName">Servername:</label>
 	            <br />
-	            <input id="serverName" class="wideInput" type="text" maxlength="100" disabled="true" />
+	            <input id="serverName" class="wideInput" type="text" maxlength="100" disabled="disabled" />
 	            <br />
 	            
 	            <label for="host">Server-IP:</label>
@@ -54,7 +52,7 @@
 	            
 	            <label for="refreshInterval">Refresh interval in seconds:</label>
 	            <br />
-	            <input id="refreshInterval" class="wideInput" type="text" maxlength="5" disabled="false" onkeyup="this.value=this.value.replace(/[^\d]/,'')" />
+	            <input id="refreshInterval" class="wideInput" type="text" maxlength="5" onkeyup="this.value=this.value.replace(/[^\d]/,'')" />
 	            <br />
 	            
 	            <label for="connTimeout">Connection timeout in seconds:</label>
