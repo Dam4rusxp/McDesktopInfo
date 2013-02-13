@@ -4,9 +4,9 @@
     <groupId>de.damarus</groupId>
     <artifactId>McDesktopInfo</artifactId>
     <version>0.4.6</version>
-    <name>McDesktopInfo</name>
+    <name>${project.artifactId}</name>
     <build>
-    	<finalName>McDesktopInfo</finalName>
+    	<finalName>${project.artifactId}</finalName>
         <defaultGoal>clean package</defaultGoal>
         <plugins>
             <plugin>
@@ -32,8 +32,8 @@
                         <phase>package</phase>
                         <configuration>
                             <target>
-                                <zip destfile="${project.build.directory}/McDesktopInfo.gadget" basedir="${project.basedir}/gadget" includes="**" />
-                                <zip destfile="${project.build.directory}/McDesktopInfo_v${project.version}.zip" basedir="${project.basedir}/target" includes="*.*" />
+                                <zip destfile="${project.build.directory}/${project.artifactId}.gadget" basedir="${project.basedir}/gadget" includes="**" />
+                                <zip destfile="${project.build.directory}/${project.artifactId}_v${project.version}.zip" basedir="${project.basedir}/target" includes="*.*" />
                             </target>
                         </configuration>
                         <goals>
