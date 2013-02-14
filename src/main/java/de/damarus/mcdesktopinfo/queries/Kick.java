@@ -22,8 +22,6 @@ import java.util.HashMap;
 
 import org.bukkit.entity.Player;
 
-import de.damarus.mcdesktopinfo.McDesktopInfo;
-
 public class Kick extends Query {
 
     protected Kick(String query) {
@@ -32,10 +30,6 @@ public class Kick extends Query {
 
     @Override
     public String exec(HashMap<String, String> params) {
-        // Report to serverlog that a kick was queried
-        // TODO Remove cleartext password
-        McDesktopInfo.log("The IP " + params.get("gadgetIp") + " sent a query to kick the player " + params.get("player") + " using the password " + params.get("adminPw"));
-
         Player player = getServer().getPlayer(params.get("player"));
         if(player != null) {
             player.kickPlayer("Kicked with McDesktopInfo");

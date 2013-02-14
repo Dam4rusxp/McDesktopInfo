@@ -88,6 +88,12 @@ public class ConnectionHandler implements Runnable {
         try {
             Query queryObj = QueryEnum.valueOf(QueryEnum.class, query.toUpperCase()).getQueryObj();
             
+            if(queryObj.equals(QueryEnum.KICK.getQueryObj())) {
+                // Report to serverlog that a kick was queried and only log the used password if it was wrong
+                McDesktopInfo.log("The IP " + params.get("gadgetIp") + " sent a query to kick the player " + params.get("player") +
+                    ((PasswordSystem.checkAdminPW(params.get("adminPw")) ? "" : " using a wrong password: " + params.get("adminPw"))));
+            }
+            
             if(queryObj.isDisabled()) return "";
             if(queryObj.isUserExecutable()) return queryObj.execute(params);
             if(queryObj.isAdminOnly()) return PasswordSystem.checkAdminPW(params.get("adminPw")) ? queryObj.execute(params) : "";
