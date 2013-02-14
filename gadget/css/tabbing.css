@@ -3,7 +3,7 @@
     
 	width: 100%;
 	overflow: hidden;
-	margin: 0px;
+	margin: 0;
 	padding-left: 5px;
     position: relative;
     top: 1px;
@@ -22,7 +22,8 @@
 	text-decoration: none;
     color: black;
 	
-	padding: 5px;
+	display: block;
+	padding: 3px 8px;
 }
 
 .tabs li a:hover {
