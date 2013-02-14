@@ -9,4 +9,5 @@ userQueries:
 - playerCount
 - serverVersion
 - playerList
+- pluginVersion
 disabledQueries: []
