@@ -85,12 +85,14 @@ public class ConnectionHandler implements Runnable {
     }
     
     public String get(String query, HashMap<String, String> params) {
-        Query queryObj = QueryEnum.valueOf(QueryEnum.class, query.toUpperCase()).getQueryObj();
-        
-        if(queryObj.isDisabled()) return "";
-        
-        if(queryObj.isAdminOnly() && params.containsKey("adminPw")) {
-            return (PasswordSystem.checkAdminPW(params.get("adminPw")) ? queryObj.execute(params) : "");
+        try {
+            Query queryObj = QueryEnum.valueOf(QueryEnum.class, query.toUpperCase()).getQueryObj();
+            
+            if(queryObj.isDisabled()) return "";
+            if(queryObj.isUserExecutable()) return queryObj.execute(params);
+            if(queryObj.isAdminOnly()) return PasswordSystem.checkAdminPW(params.get("adminPw")) ? queryObj.execute(params) : "";
+        } catch(IllegalArgumentException e) {
+            McDesktopInfo.log("Received unknown query \"" + query + "\"");
         }
         
         return "";
