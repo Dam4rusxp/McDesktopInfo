@@ -33,6 +33,7 @@ public class McDesktopInfo extends JavaPlugin {
         logger = getServer().getLogger();
 
         // TODO Write better script for writing/updating config
+        getConfig().options().copyDefaults(true);
         saveConfig();
         PasswordSystem.setPlugin(this);
 
