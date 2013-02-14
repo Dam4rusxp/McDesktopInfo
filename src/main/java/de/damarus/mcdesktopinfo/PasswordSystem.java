@@ -51,6 +51,7 @@ public class PasswordSystem {
     }
 
     public static boolean checkAdminPW(String pwHash) {
+        if(pwHash == null || pwHash.isEmpty()) return false;
         if(plugin.getConfig().getString("adminPw").isEmpty()) return false;
 
         // If password was delivered as clear text first create a MD5 from it
