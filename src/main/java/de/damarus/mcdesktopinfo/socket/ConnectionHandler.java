@@ -90,7 +90,7 @@ public class ConnectionHandler implements Runnable {
         if(queryObj.isDisabled()) return "";
         
         if(queryObj.isAdminOnly() && params.containsKey("adminPw")) {
-            PasswordSystem.checkAdminPW(params.get("adminPw"));
+            return (PasswordSystem.checkAdminPW(params.get("adminPw")) ? queryObj.execute(params) : "");
         }
         
         return "";

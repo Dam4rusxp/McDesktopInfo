@@ -55,10 +55,10 @@ public abstract class Query {
 
     protected abstract String exec(HashMap<String, String> params);
 
-    public String exec(Query query, HashMap<String, String> params) {
+    public String execute(HashMap<String, String> params) {
         if(hasTimeout() && System.currentTimeMillis() - lastExec > plugin.getConfig().getInt("valueTimeout")) return lastValue;
         lastExec = System.currentTimeMillis();
-        return lastValue = query.exec(params);
+        return lastValue = exec(params);
     }
 
     public Plugin getPlugin() {
