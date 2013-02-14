@@ -18,9 +18,11 @@
 
 package de.damarus.mcdesktopinfo;
 
-import org.bukkit.plugin.java.JavaPlugin;
-import de.damarus.mcdesktopinfo.socket.SocketListener;
 import java.util.logging.Logger;
+
+import org.bukkit.plugin.java.JavaPlugin;
+
+import de.damarus.mcdesktopinfo.socket.SocketListener;
 
 public class McDesktopInfo extends JavaPlugin {
 
@@ -47,7 +49,7 @@ public class McDesktopInfo extends JavaPlugin {
         getCommand("mcdi").setExecutor(chandler);
 
         // Start the listener in a new thread to be able to do other things while listening
-        listenerThread = new Thread(new SocketListener(getConfig().getInt("socket-port"), this));
+        listenerThread = new Thread(new SocketListener(getConfig().getInt("socket-port")));
         listenerThread.start();
     }
 

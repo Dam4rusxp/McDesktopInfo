@@ -22,23 +22,14 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import org.bukkit.Server;
-import org.bukkit.plugin.java.JavaPlugin;
-
 import de.damarus.mcdesktopinfo.McDesktopInfo;
-import de.damarus.mcdesktopinfo.QueryHandler;
 
 public class SocketListener implements Runnable {
 
-    private JavaPlugin   plugin;
-    private Server       server;
     private ServerSocket serverSocket;
     private boolean      breakLoop = false;
 
-    public SocketListener(int port, JavaPlugin plugin) {
-        this.plugin = plugin;
-        this.server = plugin.getServer();
-
+    public SocketListener(int port) {
         McDesktopInfo.log("Starting listener on port " + port + ".");
         try {
             serverSocket = new ServerSocket(port);
@@ -50,15 +41,13 @@ public class SocketListener implements Runnable {
 
     @Override
     public void run() {
-        QueryHandler values = new QueryHandler(server);
-
         while(!breakLoop) {
             try {
                 // Wait for connection
                 Socket socket = serverSocket.accept();
 
                 // Handle connection in a new thread
-                new Thread(new ConnectionHandler(socket, plugin, values)).start();
+                new Thread(new ConnectionHandler(socket)).start();
             } catch (IOException e) {
                 McDesktopInfo.log("Listening on port " + serverSocket.getLocalPort() + " was interrupted.");
                 e.printStackTrace();

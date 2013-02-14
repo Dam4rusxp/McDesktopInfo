@@ -26,25 +26,17 @@ import java.net.Socket;
 import java.net.URLDecoder;
 import java.util.HashMap;
 
-import org.bukkit.Server;
-import org.bukkit.plugin.java.JavaPlugin;
-
-import de.damarus.mcdesktopinfo.Config;
 import de.damarus.mcdesktopinfo.McDesktopInfo;
-import de.damarus.mcdesktopinfo.QueryHandler;
+import de.damarus.mcdesktopinfo.PasswordSystem;
+import de.damarus.mcdesktopinfo.queries.Query;
+import de.damarus.mcdesktopinfo.queries.QueryEnum;
 
 public class ConnectionHandler implements Runnable {
 
-    private JavaPlugin   plugin;
     private Socket       socket;
-    private Server       server;
-    private QueryHandler values;
 
-    public ConnectionHandler(Socket socket, JavaPlugin plugin, QueryHandler values) {
-        this.plugin = plugin;
+    public ConnectionHandler(Socket socket) {
         this.socket = socket;
-        this.server = plugin.getServer();
-        this.values = values;
     }
 
     @Override
@@ -79,11 +71,8 @@ public class ConnectionHandler implements Runnable {
             params.remove("rnd");
             params.put("gadgetIp", socket.getInetAddress().getHostAddress());
 
-            // Let values update if necessary
-            values.updateValues(plugin.getConfig().getInt("valueTimeout"));
-
             // Form response to the given query (Everything is in first line)
-            String response = values.get(params.get("action"), params);
+            String response = get(params.get("action"), params);
 
             sOut.writeBytes(response); // Give the response back to the client
             sOut.flush(); // Make sure, that data is sent now
@@ -93,5 +82,17 @@ public class ConnectionHandler implements Runnable {
             McDesktopInfo.log("Caught an exception while answering a query.");
             e.printStackTrace();
         }
+    }
+    
+    public String get(String query, HashMap<String, String> params) {
+        Query queryObj = QueryEnum.valueOf(QueryEnum.class, query.toUpperCase()).getQueryObj();
+        
+        if(queryObj.isDisabled()) return "";
+        
+        if(queryObj.isAdminOnly() && params.containsKey("adminPw")) {
+            PasswordSystem.checkAdminPW(params.get("adminPw"));
+        }
+        
+        return "";
     }
 }
