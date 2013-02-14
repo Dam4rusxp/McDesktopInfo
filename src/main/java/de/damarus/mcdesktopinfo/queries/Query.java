@@ -56,6 +56,7 @@ public abstract class Query {
     protected abstract String exec(HashMap<String, String> params);
 
     public String execute(HashMap<String, String> params) {
+        if(isAdminOnly() && config.getString("adminPw").isEmpty()) return "";
         if(hasTimeout() && System.currentTimeMillis() - lastExec > plugin.getConfig().getInt("valueTimeout")) return lastValue;
         lastExec = System.currentTimeMillis();
         return lastValue = exec(params);
@@ -78,14 +79,14 @@ public abstract class Query {
     }
 
     public boolean isAdminOnly() {
-        return plugin.getConfig().getStringList("adminQueries").contains(this.query);
+        return plugin.getConfig().getStringList("adminQueries").contains(query);
     }
 
     public boolean isDisabled() {
-        return plugin.getConfig().getStringList("disabledQueries").contains(this.query);
+        return plugin.getConfig().getStringList("disabledQueries").contains(query);
     }
 
     public boolean isUserExecutable() {
-        return plugin.getConfig().getStringList("userQueries").contains(this.query);
+        return plugin.getConfig().getStringList("userQueries").contains(query);
     }
 }
