@@ -57,7 +57,7 @@ public abstract class Query {
 
     public String execute(HashMap<String, String> params) {
         if(isAdminOnly() && config.getString("adminPw").isEmpty()) return "";
-        if(hasTimeout() && System.currentTimeMillis() - lastExec > plugin.getConfig().getInt("valueTimeout")) return lastValue;
+        if(hasTimeout() && System.currentTimeMillis() - lastExec < plugin.getConfig().getInt("valueTimeout")) return lastValue;
         lastExec = System.currentTimeMillis();
         return lastValue = exec(params);
     }
