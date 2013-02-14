@@ -54,7 +54,10 @@ public class McDesktopInfo extends JavaPlugin {
         listenerThread.start();
     }
 
-    public void onDisable() {}
+    public void onDisable() {
+        // Save all pending config changes
+        saveConfig();
+    }
 
     public static void log(String message) {
         logger.info("[" + Config.PLUGIN_NAME + "] " + message);
