@@ -1,13 +1,12 @@
 socket-port: 6868
-adminPw: ""
-enforcePassword: false
+adminPw: ''
 valueTimeout: 3000
 adminQueries:
-    - kick
-    - mem
+- kick
+- mem
 userQueries:
-    - serverName
-    - playerCount
-    - serverVersion
-    - playerList
+- serverName
+- playerCount
+- serverVersion
+- playerList
 disabledQueries: []
