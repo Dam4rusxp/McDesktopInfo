@@ -84,6 +84,6 @@ public class CommandHandler implements CommandExecutor {
     }
 
     public static void respond(CommandSender sender, String message) {
-        sender.sendMessage("[" + Config.PLUGIN_NAME + "] " + message);
+        sender.sendMessage("[" + McDesktopInfo.PLUGIN_NAME + "] " + message);
     }
 }

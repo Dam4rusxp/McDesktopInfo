@@ -26,7 +26,7 @@ import org.bukkit.Server;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.plugin.Plugin;
 
-import de.damarus.mcdesktopinfo.Config;
+import de.damarus.mcdesktopinfo.McDesktopInfo;
 
 public abstract class Query {
 
@@ -41,7 +41,7 @@ public abstract class Query {
 
     protected Query(String query, boolean hasTimeout) {
         this.server = Bukkit.getServer();
-        this.plugin = server.getPluginManager().getPlugin(Config.PLUGIN_NAME);
+        this.plugin = server.getPluginManager().getPlugin(McDesktopInfo.PLUGIN_NAME);
         this.config = plugin.getConfig();
         this.query = query;
         this.hasTimeout = hasTimeout;

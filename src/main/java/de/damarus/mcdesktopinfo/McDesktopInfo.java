@@ -26,8 +26,10 @@ import de.damarus.mcdesktopinfo.socket.SocketListener;
 
 public class McDesktopInfo extends JavaPlugin {
 
+    public static final String PLUGIN_NAME = "McDesktopInfo";
+
     private static Logger logger;
-    private Thread        listenerThread;
+    private Thread listenerThread;
 
     public void onEnable() {
         logger = getServer().getLogger();
@@ -60,6 +62,6 @@ public class McDesktopInfo extends JavaPlugin {
     }
 
     public static void log(String message) {
-        logger.info("[" + Config.PLUGIN_NAME + "] " + message);
+        logger.info("[" + McDesktopInfo.PLUGIN_NAME + "] " + message);
     }
 }

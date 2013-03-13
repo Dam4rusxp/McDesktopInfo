@@ -20,7 +20,7 @@ package de.damarus.mcdesktopinfo.queries;
 
 import java.util.HashMap;
 
-import de.damarus.mcdesktopinfo.Config;
+import de.damarus.mcdesktopinfo.McDesktopInfo;
 
 public class PluginVersion extends Query {
 
@@ -30,6 +30,6 @@ public class PluginVersion extends Query {
 
     @Override
     protected String exec(HashMap<String, String> params) {
-        return getServer().getPluginManager().getPlugin(Config.PLUGIN_NAME).getDescription().getVersion();
+        return getServer().getPluginManager().getPlugin(McDesktopInfo.PLUGIN_NAME).getDescription().getVersion();
     }
 }
