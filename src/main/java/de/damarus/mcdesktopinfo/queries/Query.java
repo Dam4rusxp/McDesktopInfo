@@ -26,7 +26,6 @@ import org.bukkit.configuration.Configuration;
 import org.bukkit.plugin.Plugin;
 
 import de.damarus.mcdesktopinfo.McDesktopInfo;
-import de.damarus.mcdesktopinfo.PasswordSystem;
 
 public abstract class Query {
 
@@ -51,7 +50,6 @@ public abstract class Query {
     protected abstract String exec(HashMap<String, String> params);
 
     public String execute(HashMap<String, String> params) {
-        if(isAdminOnly() && (!PasswordSystem.checkAdminPW(params.get("adminPw")) || getConfig().getString("adminPw").isEmpty())) return "";
         if(hasTimeout() && System.currentTimeMillis() - lastExec < getPlugin().getConfig().getInt("valueTimeout")) return lastValue;
         return forceExecute(params);
     }
