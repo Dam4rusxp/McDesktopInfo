@@ -20,6 +20,7 @@ package de.damarus.mcdesktopinfo;
 
 import java.util.logging.Logger;
 
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import de.damarus.mcdesktopinfo.socket.SocketListener;
@@ -28,10 +29,12 @@ public class McDesktopInfo extends JavaPlugin {
 
     public static final String PLUGIN_NAME = "McDesktopInfo";
 
+    private static Plugin instance;
     private static Logger logger;
     private Thread listenerThread;
 
     public void onEnable() {
+        instance = this;
         logger = getServer().getLogger();
 
         // TODO Write better script for writing/updating config
@@ -63,5 +66,9 @@ public class McDesktopInfo extends JavaPlugin {
 
     public static void log(String message) {
         logger.info("[" + McDesktopInfo.PLUGIN_NAME + "] " + message);
+    }
+
+    public static Plugin getPluginInstance() {
+        return instance;
     }
 }

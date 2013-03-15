@@ -21,7 +21,6 @@ package de.damarus.mcdesktopinfo.queries;
 import java.util.HashMap;
 import java.util.List;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.plugin.Plugin;
@@ -34,37 +33,36 @@ public abstract class Query {
     private long lastExec = 0;
     private String lastValue = "";
 
-    private final Configuration config;
-    private final Plugin plugin;
+    private final Plugin plugin = McDesktopInfo.getPluginInstance();
     private final String query;
-    private final Server server;
     private final boolean hasTimeout;
 
     protected Query(String query, boolean hasTimeout) {
-        this.server = Bukkit.getServer();
-        this.plugin = server.getPluginManager().getPlugin(McDesktopInfo.PLUGIN_NAME);
-        this.config = plugin.getConfig();
         this.query = query;
         this.hasTimeout = hasTimeout;
 
-        if(!(config.getStringList("userQueries").contains(query) || config.getStringList("adminQueries").contains(query) || config.getStringList("disabledQueries").contains(query))) {
-            List<String> disabled = plugin.getConfig().getStringList("disabledQueries");
+        if(!(getConfig().getStringList("userQueries").contains(query) || getConfig().getStringList("adminQueries").contains(query) || getConfig().getStringList("disabledQueries").contains(query))) {
+            List<String> disabled = getConfig().getStringList("disabledQueries");
             disabled.add(query);
-            config.set("disabledQueries", disabled);
+            getConfig().set("disabledQueries", disabled);
         }
     }
 
     protected abstract String exec(HashMap<String, String> params);
 
     public String execute(HashMap<String, String> params) {
-        if(isAdminOnly() && (!PasswordSystem.checkAdminPW(params.get("adminPw")) || config.getString("adminPw").isEmpty())) return "";
-        if(hasTimeout() && System.currentTimeMillis() - lastExec < plugin.getConfig().getInt("valueTimeout")) return lastValue;
+        if(isAdminOnly() && (!PasswordSystem.checkAdminPW(params.get("adminPw")) || getConfig().getString("adminPw").isEmpty())) return "";
+        if(hasTimeout() && System.currentTimeMillis() - lastExec < getPlugin().getConfig().getInt("valueTimeout")) return lastValue;
         return forceExecute(params);
     }
 
     public String forceExecute(HashMap<String, String> params) {
         lastExec = System.currentTimeMillis();
         return lastValue = exec(params);
+    }
+
+    public Configuration getConfig() {
+        return getPlugin().getConfig();
     }
 
     public Plugin getPlugin() {
@@ -76,7 +74,7 @@ public abstract class Query {
     }
 
     public Server getServer() {
-        return server;
+        return getPlugin().getServer();
     }
 
     public boolean hasTimeout() {
@@ -84,14 +82,14 @@ public abstract class Query {
     }
 
     public boolean isAdminOnly() {
-        return plugin.getConfig().getStringList("adminQueries").contains(query);
+        return getPlugin().getConfig().getStringList("adminQueries").contains(getQuery());
     }
 
     public boolean isDisabled() {
-        return plugin.getConfig().getStringList("disabledQueries").contains(query);
+        return getPlugin().getConfig().getStringList("disabledQueries").contains(getQuery());
     }
 
     public boolean isUserExecutable() {
-        return plugin.getConfig().getStringList("userQueries").contains(query);
+        return getPlugin().getConfig().getStringList("userQueries").contains(getQuery());
     }
 }
