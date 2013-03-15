@@ -31,14 +31,14 @@ import de.damarus.mcdesktopinfo.PasswordSystem;
 
 public abstract class Query {
 
-    private long                lastExec  = 0;
-    private String              lastValue = "";
+    private long lastExec = 0;
+    private String lastValue = "";
 
     private final Configuration config;
-    private final Plugin        plugin;
-    private final String        query;
-    private final Server        server;
-    private final boolean       hasTimeout;
+    private final Plugin plugin;
+    private final String query;
+    private final Server server;
+    private final boolean hasTimeout;
 
     protected Query(String query, boolean hasTimeout) {
         this.server = Bukkit.getServer();

@@ -27,7 +27,7 @@ import de.damarus.mcdesktopinfo.McDesktopInfo;
 public class SocketListener implements Runnable {
 
     private ServerSocket serverSocket;
-    private boolean      breakLoop = false;
+    private boolean breakLoop = false;
 
     public SocketListener(int port) {
         McDesktopInfo.log("Starting listener on port " + port + ".");
