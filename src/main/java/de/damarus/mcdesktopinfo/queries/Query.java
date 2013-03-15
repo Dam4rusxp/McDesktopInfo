@@ -81,6 +81,10 @@ public abstract class Query {
         return hasTimeout;
     }
 
+    public void resetTimeout() {
+        lastExec = 0;
+    }
+
     public boolean isAdminOnly() {
         return getPlugin().getConfig().getStringList("adminQueries").contains(getQuery());
     }

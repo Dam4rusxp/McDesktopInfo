@@ -26,7 +26,8 @@ function kickPlayer(player) {
     var values = ["kick", player];
     var body = buildParams(keys, values);
 
-    sendQuery(body, undefined, undefined);
-    refresh();
-    refreshPlayerList();
+    sendQuery(body, function() {
+        refresh();
+        refreshPlayerList();
+    });
 }

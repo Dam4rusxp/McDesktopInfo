@@ -33,6 +33,10 @@ public class Kick extends Query {
         Player player = getServer().getPlayer(params.get("player"));
         if(player != null) {
             player.kickPlayer("Kicked with McDesktopInfo");
+
+            QueryEnum.PLAYERLIST.getQueryObj().resetTimeout();
+            QueryEnum.PLAYERCOUNT.getQueryObj().resetTimeout();
+
             return params.get("player");
         }
         return "";
