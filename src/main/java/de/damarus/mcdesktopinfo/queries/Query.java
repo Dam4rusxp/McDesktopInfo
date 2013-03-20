@@ -94,4 +94,24 @@ public abstract class Query {
     public boolean isUserExecutable() {
         return getPlugin().getConfig().getStringList("userQueries").contains(getQuery());
     }
+
+    public enum QueryEnum {
+        KICK(new Kick("kick")),
+        PLAYERCOUNT(new Playercount("playerCount")),
+        MEM(new Mem("mem")),
+        PLAYERLIST(new PlayerList("playerList")),
+        SERVERNAME(new Servername("serverName")),
+        SERVERVERSION(new ServerVersion("serverVersion")),
+        PLUGINVERSION(new PluginVersion("pluginVersion"));
+
+        private Query queryObj;
+
+        QueryEnum(Query queryObj) {
+            this.queryObj = queryObj;
+        }
+
+        public Query getQueryObj() {
+            return queryObj;
+        }
+    }
 }
