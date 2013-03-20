@@ -102,7 +102,8 @@ public abstract class Query {
         PLAYERLIST(new PlayerList("playerList")),
         SERVERNAME(new Servername("serverName")),
         SERVERVERSION(new ServerVersion("serverVersion")),
-        PLUGINVERSION(new PluginVersion("pluginVersion"));
+        PLUGINVERSION(new PluginVersion("pluginVersion")),
+        TICKRATE(new Tickrate("tickrate"));
 
         private Query queryObj;
 
