@@ -23,6 +23,7 @@ import java.util.logging.Logger;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import de.damarus.mcdesktopinfo.queries.Query.QueryEnum;
 import de.damarus.mcdesktopinfo.socket.SocketListener;
 
 public class McDesktopInfo extends JavaPlugin {
@@ -53,6 +54,9 @@ public class McDesktopInfo extends JavaPlugin {
         CommandHandler chandler = new CommandHandler(this);
         getCommand("mcdesktopinfo").setExecutor(chandler);
         getCommand("mcdi").setExecutor(chandler);
+
+        // Create instances of all the Query objects
+        QueryEnum.values();
 
         // Start the listener in a new thread to be able to do other things while listening
         listenerThread = new Thread(new SocketListener(getConfig().getInt("socket-port")));
