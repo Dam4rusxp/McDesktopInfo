@@ -64,8 +64,8 @@ public class McDesktopInfo extends JavaPlugin {
         saveConfig();
     }
 
-    public static void log(String message) {
-        logger.info("[" + McDesktopInfo.PLUGIN_NAME + "] " + message);
+    public static void log(Object message) {
+        logger.info("[" + McDesktopInfo.PLUGIN_NAME + "] " + message.toString());
     }
 
     public static Plugin getPluginInstance() {
