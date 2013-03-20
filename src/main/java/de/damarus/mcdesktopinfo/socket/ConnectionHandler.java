@@ -29,6 +29,7 @@ import java.util.HashMap;
 import de.damarus.mcdesktopinfo.McDesktopInfo;
 import de.damarus.mcdesktopinfo.PasswordSystem;
 import de.damarus.mcdesktopinfo.queries.Query;
+import de.damarus.mcdesktopinfo.queries.Query.QueryEnum;;
 
 public class ConnectionHandler implements Runnable {
 
@@ -85,11 +86,11 @@ public class ConnectionHandler implements Runnable {
 
     public String get(String query, HashMap<String, String> params) {
         try {
-            Query queryObj = Query.QueryEnum.valueOf(Query.QueryEnum.class, query.toUpperCase()).getQueryObj();
+            Query queryObj = QueryEnum.valueOf(QueryEnum.class, query.toUpperCase()).getQueryObj();
 
             if(queryObj.isDisabled()) return "";
 
-            if(queryObj.equals(Query.QueryEnum.KICK.getQueryObj())) {
+            if(queryObj.equals(QueryEnum.KICK.getQueryObj())) {
                 // Report to serverlog that a kick was queried and only log the used password if it was wrong
                 McDesktopInfo.log("The IP " + params.get("gadgetIp") + " sent a query to kick the player " + params.get("player") +
                     ((PasswordSystem.checkAdminPW(params.get("adminPw")) ? "" : " using a wrong password: " + params.get("adminPw"))));
