@@ -48,38 +48,37 @@ public class ConnectionHandler implements Runnable {
             BufferedReader sIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             DataOutputStream sOut = new DataOutputStream(socket.getOutputStream());
 
-            String line = sIn.readLine();
-            String query = "";
-            if(line != null) query = line;
+            String query = sIn.readLine();
+            if(query != null) {
+                HashMap<String, String> params = new HashMap<String, String>();
 
-            HashMap<String, String> params = new HashMap<String, String>();
+                // Splitting into the important part
+                query = query.substring(query.indexOf("?") + 1);
+                if(query.contains(" HTTP/")) query = query.substring(0, query.indexOf(" HTTP/"));
 
-            // Splitting into the important part
-            query = query.substring(query.indexOf("?") + 1);
-            if(query.contains(" HTTP/")) query = query.substring(0, query.indexOf(" HTTP/"));
+                String[] paramsWithValue = query.split("[&]");
 
-            String[] paramsWithValue = query.split("[&]");
+                for(int i = 0; i < paramsWithValue.length; i++) {
+                    String[] param = paramsWithValue[i].split("[=]");
 
-            for(int i = 0; i < paramsWithValue.length; i++) {
-                String[] param = paramsWithValue[i].split("[=]");
+                    // Skip faulty parameters
+                    if(param.length != 2) {
+                        continue;
+                    }
 
-                // Skip faulty parameters
-                if(param.length != 2) {
-                    continue;
+                    // Decode parameters and put them into map
+                    params.put(URLDecoder.decode(param[0], "UTF-8"), URLDecoder.decode(param[1], "UTF-8"));
                 }
 
-                // Decode parameters and put them into map
-                params.put(URLDecoder.decode(param[0], "UTF-8"), URLDecoder.decode(param[1], "UTF-8"));
+                params.remove("rnd");
+                params.put("gadgetIp", socket.getInetAddress().getHostAddress());
+
+                // Form response to the given query (Everything is in first line)
+                String response = get(params.get("action"), params);
+
+                sOut.writeBytes(response); // Give the response back to the client
+                sOut.flush(); // Make sure, that data is sent now
             }
-
-            params.remove("rnd");
-            params.put("gadgetIp", socket.getInetAddress().getHostAddress());
-
-            // Form response to the given query (Everything is in first line)
-            String response = get(params.get("action"), params);
-
-            sOut.writeBytes(response); // Give the response back to the client
-            sOut.flush(); // Make sure, that data is sent now
 
             socket.close(); // Transmission done...
         } catch (IOException e) {
