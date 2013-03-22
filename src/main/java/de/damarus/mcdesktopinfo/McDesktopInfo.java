@@ -18,8 +18,7 @@
 
 package de.damarus.mcdesktopinfo;
 
-import java.util.logging.Logger;
-
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -30,14 +29,10 @@ public class McDesktopInfo extends JavaPlugin {
 
     public static final String PLUGIN_NAME = "McDesktopInfo";
 
-    private static Plugin instance;
-    private static Logger logger;
     private Thread listenerThread;
+    private SocketListener listener;
 
     public void onEnable() {
-        instance = this;
-        logger = getServer().getLogger();
-
         // TODO Write better script for writing/updating config
         getConfig().options().copyDefaults(true);
         saveConfig();
@@ -59,20 +54,22 @@ public class McDesktopInfo extends JavaPlugin {
         QueryEnum.values();
 
         // Start the listener in a new thread to be able to do other things while listening
-        listenerThread = new Thread(new SocketListener(getConfig().getInt("socket-port")));
+        listener = new SocketListener(getConfig().getInt("socket-port"));
+        listenerThread = new Thread(listener);
         listenerThread.start();
     }
 
     public void onDisable() {
         // Save all pending config changes
         saveConfig();
+        listener.stopListener();
     }
 
     public static void log(Object message) {
-        logger.info("[" + McDesktopInfo.PLUGIN_NAME + "] " + message.toString());
+        Bukkit.getServer().getLogger().info("[" + McDesktopInfo.PLUGIN_NAME + "] " + message.toString());
     }
 
     public static Plugin getPluginInstance() {
-        return instance;
+        return Bukkit.getServer().getPluginManager().getPlugin(PLUGIN_NAME);
     }
 }

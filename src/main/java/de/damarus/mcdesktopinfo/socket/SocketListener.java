@@ -57,4 +57,8 @@ public class SocketListener implements Runnable {
             }
         }
     }
+
+    public void stopListener() {
+        breakLoop = true;
+    }
 }

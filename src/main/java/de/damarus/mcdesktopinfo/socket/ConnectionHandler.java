@@ -29,7 +29,9 @@ import java.util.HashMap;
 import de.damarus.mcdesktopinfo.McDesktopInfo;
 import de.damarus.mcdesktopinfo.PasswordSystem;
 import de.damarus.mcdesktopinfo.queries.Query;
-import de.damarus.mcdesktopinfo.queries.Query.QueryEnum;;
+import de.damarus.mcdesktopinfo.queries.Query.QueryEnum;
+
+;
 
 public class ConnectionHandler implements Runnable {
 
@@ -46,7 +48,9 @@ public class ConnectionHandler implements Runnable {
             BufferedReader sIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             DataOutputStream sOut = new DataOutputStream(socket.getOutputStream());
 
-            String query = sIn.readLine();
+            String line = sIn.readLine();
+            String query = "";
+            if(line != null) query = line;
 
             HashMap<String, String> params = new HashMap<String, String>();
 
