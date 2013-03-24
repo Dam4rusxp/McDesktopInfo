@@ -1,6 +1,4 @@
-﻿var fields = ["playerCount", "serverName", "pluginVersion", "serverVersion", "mem", "tickrate"];
-
-var untilFinish = 0;
+﻿var untilFinish = 0;
 var autoRefreshRunning = false;
 
 function init() {
@@ -22,15 +20,17 @@ function refresh() {
     }, settings["connTimeout"] * 1000);
 
     // Load info for each existing field
+    var fields = System.Gadget.document.querySelectorAll(".value");
     untilFinish = fields.length;
+
     for(i = 0; i < fields.length; i++) {
-        if(settings["useCustomName"] && fields[i] == "serverName") {
+        if(settings["useCustomName"] && fields[i].getAttribute("id") == "serverName") {
             untilFinish--;
             continue;
         }
 
         var keys = ["action"];
-        var values = [fields[i]];
+        var values = [fields[i].getAttribute("id")];
         var params = buildParams(keys, values);
 
         sendQuery(params, function(response, field) {
@@ -41,7 +41,7 @@ function refresh() {
             if(untilFinish == 0) {
                 System.Gadget.document.getElementById("refreshBtn").disabled = false;
             }
-        }, fields[i]);
+        }, fields[i].getAttribute("id"));
     }
 }
 
