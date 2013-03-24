@@ -1,5 +1,7 @@
+<!DOCTYPE html>
 <html>
     <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=8" />
         <style type="text/css">
             body {
                 background-color: #000000;
@@ -11,6 +13,7 @@
                 height: 130px;
                 margin: 0;
                 padding: 0;
+                overflow: hidden;
             }
             
             a {
@@ -18,9 +21,10 @@
             }
             
             #mainPage {
-                width: 100%;
-                height: 100%;
-                padding: 5px;
+                width: 120px;
+                height: 126px;
+                padding: 2px 5px;
+                margin: 0;
                 overflow: hidden;
             }
             
@@ -30,6 +34,7 @@
                 
                 width: 100%;
                 margin: 0;
+                padding: 0;
             }
             
             #infoList li {
@@ -64,7 +69,7 @@
     <body onload="init();">
         <div id="mainPage">
             <ul id="infoList">
-	            <li><span id="serverName" class="value"></span></li>
+	            <li><div id="serverName" class="value"></div></li>
 	            <li>
 	                <a href="#" onclick="showFlyout();" id="playerListLink">
 		                <span id="playerCountLbl" class="label">Current Players: </span>
@@ -88,7 +93,7 @@
                     <span id="tickrate" class="value"></span>
                 </li>
             </ul>
-            <span class="btnWrapper"><input id="refreshBtn" onclick="refresh();" type="button" value="Refresh" /></span>
+            <div class="btnWrapper"><input id="refreshBtn" onclick="refresh();" type="button" value="Refresh" /></div>
         </div>
     </body>
 </html>
