@@ -45,7 +45,6 @@ public class CommandHandler implements CommandExecutor {
                 if(sender.hasPermission("mcdesktopinfo.admin")) {
                     respond(sender, "Reloading config...");
                     plugin.reloadConfig();
-                    PasswordSystem.digestPWs();
                     respond(sender, "Done!");
                     return true;
                 }

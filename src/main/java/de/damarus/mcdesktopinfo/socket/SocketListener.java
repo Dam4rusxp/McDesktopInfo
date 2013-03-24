@@ -51,7 +51,6 @@ public class SocketListener implements Runnable {
                 new Thread(new ConnectionHandler(socket)).start();
             } catch (IOException e) {
                 McDesktopInfo.log("Listening on port " + serverSocket.getLocalPort() + " was interrupted.");
-                e.printStackTrace();
             } catch (Exception e) {
                 McDesktopInfo.log("An unknown error has happened while accepting the connection from a client.");
                 e.printStackTrace();
@@ -63,10 +62,13 @@ public class SocketListener implements Runnable {
         breakLoop = true;
         try {
             serverSocket.close();
-        } catch (SocketException e) {
-        } catch (IOException e) {
+        } catch (SocketException e) {} catch (IOException e) {
             McDesktopInfo.log("An IO error occurred when stopping the listener.");
             e.printStackTrace();
         }
+    }
+
+    public int getPort() {
+        return serverSocket.getLocalPort();
     }
 }

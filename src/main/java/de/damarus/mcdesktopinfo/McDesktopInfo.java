@@ -18,6 +18,9 @@
 
 package de.damarus.mcdesktopinfo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -36,33 +39,75 @@ public class McDesktopInfo extends JavaPlugin {
         // TODO Write better script for writing/updating config
         getConfig().options().copyDefaults(true);
         saveConfig();
-        PasswordSystem.setPlugin(this);
-
-        // Check if an admin password is set
-        if(getConfig().getString("adminPw").isEmpty()) {
-            log("No password set, admin functions are disabled!");
-        } else {
-            PasswordSystem.digestPWs();
-        }
 
         // Register the command handlers
         CommandHandler chandler = new CommandHandler(this);
         getCommand("mcdesktopinfo").setExecutor(chandler);
         getCommand("mcdi").setExecutor(chandler);
-
-        // Create instances of all the Query objects
-        QueryEnum.values();
-
-        // Start the listener in a new thread to be able to do other things while listening
-        listener = new SocketListener(getConfig().getInt("socket-port"));
-        listenerThread = new Thread(listener);
-        listenerThread.start();
     }
 
     public void onDisable() {
         // Save all pending config changes
         saveConfig();
         listener.stopListener();
+    }
+
+    public void reloadConfig() {
+        super.reloadConfig();
+
+        List<String> admin = getConfig().getStringList("adminQueries");
+        List<String> user = getConfig().getStringList("userQueries");
+        List<String> disabled = getConfig().getStringList("disabledQueries");
+
+        QueryEnum[] queryObjects = QueryEnum.values();
+        List<String> queries = new ArrayList<String>();
+        for(QueryEnum q : queryObjects) {
+            queries.add(q.getQueryObj().getQuery());
+        }
+
+        // Remove nonexistant queries
+        admin.retainAll(queries);
+        user.retainAll(queries);
+        disabled.retainAll(queries);
+
+        // Remove query from user list if already configured in admin list
+        user.removeAll(admin);
+
+        // Disable not configured queries
+        for(int q = 0; q < queries.size(); q++) {
+            if(!(user.contains(queries.get(q)) || admin.contains(queries.get(q)) || disabled.contains(queries.get(q)))) {
+                disabled.add(queries.get(q));
+            }
+        }
+
+        if(getConfig().getString("adminPw").isEmpty()) {
+            log("No password set, admin functions are disabled!");
+        } else {
+            PasswordSystem.digestPWs();
+        }
+
+        if(listener == null || getConfig().getInt("socket-port") != listener.getPort()) restartListener();
+
+        getConfig().set("adminQueries", admin);
+        getConfig().set("userQueries", user);
+        getConfig().set("disabledQueries", disabled);
+        saveConfig();
+    }
+
+    public void restartListener() {
+        if(listener != null) {
+            log("Stopping listener...");
+            listener.stopListener();
+            try {
+                listenerThread.join();
+            } catch (InterruptedException e) {
+                log("An error occurred while waiting for the listener to stop.");
+                e.printStackTrace();
+            }
+        }
+        listener = new SocketListener(getConfig().getInt("socket-port"));
+        listenerThread = new Thread(listener);
+        listenerThread.start();
     }
 
     public static void log(Object message) {

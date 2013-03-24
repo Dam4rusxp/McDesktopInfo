@@ -21,11 +21,9 @@ package de.damarus.mcdesktopinfo;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.Plugin;
 
 public class PasswordSystem {
-
-    private static JavaPlugin plugin;
 
     public static String generateMD5(String x) {
         try {
@@ -51,6 +49,8 @@ public class PasswordSystem {
     }
 
     public static boolean checkAdminPW(String pwHash) {
+        Plugin plugin = McDesktopInfo.getPluginInstance();
+
         if(pwHash == null || pwHash.isEmpty()) return false;
         if(plugin.getConfig().getString("adminPw").isEmpty()) return false;
 
@@ -64,13 +64,11 @@ public class PasswordSystem {
     }
 
     public static void digestPWs() {
+        Plugin plugin = McDesktopInfo.getPluginInstance();
+
         if(plugin.getConfig().getString("adminPw").length() != 32) {
             plugin.getConfig().set("adminPw", generateMD5(plugin.getConfig().getString("adminPw")));
             plugin.saveConfig();
         }
-    }
-
-    public static void setPlugin(JavaPlugin plugin) {
-        PasswordSystem.plugin = plugin;
     }
 }

@@ -19,7 +19,6 @@
 package de.damarus.mcdesktopinfo.queries;
 
 import java.util.HashMap;
-import java.util.List;
 
 import org.bukkit.Server;
 import org.bukkit.configuration.Configuration;
@@ -39,12 +38,6 @@ public abstract class Query {
     protected Query(String query, boolean hasTimeout) {
         this.query = query;
         this.hasTimeout = hasTimeout;
-
-        if(!(getConfig().getStringList("userQueries").contains(query) || getConfig().getStringList("adminQueries").contains(query) || getConfig().getStringList("disabledQueries").contains(query))) {
-            List<String> disabled = getConfig().getStringList("disabledQueries");
-            disabled.add(query);
-            getConfig().set("disabledQueries", disabled);
-        }
     }
 
     protected abstract String exec(HashMap<String, String> params);
