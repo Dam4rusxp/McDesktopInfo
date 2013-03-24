@@ -24,7 +24,10 @@ function refresh() {
     // Load info for each existing field
     untilFinish = fields.length;
     for(i = 0; i < fields.length; i++) {
-        if(settings["useCustomName"] && fields[i] == "serverName") continue;
+        if(settings["useCustomName"] && fields[i] == "serverName") {
+            untilFinish--;
+            continue;
+        }
 
         var keys = ["action"];
         var values = [fields[i]];
