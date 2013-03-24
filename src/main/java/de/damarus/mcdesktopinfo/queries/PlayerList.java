@@ -24,6 +24,8 @@ import java.util.HashMap;
 
 import org.bukkit.entity.Player;
 
+import de.damarus.mcdesktopinfo.McDesktopInfo;
+
 public class PlayerList extends Query {
 
     protected PlayerList(String query) {
@@ -32,7 +34,7 @@ public class PlayerList extends Query {
 
     @Override
     protected String exec(HashMap<String, String> params) {
-        Player[] players = getServer().getOnlinePlayers();
+        Player[] players = McDesktopInfo.getPluginInstance().getServer().getOnlinePlayers();
 
         String playerList = "";
         for(Player p : players) {

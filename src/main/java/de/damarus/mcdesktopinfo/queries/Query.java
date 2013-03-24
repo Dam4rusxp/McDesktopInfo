@@ -20,10 +20,6 @@ package de.damarus.mcdesktopinfo.queries;
 
 import java.util.HashMap;
 
-import org.bukkit.Server;
-import org.bukkit.configuration.Configuration;
-import org.bukkit.plugin.Plugin;
-
 import de.damarus.mcdesktopinfo.McDesktopInfo;
 
 public abstract class Query {
@@ -31,7 +27,6 @@ public abstract class Query {
     private long lastExec = 0;
     private String lastValue = "";
 
-    private final Plugin plugin = McDesktopInfo.getPluginInstance();
     private final String query;
     private final boolean hasTimeout;
 
@@ -43,7 +38,7 @@ public abstract class Query {
     protected abstract String exec(HashMap<String, String> params);
 
     public String execute(HashMap<String, String> params) {
-        if(hasTimeout() && System.currentTimeMillis() - lastExec < getPlugin().getConfig().getInt("valueTimeout")) return lastValue;
+        if(hasTimeout() && System.currentTimeMillis() - lastExec < McDesktopInfo.getPluginInstance().getConfig().getInt("valueTimeout")) return lastValue;
         return forceExecute(params);
     }
 
@@ -52,20 +47,8 @@ public abstract class Query {
         return lastValue = exec(params);
     }
 
-    public Configuration getConfig() {
-        return getPlugin().getConfig();
-    }
-
-    public Plugin getPlugin() {
-        return plugin;
-    }
-
     public String getQuery() {
         return query;
-    }
-
-    public Server getServer() {
-        return getPlugin().getServer();
     }
 
     public boolean hasTimeout() {
@@ -77,15 +60,15 @@ public abstract class Query {
     }
 
     public boolean isAdminOnly() {
-        return getPlugin().getConfig().getStringList("adminQueries").contains(getQuery());
+        return McDesktopInfo.getPluginInstance().getConfig().getStringList("adminQueries").contains(getQuery());
     }
 
     public boolean isDisabled() {
-        return getPlugin().getConfig().getStringList("disabledQueries").contains(getQuery());
+        return McDesktopInfo.getPluginInstance().getConfig().getStringList("disabledQueries").contains(getQuery());
     }
 
     public boolean isUserExecutable() {
-        return getPlugin().getConfig().getStringList("userQueries").contains(getQuery());
+        return McDesktopInfo.getPluginInstance().getConfig().getStringList("userQueries").contains(getQuery());
     }
 
     public enum QueryEnum {

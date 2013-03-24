@@ -30,6 +30,6 @@ public class PluginVersion extends Query {
 
     @Override
     protected String exec(HashMap<String, String> params) {
-        return getServer().getPluginManager().getPlugin(McDesktopInfo.PLUGIN_NAME).getDescription().getVersion();
+        return McDesktopInfo.getPluginInstance().getDescription().getVersion();
     }
 }
