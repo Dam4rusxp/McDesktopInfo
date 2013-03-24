@@ -21,6 +21,7 @@ package de.damarus.mcdesktopinfo.socket;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 
 import de.damarus.mcdesktopinfo.McDesktopInfo;
 
@@ -60,5 +61,12 @@ public class SocketListener implements Runnable {
 
     public void stopListener() {
         breakLoop = true;
+        try {
+            serverSocket.close();
+        } catch (SocketException e) {
+        } catch (IOException e) {
+            McDesktopInfo.log("An IO error occurred when stopping the listener.");
+            e.printStackTrace();
+        }
     }
 }
