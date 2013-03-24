@@ -4,6 +4,7 @@ valueTimeout: 3000
 adminQueries:
 - kick
 - mem
+- tickrate
 userQueries:
 - serverName
 - playerCount

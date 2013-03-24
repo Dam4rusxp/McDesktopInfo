@@ -1,4 +1,4 @@
-﻿var fields = ["playerCount", "serverName", "pluginVersion", "serverVersion", "mem"];
+﻿var fields = ["playerCount", "serverName", "pluginVersion", "serverVersion", "mem", "tickrate"];
 
 var untilFinish = 0;
 var autoRefreshRunning = false;
