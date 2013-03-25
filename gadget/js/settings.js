@@ -1,6 +1,6 @@
 var settings = new settingsObject();
 
-var checkSettings = new Array("useCustomName", "useAutoRefresh")
+var checkSettings = new Array("useCustomName", "useAutoRefresh");
 var varSettings = new Array("refreshInterval", "connTimeout");
 var stringSettings = new Array("serverName", "host", "bg", "adminPw", "textColor");
 
