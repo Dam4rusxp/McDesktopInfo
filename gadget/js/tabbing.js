@@ -1,6 +1,6 @@
 function setupTabs() {
     var tabList = document.getElementById("tabList");
-    var panes = document.getElementById("paneContainer").getElementsByTagName("div");
+    var panes = document.getElementById("paneContainer").querySelectorAll(".pane");
 
     for(i = 0; i < panes.length; i++) {
         var paneId = panes[i].getAttribute("id");
@@ -32,10 +32,10 @@ function showTab(tabId) {
         var hash = tabLink.hash;
 
         if(hash.substring(1) != tabId) {
-            tabs[i].setAttribute("className", "");
+            tabs[i].setAttribute("class", "");
             document.getElementById(hash.substring(1)).style.display = "none";
         } else {
-            tabs[i].setAttribute("className", "activetab");
+            tabs[i].setAttribute("class", "activetab");
         }
     }
 }
