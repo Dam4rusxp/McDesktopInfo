@@ -6,10 +6,10 @@ var stringSettings = new Array("serverName", "host", "bg", "adminPw", "textColor
 
 function initSettings() {
     System.Gadget.onSettingsClosing = settingsClosing;
-    
+
     setupTabs();
     applySettings();
-    
+
     nameBoxChanged();
     refreshBoxChanged();
 }
@@ -27,12 +27,12 @@ function settingsClosing(event) {
 function settingsObject() {
     this.load = loadSettings;
     this.save = saveSettings;
-    
+
     this["useCustomName"]   = false;
     this["useAutoRefresh"]  = false;
     this["refreshInterval"] = 30;
     this["connTimeout"]     = 5;
-    
+
     this["serverName"] = "A Bukkit Server";
     this["host"]       = "";
     this["bg"]         = "bg_grass.png";

@@ -17,7 +17,7 @@
             body, input {
                 box-sizing: border-box;
             }
-            
+
             .wideInput {
                 display: block;
                 width: 100%;
@@ -35,36 +35,36 @@
                 <input type="checkbox" id="useCustomName" onclick="nameBoxChanged();" />
                 <label for="useCustomName">Use custom Servername?</label>
                 <br />
-                
+
                 <label for="serverName">Servername:</label>
                 <br />
                 <input id="serverName" class="wideInput" type="text" maxlength="100" disabled="disabled" />
                 <br />
-                
+
                 <label for="host">Server-IP:</label>
                 <br />
                 <input id="host" class="wideInput" type="text" maxlength="100" onblur="this.value = addPortNumber(this.value);" />
                 <br />
-                
+
                 <label for="adminPw">Administration-Password:</label>
                 <br />
                 <input id="adminPw" class="wideInput" type="password" maxlength="100" />
                 <br />
-                
+
                 <input type="checkbox" id="useAutoRefresh" onclick="refreshBoxChanged();" />
                 <label for="useAutoRefresh">Use automatic refresh?</label>
                 <br />
-                
+
                 <label for="refreshInterval">Refresh interval in seconds:</label>
                 <br />
                 <input id="refreshInterval" class="wideInput" type="text" maxlength="5" onkeyup="this.value=this.value.replace(/[^\d]/,'')" />
                 <br />
-                
+
                 <label for="connTimeout">Connection timeout in seconds:</label>
                 <br />
                 <input id="connTimeout" class="wideInput" type="text" maxlength="2" onkeyup="this.value=this.value.replace(/[^\d]/,'')" />
             </div>
-            
+
             <div id="pane2" class="pane" title="Design">
                 <label for="bg">Background:</label>
                 <br />
@@ -73,7 +73,7 @@
                     <option value="bg_grass.png">Grass</option>
                 </select>
                 <br />
-                
+
                 <label for="textColor">Text color of the gadget:</label>
                 <br />
                 <input id="textColor" class="wideInput" type="text" maxlength="7" />

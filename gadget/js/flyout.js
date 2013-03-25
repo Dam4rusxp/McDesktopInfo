@@ -6,7 +6,7 @@
 
 function refreshPlayerList() {
     var body = buildParams(["action"], ["playerList"]);
-    
+
     sendQuery(body, function(response) {
         players = response.split("+");
 
