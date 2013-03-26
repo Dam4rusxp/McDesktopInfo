@@ -34,13 +34,9 @@ function refresh() {
         var params = buildParams(keys, values);
 
         sendQuery(params, function(response, field) {
-            // Note: Do not access variables of the refresh function here, because it will finish before this is called
             System.Gadget.document.querySelector("#" + field + " .value").innerHTML = response;
-
             untilFinish--;
-            if(untilFinish == 0) {
-                System.Gadget.document.getElementById("refreshBtn").disabled = false;
-            }
+            if(untilFinish == 0) System.Gadget.document.getElementById("refreshBtn").disabled = false;
         }, fields[i].getAttribute("id"));
     }
 }
