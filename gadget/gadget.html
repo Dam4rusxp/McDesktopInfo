@@ -52,6 +52,14 @@
             .btnWrapper {
                 text-align: center;
             }
+
+            #infoList li {
+                display: none;
+            }
+
+            #serverName {
+                display: inline;
+            }
         </style>
 
         <script type="text/javascript" language="javascript" src="js/gadget.js"></script>
@@ -61,28 +69,28 @@
     <body onload="init();">
         <div id="mainPage">
             <ul id="infoList">
-                <li><div id="serverName" class="value"></div></li>
-                <li>
+                <li id="serverName"><div class="value"></div></li>
+                <li id="playerCount">
                     <a href="#" onclick="showFlyout();" id="playerListLink">
-                        <span id="playerCountLbl" class="label">Current Players: </span>
-                        <span id="playerCount" class="value"></span>
+                        <span class="label">Current Players: </span>
+                        <span class="value"></span>
                     </a>
                 </li>
-                <li>
-                    <span id="pluginVersionLbl" class="label">Plugin Version: </span>
-                    <span id="pluginVersion" class="value"></span>
+                <li id="pluginVersion">
+                    <span class="label">Plugin Version: </span>
+                    <span class="value"></span>
                 </li>
-                <li>
-                    <span id="serverVersionLbl" class="label">Server Version: </span>
-                    <span id="serverVersion" class="value"></span>
+                <li id="serverVersion">
+                    <span class="label">Server Version: </span>
+                    <span class="value"></span>
                 </li>
-                <li>
-                    <span id="memLbl" class="label">RAM: </span>
-                    <span id="mem" class="value"></span>
+                <li id="mem">
+                    <span class="label">RAM: </span>
+                    <span class="value"></span>
                 </li>
-                <li>
-                    <span id="tpsLbl" class="label">Tickrate: </span>
-                    <span id="tickrate" class="value"></span>
+                <li id="tickrate">
+                    <span class="label">Tickrate: </span>
+                    <span class="value"></span>
                 </li>
             </ul>
             <div class="btnWrapper"><input id="refreshBtn" onclick="refresh();" type="button" value="Refresh" /></div>

@@ -8,19 +8,50 @@
         <style type="text/css">
             body {
                 margin: 0;
-                padding: 0 0 26px;
+                padding: 15px 0 26px;
                 height: 300px;
                 width: 250px;
                 overflow: hidden;
             }
 
-            body, input {
+            body, input, select {
                 box-sizing: border-box;
             }
 
             .wideInput {
                 display: block;
                 width: 100%;
+            }
+
+            #selectors {
+                overflow: hidden;
+                font-size: 0;
+                white-space: nowrap;
+            }
+
+            #selectors select {
+                display: block;
+                width: 50%;
+            }
+
+            #enabledHeader, #disabledHeader {
+                padding-top: 15px;
+                font-weight: bold;
+                width: 50%;
+                text-align: center;
+            }
+
+            #enabledQueries, #enabledHeader {
+                float: left;
+            }
+
+            #disabledQueries, #disabledHeader {
+                float: right
+            }
+
+            #buttons {
+                width: 100%;
+                text-align: center;
             }
         </style>
 
@@ -77,6 +108,22 @@
                 <label for="textColor">Text color of the gadget:</label>
                 <br />
                 <input id="textColor" class="wideInput" type="text" maxlength="7" />
+            </div>
+
+            <div id="pane3" class="pane" title="Values">
+                <div id="selectorHeaders">
+                    <div id="enabledHeader">Enabled</div><div id="disabledHeader">Disabled</div><br />
+                </div>
+                <div id="selectors">
+                    <select size="8" id="enabledQueries" onclick="document.getElementById('disabledQueries').selectedIndex = -1;"></select>
+                    <select size="8" id="disabledQueries" onclick="document.getElementById('enabledQueries').selectedIndex = -1;"></select>
+                </div>
+                <div id="buttons">
+                    <input type="button" id="enable" value="<-" onclick="left();">
+                    <input type="button" id="up" value=" Up " onclick="up();">
+                    <input type="button" id="down" value="Down" onclick="down();">
+                    <input type="button" id="disable" value="->" onclick="right();">
+                </div>
             </div>
         </div>
     </body>

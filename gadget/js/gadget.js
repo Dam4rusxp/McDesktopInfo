@@ -20,7 +20,7 @@ function refresh() {
     }, settings["connTimeout"] * 1000);
 
     // Load info for each existing field
-    var fields = System.Gadget.document.querySelectorAll(".value");
+    var fields = System.Gadget.document.querySelectorAll("#infoList li");
     untilFinish = fields.length;
 
     for(i = 0; i < fields.length; i++) {
@@ -35,7 +35,7 @@ function refresh() {
 
         sendQuery(params, function(response, field) {
             // Note: Do not access variables of the refresh function here, because it will finish before this is called
-            System.Gadget.document.getElementById(field).innerHTML = response;
+            System.Gadget.document.querySelector("#" + field + " .value").innerHTML = response;
 
             untilFinish--;
             if(untilFinish == 0) {
@@ -116,11 +116,24 @@ function settingsChanged() {
 
     // Set custom name
     if(settings["useCustomName"]) {
-        System.Gadget.document.getElementById("serverName").innerHTML = settings["serverName"];
+        System.Gadget.document.querySelector("#serverName .value").innerHTML = settings["serverName"];
     }
 
     // Set Background
     System.Gadget.background = "img/" + settings["bg"];
+
+    // Hide all values with labels
+    var liElements = System.Gadget.document.querySelectorAll("#infoList li");
+    for(i = 0; i < liElements.length; i++) liElements[i].style.display = "";
+
+    // Display values for enabled queries
+    var enabledQueries = settings["enabledQueries"].split(";");
+
+    System.Gadget.document.getElementById("serverName").style.display = "block";
+    for(i = 0; i < enabledQueries.length; i++) {
+        System.Gadget.document.getElementById(enabledQueries[i]).style.display = "block";
+        System.Gadget.document.getElementById("infoList").appendChild(System.Gadget.document.getElementById(enabledQueries[i]));
+    }
 
     // Set text color
     var spans = System.Gadget.document.getElementsByTagName("span");
