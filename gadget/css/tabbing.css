@@ -1,4 +1,4 @@
-.tabs {
+.tabList {
     list-style-type: none;
     padding: 0 0 0 5px;
     margin: -1px 0 0;
@@ -7,14 +7,14 @@
     overflow: hidden;
 }
 
-.tabs li {
+.tab {
     background: none;
     border: 1px solid black;
     float: left;
     margin-right: 5px;
 }
 
-.tabs li a {
+.tab a {
     font-weight: bold;
     text-decoration: none;
     color: black;
@@ -22,12 +22,12 @@
     padding: 3px 8px;
 }
 
-.tabs li a:hover {
+.tab a:hover {
     background: silver;
     color: black;
 }
 
-.activetab {
+.tab.activetab {
     background: white !important;
     border-bottom: 1px solid white !important;
 }
@@ -41,4 +41,9 @@
 
 .pane {
     padding: 5px;
+    display: none;
+}
+
+.pane.activepane {
+    display: block;
 }

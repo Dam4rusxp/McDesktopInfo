@@ -60,9 +60,8 @@
         <script type="text/javascript" language="javascript" src="js/tabbing.js"></script>
     </head>
     <body onload="initSettings();">
-        <ul id="tabList" class="tabs"></ul>
-        <div id="paneContainer" class="paneContainer">
-            <div id="pane1" class="pane" title="Connection">
+        <div class="paneContainer">
+            <div class="pane" title="Connection">
                 <input type="checkbox" id="useCustomName" onclick="nameBoxChanged();" />
                 <label for="useCustomName">Use custom Servername?</label>
                 <br />
@@ -96,7 +95,7 @@
                 <input id="connTimeout" class="wideInput" type="text" maxlength="2" onkeyup="this.value=this.value.replace(/[^\d]/,'')" />
             </div>
 
-            <div id="pane2" class="pane" title="Design">
+            <div class="pane" title="Design">
                 <label for="bg">Background:</label>
                 <br />
                 <select id="bg" class="wideInput">
@@ -110,7 +109,7 @@
                 <input id="textColor" class="wideInput" type="text" maxlength="7" />
             </div>
 
-            <div id="pane3" class="pane" title="Values">
+            <div class="pane" title="Values">
                 <div id="selectorHeaders">
                     <div id="enabledHeader">Enabled</div><div id="disabledHeader">Disabled</div><br />
                 </div>

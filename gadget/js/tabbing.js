@@ -1,41 +1,38 @@
 function setupTabs() {
-    var tabList = document.getElementById("tabList");
-    var panes = document.getElementById("paneContainer").querySelectorAll(".pane");
+    var paneContainers = document.querySelectorAll(".paneContainer");
 
-    for(i = 0; i < panes.length; i++) {
-        var paneId = panes[i].getAttribute("id");
-        var paneName = panes[i].getAttribute("title");
+    for(i = 0; i < paneContainers.length; i++) {
+        var tabList = document.createElement("ul");
+        tabList.setAttribute("class", "tabList");
 
-        var tab = document.createElement("li");
-        tab.innerHTML = "<a href=\"#" + paneId + "\" onclick=\"showTab(\'" + paneId + "\'); this.blur(); return false;\">" + paneName + "</a>";
-        tabList.appendChild(tab);
+        var panes = paneContainers[i].querySelectorAll(".pane");
+        for(p = 0; p < panes.length; p++) {
+            var tab = document.createElement("li");
+            tab.setAttribute("class", "tab");
 
-        panes[i].removeAttribute("title");
+            var link = document.createElement("a");
+            link.href = "#";
+            link.setAttribute("onclick", "showPane(this.parentNode.parentNode, " + p + "); this.blur(); return false;");
+            link.innerHTML = panes[p].title;
+
+            tab.appendChild(link);
+            tabList.appendChild(tab);
+        }
+
+        document.getElementsByTagName("body")[0].insertBefore(tabList, paneContainers[i]);
+        showPane(tabList, 0);
     }
-
-    // Refresh tabList and activate first tab
-    tabList = document.getElementById("tabList");
-    showTab(tabList.getElementsByTagName("a")[0].hash.substring(1));
 }
 
-function showTab(tabId) {
-    // Display the requested tab
-    var newTab = document.getElementById(tabId);
-    newTab.style.display = "";
+function showPane(tabList, paneNo) {
+    var paneContainer = tabList.nextSibling;
+    var panes = paneContainer.querySelectorAll(".pane");
 
-    // Hide all other tabs
-    var tabList = document.getElementById("tabList");
-    var tabs = tabList.getElementsByTagName("li");
-
-    for(i = 0; i < tabs.length; i++) {
-        var tabLink = tabs[i].getElementsByTagName("a")[0];
-        var hash = tabLink.hash;
-
-        if(hash.substring(1) != tabId) {
-            tabs[i].setAttribute("class", "");
-            document.getElementById(hash.substring(1)).style.display = "none";
-        } else {
-            tabs[i].setAttribute("class", "activetab");
-        }
+    for(i = 0; i < panes.length; i++) {
+        panes[i].setAttribute("class", "pane");
+        tabList.children[i].setAttribute("class", "tab");
     }
+
+    panes[paneNo].setAttribute("class", "pane activepane");
+    tabList.children[paneNo].setAttribute("class", "tab activetab");
 }
