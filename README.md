@@ -17,7 +17,7 @@ License
 
 McDesktopInfo - A Bukkit plugin + Windows Sidebar Gadget
 
-Copyright (C) 2012  Damarus
+Copyright (C) 2012 - 2013  Damarus
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
