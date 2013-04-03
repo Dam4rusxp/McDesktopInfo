@@ -8,10 +8,12 @@ import de.damarus.mcdesktopinfo.McDesktopInfo;
 
 public class Tickrate extends Query {
 
-    private Poller poller = new Poller();
+    private Poller poller;
 
     protected Tickrate(String query) {
         super(query, true);
+
+        poller = new Poller();
 
         if(!isDisabled()) {
             McDesktopInfo.log("Starting TPS counter thread...");
@@ -21,20 +23,21 @@ public class Tickrate extends Query {
 
     @Override
     protected String exec(HashMap<String, String> params) {
-        return poller.getTps() + "";
+        // Round to 2 decimal places
+        return Math.round(poller.getTps() * 100) / 100.0 + "";
     }
 
     class Poller implements Runnable {
 
         public static final int INTERVAL = 40;
 
-        private long lastRun = System.currentTimeMillis() - (INTERVAL / 20) * 1000;
+        private long lastRun = System.currentTimeMillis() - INTERVAL / 20 * 1000;
         private double tps;
 
         @Override
         public void run() {
             long now = System.currentTimeMillis();
-            tps = INTERVAL / ((now - lastRun) / 1000);
+            tps = INTERVAL / ((now - lastRun) / 1000.0);
             lastRun = now;
         }
 
