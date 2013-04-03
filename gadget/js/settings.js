@@ -151,6 +151,7 @@ function right() {
 
     if(enabledQueries.selectedIndex != -1) {
         var option = enabledQueries.children[enabledQueries.selectedIndex];
+        if(--enabledQueries.selectedIndex < 0) enabledQueries.selectedIndex = 1;
         disabledQueries.appendChild(option);
         option.selected = false;
     }
@@ -162,6 +163,7 @@ function left() {
 
     if(disabledQueries.selectedIndex != -1) {
         var option = disabledQueries.children[disabledQueries.selectedIndex];
+        if(--disabledQueries.selectedIndex < 0) disabledQueries.selectedIndex = 1;
         enabledQueries.appendChild(option);
         option.selected = false;
     }
