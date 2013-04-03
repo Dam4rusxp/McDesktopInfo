@@ -13,8 +13,6 @@ import de.damarus.mcdesktopinfo.PasswordSystem;
 import de.damarus.mcdesktopinfo.queries.Query;
 import de.damarus.mcdesktopinfo.queries.Query.QueryEnum;
 
-;
-
 public class ConnectionHandler implements Runnable {
 
     private Socket socket;
