@@ -8,7 +8,7 @@ import de.damarus.mcdesktopinfo.McDesktopInfo;
 
 public class Tickrate extends Query {
 
-    Poller poller = new Poller();
+    private Poller poller = new Poller();
 
     protected Tickrate(String query) {
         super(query, true);
