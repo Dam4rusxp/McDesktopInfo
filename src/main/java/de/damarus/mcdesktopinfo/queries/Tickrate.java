@@ -37,7 +37,11 @@ public class Tickrate extends Query {
         @Override
         public void run() {
             long now = System.currentTimeMillis();
-            tps = INTERVAL / ((now - lastRun) / 1000.0);
+            double delta = (now - lastRun) / 1000.0;
+
+            tps = 0;
+            if(delta != 0) tps = INTERVAL / delta;
+
             lastRun = now;
         }
 
