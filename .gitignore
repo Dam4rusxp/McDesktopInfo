@@ -3,6 +3,9 @@
 /.project
 /.settings
 
+# IntelliJ
+/*.iml
+
 # Mac OS
 /.DS_Store
 
