@@ -2,8 +2,10 @@
 <gadget>
   <name>McDesktopInfo</name>
   <version>${project.version}</version>
-  <author name="Damarus"></author>
-  <copyright>&#169; Damarus</copyright>
+  <author name="Damarus">
+      <info url="https://github.com/Dam4rusxp/McDesktopInfo" />
+  </author>
+  <copyright>&#169; 2014 Damarus</copyright>
   <description>A Windows Sidebar gadget that displays information from a Bukkit server.</description>
   <icons>
       <icon height="100" width="100" src="icon.png" />
