@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>de.damarus</groupId>
     <artifactId>McDesktopInfo</artifactId>
-    <version>0.4.9</version>
+    <version>0.5-dev</version>
     <name>${project.artifactId}</name>
     <build>
     	<finalName>${project.artifactId}</finalName>
