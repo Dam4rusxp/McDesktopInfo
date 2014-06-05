@@ -1,5 +1,4 @@
-﻿var untilFinish = 0;
-var autoRefreshRunning = false;
+﻿var autoRefreshRunning = false;
 
 function init() {
     System.Gadget.settingsUI = "settings.html";
@@ -22,8 +21,8 @@ function refresh() {
     sendQuery({"action": "refresh"}, function(response) {
         // Server responds JSON object with key (ID) - value pairs, apply these to the gadget
         for (var key in response) {
-            var element = System.Gadget.document.getElementById(key);
-            if (typeof element !== "undefined") element.innerHTML = response[key];
+            var element = System.Gadget.document.querySelector("#" + key + " .value");
+            if(element != null) element.innerHTML = response[key];
         }
     });
 }
@@ -47,7 +46,7 @@ function sendQuery(content, callback, callbackParam) {
 
         // Add auth info to the request
         var additionalInfo = {
-            "adminPw": settings["adminPw"];
+            "adminPw": settings["adminPw"]
         };
         content = additionalInfo.concat(content);
 
@@ -58,7 +57,7 @@ function sendQuery(content, callback, callbackParam) {
                 response = typeof response !== "undefined" ? response : "";
 
                 // Interpret server response as JSON string
-                response = eval("(" + response + ")");
+                response = JSON.parse(response);
 
                 callback(response, callbackParam);
             }
@@ -66,7 +65,7 @@ function sendQuery(content, callback, callbackParam) {
 
         xhr.send(content);
     } else {
-        callback("", callbackParam);
+        callback(undefined, callbackParam);
     }
 }
 
@@ -97,7 +96,7 @@ function settingsChanged() {
 
     // Hide all values with labels
     var liElements = System.Gadget.document.querySelectorAll("#infoList li");
-    for(i = 0; i < liElements.length; i++) liElements[i].style.display = "";
+    for(i = 0; i < liElements.length; i++) liElements[i].style.display = "none";
 
     // Display values for enabled queries
     var enabledQueries = settings["enabledQueries"].split(";");
