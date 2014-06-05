@@ -63,7 +63,7 @@ public class ConnectionHandler implements Runnable {
                     ((PasswordSystem.checkAdminPW((String)params.get("adminPw")) ? "" : " using a wrong password: " + params.get("adminPw"))));
             }
 
-            if(!queryObj.isDisabled() && (queryObj.isUserExecutable() || PasswordSystem.checkAdminPW((String)params.get("adminPw")))) answer.putAll(queryObj.run(params));
+            answer.putAll(queryObj.runSecure(params));
         } catch (IllegalArgumentException e) {
             McDesktopInfo.log("Received unknown query \"" + params.get("action") + "\"");
         }

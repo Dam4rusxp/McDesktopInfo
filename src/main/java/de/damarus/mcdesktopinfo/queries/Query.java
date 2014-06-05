@@ -1,6 +1,7 @@
 package de.damarus.mcdesktopinfo.queries;
 
 import de.damarus.mcdesktopinfo.McDesktopInfo;
+import de.damarus.mcdesktopinfo.PasswordSystem;
 import org.json.simple.JSONObject;
 
 public abstract class Query {
@@ -14,6 +15,18 @@ public abstract class Query {
     }
 
     public abstract JSONObject run(JSONObject params);
+
+    public JSONObject runSecure(JSONObject params) {
+        JSONObject answer = new JSONObject();
+
+        if (!isDisabled() && (isUserExecutable() || PasswordSystem.checkAdminPW((String)params.get("adminPw")))) {
+            answer = run(params);
+        } else {
+            answer.put(getQueryString(), "");
+        }
+
+        return answer;
+    }
 
     public String getQueryString() {
         return query;

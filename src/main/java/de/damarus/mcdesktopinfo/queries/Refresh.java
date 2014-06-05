@@ -13,9 +13,7 @@ public class Refresh extends Query {
         JSONObject answer = new JSONObject();
         for(QueryEnum e : QueryEnum.values()) {
             Query q = e.getQueryObj();
-            if (q.runOnRefresh()) {
-                answer.putAll(q.run(params));
-            }
+            if (q.runOnRefresh()) answer.putAll(q.runSecure(params));
         }
         return answer;
     }
