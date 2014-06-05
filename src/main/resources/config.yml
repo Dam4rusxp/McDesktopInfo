@@ -11,4 +11,5 @@ userQueries:
 - playerList
 - pluginVersion
 - refresh
+- chatHistory
 disabledQueries: []

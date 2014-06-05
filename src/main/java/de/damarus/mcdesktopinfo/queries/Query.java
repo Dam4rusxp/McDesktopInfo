@@ -53,7 +53,8 @@ public abstract class Query {
         SERVERVERSION(new ServerVersion("serverVersion", true)),
         PLUGINVERSION(new PluginVersion("pluginVersion", true)),
         TICKRATE(new Tickrate("tickrate", true)),
-        REFRESH(new Refresh("refresh", false));
+        REFRESH(new Refresh("refresh", false)),
+        CHATHISTORY(new ChatHistory("chatHistory", false));
 
         private Query queryObj;
 
