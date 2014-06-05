@@ -54,11 +54,8 @@ function sendQuery(content, callback, callbackParam) {
         // Set the function that is executed when we get an answer
         xhr.onreadystatechange = function() {
             if(xhr.readyState == 4) {
-                var response = xhr.responseText;
-                response = typeof response !== "undefined" ? response : "";
-
-                // Interpret server response as JSON string
-                var jsonObj = JSON.parse(response);
+                var jsonObj = {};
+                if (xhr.responseText) jsonObj = JSON.parse(xhr.responseText);
 
                 callback(jsonObj, callbackParam);
             }
