@@ -17,6 +17,6 @@ public class Refresh extends Query {
                 answer.putAll(q.run(params));
             }
         }
-        return null;
+        return answer;
     }
 }
