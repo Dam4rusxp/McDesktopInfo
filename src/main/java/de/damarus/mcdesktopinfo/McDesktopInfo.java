@@ -3,12 +3,11 @@ package de.damarus.mcdesktopinfo;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.damarus.mcdesktopinfo.queries.Query.QueryEnum;
+import de.damarus.mcdesktopinfo.socket.SocketListener;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import de.damarus.mcdesktopinfo.queries.Query.QueryEnum;
-import de.damarus.mcdesktopinfo.socket.SocketListener;
 
 public class McDesktopInfo extends JavaPlugin {
 
@@ -44,7 +43,7 @@ public class McDesktopInfo extends JavaPlugin {
         QueryEnum[] queryObjects = QueryEnum.values();
         List<String> queries = new ArrayList<String>();
         for(QueryEnum q : queryObjects) {
-            queries.add(q.getQueryObj().getQuery());
+            queries.add(q.getQueryObj().getQueryString());
         }
 
         // Remove nonexistant queries

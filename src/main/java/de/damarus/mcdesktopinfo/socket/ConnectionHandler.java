@@ -1,17 +1,14 @@
 package de.damarus.mcdesktopinfo.socket;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.Socket;
-import java.net.URLDecoder;
-import java.util.HashMap;
 
 import de.damarus.mcdesktopinfo.McDesktopInfo;
 import de.damarus.mcdesktopinfo.PasswordSystem;
 import de.damarus.mcdesktopinfo.queries.Query;
 import de.damarus.mcdesktopinfo.queries.Query.QueryEnum;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 
 public class ConnectionHandler implements Runnable {
 
@@ -24,41 +21,30 @@ public class ConnectionHandler implements Runnable {
     @Override
     public void run() {
         try {
-            // Get in and out streams
             BufferedReader sIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            DataOutputStream sOut = new DataOutputStream(socket.getOutputStream());
 
-            String query = sIn.readLine();
-            if(query != null) {
-                HashMap<String, String> params = new HashMap<String, String>();
+            int contentLength = -1;
+            String token = "Content-Length: ";
 
-                // Splitting into the important part
-                query = query.substring(query.indexOf("?") + 1);
-                if(query.contains(" HTTP/")) query = query.substring(0, query.indexOf(" HTTP/"));
-
-                String[] paramsWithValue = query.split("[&]");
-
-                for(int i = 0; i < paramsWithValue.length; i++) {
-                    String[] param = paramsWithValue[i].split("[=]");
-
-                    // Skip faulty parameters
-                    if(param.length != 2) {
-                        continue;
-                    }
-
-                    // Decode parameters and put them into map
-                    params.put(URLDecoder.decode(param[0], "UTF-8"), URLDecoder.decode(param[1], "UTF-8"));
+            String line;
+            do {
+                line = sIn.readLine();
+                if(line.startsWith(token)) {
+                    contentLength = Integer.parseInt(line.substring(token.length()));
+                    McDesktopInfo.log("Detected Content-Length of " + contentLength + " bytes.");
                 }
+            } while (line.length() != 0);
 
-                params.remove("rnd");
-                params.put("gadgetIp", socket.getInetAddress().getHostAddress());
+            char[] cData = new char[contentLength];
+            sIn.read(cData);
+            String requestBody = new String(cData);
 
-                // Form response to the given query (Everything is in first line)
-                String response = get(params.get("action"), params);
+            JSONObject params = (JSONObject)JSONValue.parse(requestBody);
+            JSONObject answer = get(params);
 
-                sOut.writeBytes(response); // Give the response back to the client
-                sOut.flush(); // Make sure, that data is sent now
-            }
+            Writer sOut = new OutputStreamWriter(socket.getOutputStream());
+            answer.writeJSONString(sOut);
+            sOut.flush();
 
             socket.close(); // Transmission done...
         } catch (IOException e) {
@@ -67,24 +53,23 @@ public class ConnectionHandler implements Runnable {
         }
     }
 
-    public String get(String query, HashMap<String, String> params) {
+    public JSONObject get(JSONObject params) {
+        JSONObject answer = new JSONObject();
         try {
-            Query queryObj = QueryEnum.valueOf(QueryEnum.class, query.toUpperCase()).getQueryObj();
+            Query queryObj = QueryEnum.valueOf((String)answer.get("action")).getQueryObj();
 
-            if(queryObj.isDisabled()) return "";
-
+            // TODO Move this to the Kick class
             if(queryObj.equals(QueryEnum.KICK.getQueryObj())) {
                 // Report to serverlog that a kick was queried and only log the used password if it was wrong
                 McDesktopInfo.log("The IP " + params.get("gadgetIp") + " sent a query to kick the player " + params.get("player") +
-                    ((PasswordSystem.checkAdminPW(params.get("adminPw")) ? "" : " using a wrong password: " + params.get("adminPw"))));
+                    ((PasswordSystem.checkAdminPW((String)params.get("adminPw")) ? "" : " using a wrong password: " + params.get("adminPw"))));
             }
 
-            if(queryObj.isUserExecutable()) return queryObj.execute(params);
-            if(queryObj.isAdminOnly()) return PasswordSystem.checkAdminPW(params.get("adminPw")) ? queryObj.execute(params) : "";
+            if(!queryObj.isDisabled() && (queryObj.isUserExecutable() || PasswordSystem.checkAdminPW((String)params.get("adminPw")))) answer.putAll(queryObj.run(params));
         } catch (IllegalArgumentException e) {
-            McDesktopInfo.log("Received unknown query \"" + query + "\"");
+            McDesktopInfo.log("Received unknown query \"" + params.get("action") + "\"");
         }
 
-        return "";
+        return answer;
     }
 }

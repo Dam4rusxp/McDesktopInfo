@@ -1,67 +1,46 @@
 package de.damarus.mcdesktopinfo.queries;
 
-import java.util.HashMap;
-
 import de.damarus.mcdesktopinfo.McDesktopInfo;
+import org.json.simple.JSONObject;
 
 public abstract class Query {
 
-    private long lastExec = 0;
-    private String lastValue = "";
-
     private final String query;
-    private final boolean hasTimeout;
+    private final boolean runOnRefresh;
 
-    protected Query(String query, boolean hasTimeout) {
+    protected Query(String query, boolean runOnRefresh) {
         this.query = query;
-        this.hasTimeout = hasTimeout;
+        this.runOnRefresh = runOnRefresh;
     }
 
-    protected abstract String exec(HashMap<String, String> params);
+    public abstract JSONObject run(JSONObject params);
 
-    public String execute(HashMap<String, String> params) {
-        if(hasTimeout() && System.currentTimeMillis() - lastExec < McDesktopInfo.getPluginInstance().getConfig().getInt("valueTimeout")) return lastValue;
-        return forceExecute(params);
-    }
-
-    public String forceExecute(HashMap<String, String> params) {
-        lastExec = System.currentTimeMillis();
-        return lastValue = exec(params);
-    }
-
-    public String getQuery() {
+    public String getQueryString() {
         return query;
     }
 
-    public boolean hasTimeout() {
-        return hasTimeout;
-    }
-
-    public void resetTimeout() {
-        lastExec = 0;
-    }
-
-    public boolean isAdminOnly() {
-        return McDesktopInfo.getPluginInstance().getConfig().getStringList("adminQueries").contains(getQuery());
-    }
-
     public boolean isDisabled() {
-        return McDesktopInfo.getPluginInstance().getConfig().getStringList("disabledQueries").contains(getQuery());
+        return McDesktopInfo.getPluginInstance().getConfig().getStringList("disabledQueries").contains(getQueryString());
     }
 
     public boolean isUserExecutable() {
-        return McDesktopInfo.getPluginInstance().getConfig().getStringList("userQueries").contains(getQuery());
+        return McDesktopInfo.getPluginInstance().getConfig().getStringList("userQueries").contains(getQueryString());
+    }
+
+    public boolean runOnRefresh() {
+        return runOnRefresh;
     }
 
     public enum QueryEnum {
-        KICK(new Kick("kick")),
-        PLAYERCOUNT(new Playercount("playerCount")),
-        MEM(new Mem("mem")),
-        PLAYERLIST(new PlayerList("playerList")),
-        SERVERNAME(new Servername("serverName")),
-        SERVERVERSION(new ServerVersion("serverVersion")),
-        PLUGINVERSION(new PluginVersion("pluginVersion")),
-        TICKRATE(new Tickrate("tickrate"));
+        KICK(new Kick("kick", false)),
+        PLAYERCOUNT(new Playercount("playerCount", true)),
+        MEM(new Mem("mem", true)),
+        PLAYERLIST(new PlayerList("playerList", true)),
+        SERVERNAME(new Servername("serverName", true)),
+        SERVERVERSION(new ServerVersion("serverVersion", true)),
+        PLUGINVERSION(new PluginVersion("pluginVersion", true)),
+        TICKRATE(new Tickrate("tickrate", true)),
+        REFRESH(new Refresh("refresh", false));
 
         private Query queryObj;
 

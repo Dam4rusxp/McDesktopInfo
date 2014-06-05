@@ -14,11 +14,9 @@ function init() {
 function refresh() {
     // Disable refresh button until we finish or run into timeout
     System.Gadget.document.getElementById("refreshBtn").disabled = true;
-    setTimeout(function() {
-        System.Gadget.document.getElementById("refreshBtn").disabled = false;
-    }, settings["connTimeout"] * 1000);
 
     sendQuery({"action": "refresh"}, function(response) {
+        System.Gadget.document.getElementById("refreshBtn").disabled = false;
         // Server responds JSON object with key (ID) - value pairs, apply these to the gadget
         for (var key in response) {
             var element = System.Gadget.document.querySelector("#" + key + " .value");
@@ -41,14 +39,19 @@ function sendQuery(content, callback, callbackParam) {
     if(typeof settings["host"] !== "undefined" && settings["host"] != "") {
         var xhr = new XMLHttpRequest();
 
-        xhr.open("GET", encodeURI(settings["host"]) + "&rnd=" + Math.random(), true);
-        xhr.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
+        var data = "somehow the data arrives";
+
+        xhr.open("POST", "http://" + encodeURI(settings["host"]) + "?rnd=" + Math.random(), true);
+        xhr.timeout = settings["connTimeout"] * 1000;
+        xhr.setRequestHeader("Cache-Control", "no-cache");
+        xhr.setRequestHeader("Content-Type", "text/plain; charset=utf-8");
+        xhr.setRequestHeader("Connection", "close");
 
         // Add auth info to the request
-        var additionalInfo = {
-            "adminPw": settings["adminPw"]
-        };
-        content = additionalInfo.concat(content);
+        var additionalInfo = {};
+        if(settings["adminPw"] !== "") additionalInfo["adminPw"] = settings["adminPw"];
+
+        for(var key in additionalInfo) content[key] = additionalInfo[key];
 
         // Set the function that is executed when we get an answer
         xhr.onreadystatechange = function() {
@@ -57,13 +60,13 @@ function sendQuery(content, callback, callbackParam) {
                 response = typeof response !== "undefined" ? response : "";
 
                 // Interpret server response as JSON string
-                response = JSON.parse(response);
+                var jsonObj = JSON.parse(response);
 
-                callback(response, callbackParam);
+                callback(jsonObj, callbackParam);
             }
         }
 
-        xhr.send(content);
+        xhr.send(JSON.stringify(content));
     } else {
         callback(undefined, callbackParam);
     }

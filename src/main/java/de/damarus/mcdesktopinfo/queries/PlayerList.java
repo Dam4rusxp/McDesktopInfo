@@ -1,33 +1,25 @@
 package de.damarus.mcdesktopinfo.queries;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.HashMap;
-
-import org.bukkit.entity.Player;
-
 import de.damarus.mcdesktopinfo.McDesktopInfo;
+import org.bukkit.entity.Player;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 public class PlayerList extends Query {
 
-    protected PlayerList(String query) {
-        super(query, true);
+    protected PlayerList(String query, boolean runOnRefresh) {
+        super(query, runOnRefresh);
     }
 
     @Override
-    protected String exec(HashMap<String, String> params) {
+    public JSONObject run(JSONObject params) {
+        JSONObject answer = new JSONObject();
         Player[] players = McDesktopInfo.getPluginInstance().getServer().getOnlinePlayers();
 
-        String playerList = "";
-        for(Player p : players) {
-            try {
-                playerList += "+" + URLEncoder.encode(p.getName(), "UTF-8");
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-        }
+        JSONArray playerList = new JSONArray();
+        for (Player p : players) playerList.add(p.getName());
+        answer.put("playerList", playerList);
 
-        playerList = playerList.replaceFirst("[+]", "");
-        return playerList;
+        return answer;
     }
 }

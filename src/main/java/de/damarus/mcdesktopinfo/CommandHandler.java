@@ -1,11 +1,10 @@
 package de.damarus.mcdesktopinfo;
 
+import de.damarus.mcdesktopinfo.queries.Query.QueryEnum;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import de.damarus.mcdesktopinfo.queries.Query.QueryEnum;
 
 public class CommandHandler implements CommandExecutor {
 
@@ -46,8 +45,8 @@ public class CommandHandler implements CommandExecutor {
                     String cmds = "";
                     for(int i = 0; i < queries.length; i++) {
                         if(!queries[i].getQueryObj().isDisabled()) {
-                            cmds += ", " + queries[i].getQueryObj().getQuery();
-                            if(queries[i].getQueryObj().isAdminOnly()) cmds += "[A]";
+                            cmds += ", " + queries[i].getQueryObj().getQueryString();
+                            if(!queries[i].getQueryObj().isUserExecutable()) cmds += "[A]";
                         }
                     }
 

@@ -1,6 +1,5 @@
 socket-port: 6868
 adminPw: ''
-valueTimeout: 3000
 adminQueries:
 - kick
 - mem
@@ -11,4 +10,5 @@ userQueries:
 - serverVersion
 - playerList
 - pluginVersion
+- refresh
 disabledQueries: []

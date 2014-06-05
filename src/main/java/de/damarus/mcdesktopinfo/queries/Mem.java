@@ -1,20 +1,23 @@
 package de.damarus.mcdesktopinfo.queries;
 
-import java.util.HashMap;
+import org.json.simple.JSONObject;
 
 public class Mem extends Query {
 
-    protected Mem(String query) {
-        super(query, true);
+    protected Mem(String query, boolean runOnRefresh) {
+        super(query, runOnRefresh);
     }
 
     @Override
-    protected String exec(HashMap<String, String> params) {
+    public JSONObject run(JSONObject params) {
+        JSONObject answer = new JSONObject();
         Runtime runtime = Runtime.getRuntime();
 
         long used = (runtime.totalMemory() - runtime.freeMemory()) / 1024 / 1024;
         long max = runtime.maxMemory() / 1024 / 1024;
 
-        return used + "MB / " + (max == Long.MAX_VALUE ? "inf" : max + "MB");
+        answer.put(getQueryString(), used + "MB / " + (max == Long.MAX_VALUE ? "inf" : max + "MB"));
+
+        return answer;
     }
 }

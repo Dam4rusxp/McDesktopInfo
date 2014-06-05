@@ -1,17 +1,18 @@
 package de.damarus.mcdesktopinfo.queries;
 
-import java.util.HashMap;
-
 import de.damarus.mcdesktopinfo.McDesktopInfo;
+import org.json.simple.JSONObject;
 
 public class ServerVersion extends Query {
 
-    protected ServerVersion(String query) {
-        super(query, true);
+    protected ServerVersion(String query, boolean runOnRefresh) {
+        super(query, runOnRefresh);
     }
 
     @Override
-    protected String exec(HashMap<String, String> params) {
-        return McDesktopInfo.getPluginInstance().getServer().getBukkitVersion();
+    public JSONObject run(JSONObject params) {
+        JSONObject answer = new JSONObject();
+        answer.put(getQueryString(), McDesktopInfo.getPluginInstance().getServer().getBukkitVersion());
+        return answer;
     }
 }

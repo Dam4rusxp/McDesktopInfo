@@ -1,17 +1,15 @@
 package de.damarus.mcdesktopinfo.queries;
 
-import java.util.HashMap;
-
-import org.bukkit.Bukkit;
-
 import de.damarus.mcdesktopinfo.McDesktopInfo;
+import org.bukkit.Bukkit;
+import org.json.simple.JSONObject;
 
 public class Tickrate extends Query {
 
     private Poller poller;
 
-    protected Tickrate(String query) {
-        super(query, true);
+    protected Tickrate(String query, boolean runOnRefresh) {
+        super(query, runOnRefresh);
 
         poller = new Poller();
 
@@ -22,9 +20,11 @@ public class Tickrate extends Query {
     }
 
     @Override
-    protected String exec(HashMap<String, String> params) {
+    public JSONObject run(JSONObject params) {
+        JSONObject answer = new JSONObject();
         // Round to 2 decimal places
-        return Math.round(poller.getTps() * 100) / 100.0 + "";
+        answer.put(getQueryString(), Math.round(poller.getTps() * 100) / 100.0 + "");
+        return answer;
     }
 
     class Poller implements Runnable {

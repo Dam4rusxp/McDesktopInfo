@@ -1,20 +1,20 @@
 package de.damarus.mcdesktopinfo.queries;
 
-import java.util.HashMap;
-
-import org.bukkit.Server;
-
 import de.damarus.mcdesktopinfo.McDesktopInfo;
+import org.bukkit.Server;
+import org.json.simple.JSONObject;
 
 public class Playercount extends Query {
 
-    protected Playercount(String query) {
-        super(query, true);
+    protected Playercount(String query, boolean runOnRefresh) {
+        super(query, runOnRefresh);
     }
 
     @Override
-    protected String exec(HashMap<String, String> params) {
+    public JSONObject run(JSONObject params) {
+        JSONObject answer = new JSONObject();
         Server server = McDesktopInfo.getPluginInstance().getServer();
-        return server.getOnlinePlayers().length + " / " + server.getMaxPlayers();
+        answer.put(getQueryString(), server.getOnlinePlayers().length + " / " + server.getMaxPlayers());
+        return answer;
     }
 }
