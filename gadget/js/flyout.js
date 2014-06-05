@@ -5,26 +5,22 @@
 }
 
 function refreshPlayerList() {
-    var body = buildParams(["action"], ["playerList"]);
-
-    sendQuery(body, function(response) {
-        players = response.split("+");
-
-        var listTemp = "";
-        for(i = 0; i < players.length; i++) {
-            if(players[i] != undefined && players[i] != "") {
-                listTemp += unescape(players[i]) + " (<a href=\"#\" onclick=\"kickPlayer(\'" + unescape(players[i]) + "\'); return false;\">Kick</a>)" + "<br />";
-            }
+    sendQuery({"action": "playerList"}, function(playerList) {
+        var htmlList = "";
+        for (var player in playerList) {
+            htmlList += player["name"];
+            htmlList += " (<a href=\"#\" onclick=\"kickPlayer(\'" + player["name"] + "\'); return false;\">Kick</a>)" + "<br />";
         }
 
-        System.Gadget.Flyout.document.getElementById("playerList").innerHTML = listTemp;
+        System.Gadget.Flyout.document.getElementById("playerList").innerHTML = htmlList;
     });
 }
 
 function kickPlayer(player) {
-    var keys = ["action", "player"];
-    var values = ["kick", player];
-    var body = buildParams(keys, values);
+    var content = {
+        "action": "kick";
+        "player": player;
+    }
 
     sendQuery(body, function() {
         refresh();
