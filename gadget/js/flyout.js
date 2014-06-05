@@ -7,9 +7,10 @@
 function refreshPlayerList() {
     sendQuery({"action": "playerList"}, function(answer) {
         var htmlList = "";
-        for (var player in answer["playerList"]) {
-            htmlList += player["name"];
-            htmlList += " (<a href=\"#\" onclick=\"kickPlayer(\'" + player["name"] + "\'); return false;\">Kick</a>)" + "<br />";
+        var playerList = answer["playerList"];
+        for (var i = 0; i < playerList.length; i++) {
+            htmlList += playerList[i];
+            htmlList += " (<a href=\"#\" onclick=\"kickPlayer(\'" + playerList[i] + "\'); return false;\">Kick</a>)" + "<br />";
         }
 
         System.Gadget.Flyout.document.getElementById("playerList").innerHTML = htmlList;
