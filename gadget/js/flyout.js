@@ -5,9 +5,9 @@
 }
 
 function refreshPlayerList() {
-    sendQuery({"action": "playerList"}, function(playerList) {
+    sendQuery({"action": "playerList"}, function(answer) {
         var htmlList = "";
-        for (var player in playerList) {
+        for (var player in answer["playerList"]) {
             htmlList += player["name"];
             htmlList += " (<a href=\"#\" onclick=\"kickPlayer(\'" + player["name"] + "\'); return false;\">Kick</a>)" + "<br />";
         }
@@ -18,11 +18,11 @@ function refreshPlayerList() {
 
 function kickPlayer(player) {
     var content = {
-        "action": "kick";
-        "player": player;
-    }
+        "action": "kick",
+        "player": player
+    };
 
-    sendQuery(body, function() {
+    sendQuery(content, function() {
         refresh();
         refreshPlayerList();
     });
