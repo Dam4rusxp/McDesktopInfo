@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <gadget>
   <name>McDesktopInfo</name>
-  <version>${project.version}</version>
+  <version>${gadget.version}</version>
   <author name="Damarus">
       <info url="https://github.com/Dam4rusxp/McDesktopInfo" />
   </author>
