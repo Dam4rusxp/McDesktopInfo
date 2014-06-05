@@ -19,6 +19,9 @@ public class Kick extends Query {
             player.kickPlayer("Kicked with McDesktopInfo");
 
             answer.put(getQueryString(), params.get("player"));
+
+            // Report to serverlog that a kick was queried
+            McDesktopInfo.log("The address " + params.get("gadgetIp") + " sent a query to kick the player " + params.get("player"));
         }
         return answer;
     }

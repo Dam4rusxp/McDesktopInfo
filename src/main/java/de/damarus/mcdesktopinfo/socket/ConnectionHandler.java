@@ -4,7 +4,6 @@ import java.io.*;
 import java.net.Socket;
 
 import de.damarus.mcdesktopinfo.McDesktopInfo;
-import de.damarus.mcdesktopinfo.PasswordSystem;
 import de.damarus.mcdesktopinfo.queries.Query;
 import de.damarus.mcdesktopinfo.queries.Query.QueryEnum;
 import org.json.simple.JSONObject;
@@ -37,6 +36,9 @@ public class ConnectionHandler implements Runnable {
             String requestBody = new String(cData);
 
             JSONObject params = (JSONObject)JSONValue.parse(requestBody);
+
+            params.put("gadgetIp", socket.getInetAddress().toString());
+
             JSONObject answer = get(params);
 
             Writer sOut = new OutputStreamWriter(socket.getOutputStream());
@@ -55,13 +57,6 @@ public class ConnectionHandler implements Runnable {
         try {
             String query = params.get("action").toString();
             Query queryObj = QueryEnum.valueOf(query.toUpperCase()).getQueryObj();
-
-            // TODO Move this to the Kick class
-            if(queryObj.equals(QueryEnum.KICK.getQueryObj())) {
-                // Report to serverlog that a kick was queried and only log the used password if it was wrong
-                McDesktopInfo.log("The IP " + params.get("gadgetIp") + " sent a query to kick the player " + params.get("player") +
-                    ((PasswordSystem.checkAdminPW((String)params.get("adminPw")) ? "" : " using a wrong password: " + params.get("adminPw"))));
-            }
 
             answer.putAll(queryObj.runSecure(params));
         } catch (IllegalArgumentException e) {
