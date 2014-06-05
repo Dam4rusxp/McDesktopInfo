@@ -29,10 +29,7 @@ public class ConnectionHandler implements Runnable {
             String line;
             do {
                 line = sIn.readLine();
-                if(line.startsWith(token)) {
-                    contentLength = Integer.parseInt(line.substring(token.length()));
-                    McDesktopInfo.log("Detected Content-Length of " + contentLength + " bytes.");
-                }
+                if(line.startsWith(token)) contentLength = Integer.parseInt(line.substring(token.length()));
             } while (line.length() != 0);
 
             char[] cData = new char[contentLength];
@@ -58,7 +55,6 @@ public class ConnectionHandler implements Runnable {
         try {
             String query = params.get("action").toString();
             Query queryObj = QueryEnum.valueOf(query.toUpperCase()).getQueryObj();
-            McDesktopInfo.log(queryObj.getQueryString());
 
             // TODO Move this to the Kick class
             if(queryObj.equals(QueryEnum.KICK.getQueryObj())) {
