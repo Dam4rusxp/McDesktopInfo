@@ -56,7 +56,9 @@ public class ConnectionHandler implements Runnable {
     public JSONObject get(JSONObject params) {
         JSONObject answer = new JSONObject();
         try {
-            Query queryObj = QueryEnum.valueOf((String)answer.get("action")).getQueryObj();
+            String query = params.get("action").toString();
+            Query queryObj = QueryEnum.valueOf(query.toUpperCase()).getQueryObj();
+            McDesktopInfo.log(queryObj.getQueryString());
 
             // TODO Move this to the Kick class
             if(queryObj.equals(QueryEnum.KICK.getQueryObj())) {
