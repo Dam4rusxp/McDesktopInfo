@@ -13,32 +13,19 @@ function init() {
 }
 
 function refresh() {
-    // Disable refresh button until we finish, refresh timeout is 5s
+    // Disable refresh button until we finish or run into timeout
     System.Gadget.document.getElementById("refreshBtn").disabled = true;
     setTimeout(function() {
         System.Gadget.document.getElementById("refreshBtn").disabled = false;
     }, settings["connTimeout"] * 1000);
 
-    // Load info for each existing field
-    var fields = System.Gadget.document.querySelectorAll("#infoList li");
-    untilFinish = fields.length;
-
-    for(i = 0; i < fields.length; i++) {
-        if(settings["useCustomName"] && fields[i].getAttribute("id") == "serverName") {
-            untilFinish--;
-            continue;
+    sendQuery({"action": "refresh"}, function(response) {
+        // Server responds JSON object with key (ID) - value pairs, apply these to the gadget
+        for (var key in response) {
+            var element = System.Gadget.document.getElementById(key);
+            if (typeof element !== "undefined") element.innerHTML = response[key];
         }
-
-        var keys = ["action"];
-        var values = [fields[i].getAttribute("id")];
-        var params = buildParams(keys, values);
-
-        sendQuery(params, function(response, field) {
-            System.Gadget.document.querySelector("#" + field + " .value").innerHTML = response;
-            untilFinish--;
-            if(untilFinish == 0) System.Gadget.document.getElementById("refreshBtn").disabled = false;
-        }, fields[i].getAttribute("id"));
-    }
+    });
 }
 
 function autoRefresh() {
@@ -50,47 +37,37 @@ function autoRefresh() {
     }
 }
 
-function sendQuery(params, callback, callbackParam) {
+function sendQuery(content, callback, callbackParam) {
     // If no host is specified, do not try to update
-    if(settings["host"] != undefined && settings["host"] != "") {
+    if(typeof settings["host"] !== "undefined" && settings["host"] != "") {
         var xhr = new XMLHttpRequest();
 
-        xhr.open("GET", encodeURI("http://" + settings["host"] + "/") + params + "&rnd=" + Math.random(), true);
+        xhr.open("GET", encodeURI(settings["host"]) + "&rnd=" + Math.random(), true);
+        xhr.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
 
-        // Set the function that is executes when we get an answer
+        // Add auth info to the request
+        var additionalInfo = {
+            "adminPw": settings["adminPw"];
+        };
+        content = additionalInfo.concat(content);
+
+        // Set the function that is executed when we get an answer
         xhr.onreadystatechange = function() {
             if(xhr.readyState == 4) {
                 var response = xhr.responseText;
-                if(response == undefined) response = "";
+                response = typeof response !== "undefined" ? response : "";
 
-                typeof callback == "function" && callback(response, callbackParam);
+                // Interpret server response as JSON string
+                response = eval("(" + response + ")");
+
+                callback(response, callbackParam);
             }
         }
 
-        xhr.send();
+        xhr.send(content);
     } else {
-        typeof callback == "function" && callback("", callbackParam);
+        callback("", callbackParam);
     }
-}
-
-function buildParams(keys, values) {
-    var params = "?";
-
-    if(keys.length != values.length) return;
-
-    // Add adminPw if one is set
-    if(settings["adminPw"] != undefined && settings["adminPw"] != "") {
-        keys.push("adminPw");
-        values.push(settings["adminPw"]);
-    }
-
-    // Build the param String and escape it properly
-    for( var i = 0; i < keys.length; i++) {
-        if(i > 0) params += "&";
-        params += escape(keys[i]) + "=" + escape(values[i]);
-    }
-
-    return params;
 }
 
 function showFlyout() {
