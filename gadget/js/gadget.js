@@ -39,8 +39,6 @@ function sendQuery(content, callback, callbackParam) {
     if(typeof settings["host"] !== "undefined" && settings["host"] != "") {
         var xhr = new XMLHttpRequest();
 
-        var data = "somehow the data arrives";
-
         xhr.open("POST", "http://" + encodeURI(settings["host"]) + "?rnd=" + Math.random(), true);
         xhr.timeout = settings["connTimeout"] * 1000;
         xhr.setRequestHeader("Cache-Control", "no-cache");
