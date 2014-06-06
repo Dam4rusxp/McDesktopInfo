@@ -5,8 +5,6 @@ function init() {
     System.Gadget.onSettingsClosed = settingsClosed;
 
     System.Gadget.Flyout.file = "flyout.html";
-    System.Gadget.Flyout.onShow = showFlyout;
-    System.Gadget.Flyout.onHide = hideFlyout;
 
     settingsChanged();
 }
@@ -17,6 +15,16 @@ function refresh() {
 
     sendQuery({"action": "refresh"}, function(response) {
         System.Gadget.document.getElementById("refreshBtn").disabled = false;
+
+        // Clear the gadget if the server cannot be reached
+        if (typeof response === "undefined") {
+            response = {};
+            var valueElements = settings.values["enabledQueries"].split(";");
+            for (var i = 0; i < valueElements.length; i++) response[valueElements[i]] = "";
+        }
+
+        if (settings.values["useCustomName"] === true) response["serverName"] = settings.values["serverName"];
+
         // Server responds JSON object with key (ID) - value pairs, apply these to the gadget
         for (var key in response) {
             var element = System.Gadget.document.querySelector("#" + key + " .value");
@@ -26,9 +34,9 @@ function refresh() {
 }
 
 function autoRefresh() {
-    if(settings["useAutoRefresh"]) {
+    if(settings.values["useAutoRefresh"]) {
         refresh();
-        setTimeout(autoRefresh, settings["refreshInterval"] * 1000);
+        setTimeout(autoRefresh, settings.values["refreshInterval"] * 1000);
     } else {
         autoRefreshRunning = false;
     }
@@ -36,18 +44,18 @@ function autoRefresh() {
 
 function sendQuery(content, callback, callbackParam) {
     // If no host is specified, do not try to update
-    if(typeof settings["host"] !== "undefined" && settings["host"] != "") {
+    if(typeof settings.values["host"] !== "undefined" && settings.values["host"] != "") {
         var xhr = new XMLHttpRequest();
 
-        xhr.open("POST", "http://" + encodeURI(settings["host"]) + "?rnd=" + Math.random(), true);
-        xhr.timeout = settings["connTimeout"] * 1000;
+        xhr.open("POST", "http://" + encodeURI(settings.values["host"]) + "?rnd=" + Math.random(), true);
+        xhr.timeout = settings.values["connTimeout"] * 1000;
         xhr.setRequestHeader("Cache-Control", "no-cache");
         xhr.setRequestHeader("Content-Type", "text/plain; charset=utf-8");
         xhr.setRequestHeader("Connection", "close");
 
         // Add auth info to the request
         var additionalInfo = {};
-        if(settings["adminPw"] !== "") additionalInfo["adminPw"] = settings["adminPw"];
+        if(settings.values["adminPw"] !== "") additionalInfo["adminPw"] = settings.values["adminPw"];
 
         for(var key in additionalInfo) content[key] = additionalInfo[key];
 
@@ -82,22 +90,22 @@ function settingsClosed(event) {
 }
 
 function settingsChanged() {
-    settings.load();
+    settings.loadSettings();
 
     // Set custom name
-    if(settings["useCustomName"]) {
-        System.Gadget.document.querySelector("#serverName .value").innerHTML = settings["serverName"];
+    if(settings.values["useCustomName"]) {
+        System.Gadget.document.querySelector("#serverName .value").innerHTML = settings.values["serverName"];
     }
 
     // Set Background
-    System.Gadget.background = "img/" + settings["bg"];
+    System.Gadget.background = "img/" + settings.values["bg"];
 
     // Hide all values with labels
     var liElements = System.Gadget.document.querySelectorAll("#infoList li");
     for(i = 0; i < liElements.length; i++) liElements[i].style.display = "none";
 
     // Display values for enabled queries
-    var enabledQueries = settings["enabledQueries"].split(";");
+    var enabledQueries = settings.values["enabledQueries"].split(";");
 
     System.Gadget.document.getElementById("serverName").style.display = "block";
     for(i = 0; i < enabledQueries.length; i++) {
@@ -106,17 +114,13 @@ function settingsChanged() {
     }
 
     // Set text color
-    var spans = System.Gadget.document.getElementsByTagName("span");
-    var as = System.Gadget.document.getElementsByTagName("a");
-
-    for(i = 0; i < spans.length; i++) spans[i].style.color = settings["textColor"];
-    for(i = 0; i < as.length; i++) as[i].style.color = settings["textColor"];
+    System.Gadget.document.querySelector("body").style.color = settings.values["textColor"];
 
     refresh();
 
     // Start auto refreshing
-    if(settings["useAutoRefresh"] && !autoRefreshRunning) {
-        setTimeout(autoRefresh, settings["refreshInterval"] * 1000);
+    if(settings.values["useAutoRefresh"] && !autoRefreshRunning) {
+        setTimeout(autoRefresh, settings.values["refreshInterval"] * 1000);
         autoRefreshRunning = true;
     }
 }

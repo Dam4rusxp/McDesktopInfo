@@ -1,6 +1,6 @@
 ﻿function initFlyout() {
     // The settings need to be loaded seperately for gadget and flyout
-    settings.load();
+    settings.loadSettings();
     refreshPlayerList();
     refreshChatHistory();
 }
