@@ -1,5 +1,6 @@
 socket-port: 6868
 adminPw: ''
+maxChatHistory: 50
 adminQueries:
 - kick
 - mem
