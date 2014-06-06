@@ -2,18 +2,36 @@
     // The settings need to be loaded seperately for gadget and flyout
     settings.load();
     refreshPlayerList();
+    refreshChatHistory();
 }
 
 function refreshPlayerList() {
     sendQuery({"action": "playerList"}, function(answer) {
-        var htmlList = "";
-        var playerList = answer["playerList"];
-        for (var i = 0; i < playerList.length; i++) {
-            htmlList += playerList[i];
-            htmlList += " (<a href=\"#\" onclick=\"kickPlayer(\'" + playerList[i] + "\'); return false;\">Kick</a>)" + "<br />";
-        }
+        if(typeof answer !== "undefined") {
+            var playerListElement = System.Gadget.Flyout.document.getElementById("playerList");
 
-        System.Gadget.Flyout.document.getElementById("playerList").innerHTML = htmlList;
+            for (var i = 0; i < answer["playerList"].length; i++) {
+                var pLi = document.createElement("li");
+                var msgTxt = document.createTextNode(answer["playerList"][i]);
+                pLi.appendChild(msgTxt);
+                playerListElement.appendChild(pLi);
+            }
+        }
+    });
+}
+
+function refreshChatHistory() {
+    sendQuery({"action": "chatHistory"}, function(answer) {
+        if(typeof answer !== "undefined") {
+            var chatElement = System.Gadget.Flyout.document.getElementById("chatHistory");
+
+            for (var i = 0; i < answer["chatHistory"].length; i++) {
+                var msgDiv = document.createElement("div");
+                var msgTxt = document.createTextNode(answer["chatHistory"][i]);
+                msgDiv.appendChild(msgTxt);
+                chatElement.appendChild(msgDiv);
+            }
+        }
     });
 }
 

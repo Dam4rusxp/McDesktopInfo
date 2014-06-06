@@ -1,31 +1,41 @@
 ﻿<!DOCTYPE html>
 ﻿﻿<html>
     <head>
-        <meta http-equiv="X-UA-Compatible" content="IE=8" />
+        <!--<meta http-equiv="X-UA-Compatible" content="IE=8" />-->
         <style type="text/css">
             body {
-                background: #F1F1EC;
+                background: lightgray;
                 color: black;
                 font-family: Segoe UI, Tahoma, Sans-Serif;
-                font-size: 10px;
+                font-size: 11px;
 
-                width: 130px;
-                height: 130px;
+                width: 462px;
+                height: 247px;
+
                 margin: 0;
                 padding: 0;
             }
 
-            #contentDiv {
-                display: inline;
-                height: 126px;
-                width: 120px;
-                padding: 2px 5px;
-                overflow: auto;
+            table {
+                position: absolute;
+                top: 5px;
+                left: 5px;
+                background: #F1F1EC;
             }
 
-            #playerListLbl {
-                font-size: 12px;
-                font-weight: bold;
+            td {
+                overflow-y: scroll;
+                vertical-align: top;
+                padding: 5px;
+            }
+
+            #chatHistory {
+                height: 200px;
+            }
+
+            #playerList {
+                padding-left: 18px;
+                margin: 0;
             }
         </style>
 
@@ -36,9 +46,23 @@
     </head>
     <body onload="initFlyout();">
         <div id="contentDiv">
-            <span id="playerListLbl">Player List:</span>
-            <br />
-            <div id="playerList"></div>
+            <table border="1">
+                <colgroup>
+                    <col width="120" />
+                    <col width="300" />
+                </colgroup>
+                <tr>
+                    <th>PlayerList</th>
+                    <th>Chat</th>
+                </tr>
+                <tr>
+                    <td>
+                        <ul id="playerList">
+                        </ul>
+                    </td>
+                    <td id="chatHistory"></td>
+                </tr>
+            </table>
         </div>
     </body>
 </html>
