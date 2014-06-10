@@ -24,7 +24,7 @@ public class ChatHistory extends Query implements Listener {
     @EventHandler
     public void onChatMessage(AsyncPlayerChatEvent e) {
         if(!isDisabled()) {
-            addMessage(e.getPlayer().getName() + ": " + e.getMessage());
+            addMessage("<" + e.getPlayer().getName() + "> " + e.getMessage());
 
         }
     }
