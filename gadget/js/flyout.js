@@ -26,10 +26,9 @@ function refreshChatHistory() {
             var chatElement = System.Gadget.Flyout.document.getElementById("chatHistory");
 
             for (var i = 0; i < answer["chatHistory"].length; i++) {
-                var msgDiv = document.createElement("div");
-                var msgTxt = document.createTextNode(answer["chatHistory"][i]);
-                msgDiv.appendChild(msgTxt);
-                chatElement.appendChild(msgDiv);
+                var paragraph = document.createElement("p");
+                paragraph.appendChild(document.createTextNode(answer["chatHistory"][i]));
+                chatElement.appendChild(paragraph);
             }
         }
     });

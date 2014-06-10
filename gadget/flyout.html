@@ -17,6 +17,8 @@
             }
 
             table {
+                table-layout: fixed;
+                width: 452px;
                 position: absolute;
                 top: 5px;
                 left: 5px;
@@ -24,13 +26,20 @@
             }
 
             td {
-                overflow-y: scroll;
                 vertical-align: top;
-                padding: 5px;
             }
 
-            #chatHistory {
+            .cellContainer {
                 height: 200px;
+                max-height: 200px;
+                overflow-y: auto;
+                padding: 5px;
+                word-wrap: break-word;
+            }
+
+            #chatHistory p {
+                margin-top: 3px;
+                margin-bottom: 3px;
             }
 
             #playerList {
@@ -57,10 +66,12 @@
                 </tr>
                 <tr>
                     <td>
-                        <ul id="playerList">
-                        </ul>
+                        <div class="cellContainer">
+                            <ul id="playerList">
+                            </ul>
+                        </div>
                     </td>
-                    <td id="chatHistory"></td>
+                    <td><div id="chatHistory" class="cellContainer"></div></td>
                 </tr>
             </table>
         </div>
