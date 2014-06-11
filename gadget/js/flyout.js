@@ -11,10 +11,23 @@ function refreshPlayerList() {
             var playerListElement = System.Gadget.Flyout.document.getElementById("playerList");
 
             for (var i = 0; i < answer["playerList"].length; i++) {
-                var pLi = document.createElement("li");
-                var msgTxt = document.createTextNode(answer["playerList"][i]);
-                pLi.appendChild(msgTxt);
-                playerListElement.appendChild(pLi);
+                // Craft correct scope for callback
+                (function(player) {
+                    var pLi = document.createElement("li");
+                    pLi.appendChild(document.createTextNode(answer["playerList"][i] + " ("));
+
+                    var kickLink = document.createElement("a");
+                    kickLink.appendChild(document.createTextNode("Kick"));
+                    kickLink.href = "#";
+                    kickLink.onclick = function() {
+                        kickPlayer(player);
+                    };
+
+                    pLi.appendChild(kickLink);
+                    pLi.appendChild(document.createTextNode(")"));
+
+                    playerListElement.appendChild(pLi);
+                })(answer["playerList"][i]);
             }
         }
     });
