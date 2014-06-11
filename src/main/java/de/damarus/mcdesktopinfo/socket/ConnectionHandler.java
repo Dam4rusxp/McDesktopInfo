@@ -59,8 +59,8 @@ public class ConnectionHandler implements Runnable {
             Query queryObj = QueryEnum.valueOf(query.toUpperCase()).getQueryObj();
 
             answer.putAll(queryObj.runSecure(params));
-        } catch (IllegalArgumentException e) {
-            McDesktopInfo.log("Received unknown query \"" + params.get("action") + "\"");
+        } catch (Exception e) {
+            McDesktopInfo.log("An error occurred while executing the query \"" + params.get("action") + "\"!");
         }
 
         return answer;
